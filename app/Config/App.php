@@ -182,19 +182,19 @@ class App extends BaseConfig
      *
      * @var string
      */
-    public string $version = "v24.0.0";
+    public string $version = "v24.1.0";
     /**
      * versionDate - don't change here, but in function setParameters() below
      *
      * @var string
      */
-    public string $versionDate = "30/06/2024";
+    public string $versionDate = "30/11/2024";
     /**
      * Number of the database version
      *
      * @var string
      */
-    public string $dbversion = "24.0";
+    public string $dbversion = "24.1";
     /**
      * Location of the database schema
      *
@@ -252,7 +252,7 @@ class App extends BaseConfig
      *
      * @var string
      */
-    public $GACL_aco = "app";
+    public $GACL_aco = "pomet";
     /**
      * Generic mail used to send messages to the administrators
      *

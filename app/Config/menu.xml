@@ -5,16 +5,21 @@
 		<its:translateRule selector="//item/@tooltip" translate="yes" />
 	</its:rules>
 
-	<item module="manage" label="Gestion" tooltip="Gestion">
+	<item module="traitList" tooltip="Saisie des traits" label="Traits">
+		<item module="traitList" tooltip="Saisie des traits" label="Traits"/>
+	</item>
+	
+	<item module="campagneList" label="Campagnes" tooltip="Liste des campagnes" droits="param">
+		<item module="campagneList" label="Campagnes" tooltip="Liste des campagnes" droits="param" />
+		<item module="personneList" label="Opérateurs" tooltip="Liste des opérateurs" droits="param"/>
 		<item divider='1' droits="param" />
 		<item module="requestList" label="Requêtes SQL" tooltip="Exécution de requêtes SQL dans la base de données" droits="param" />
 	</item>
 
-	<item module="parametre" label="Paramètres" tooltip="Paramètres de l'application" droits="gestion">
-		<item divider='1' />
-		<item module="dbstructureSchema" droits="admin" label="Schéma de la base de données" tooltip="Schéma de la base de données" />
-		<item module="dbstructureHtml" droits='admin' label="Structure de la base de données (HTML)" tooltip="Liste des tables et des colonnes" />
-		<item module="dbstructureLatex" droits='admin' label="Structure de la base de données (Latex)" tooltip="Liste des tables et des colonnes sous forme de tableaux Latex" />
+	<item module="parametre" label="Paramètres" tooltip="Paramètres de l'application" droits="consult">
+		<item module="especeList" label="Espèces" tooltip="Liste des espèces" droits="consult"/>
+		<item module="materielList" label="Matériels" tooltip="Liste des matériels de pêche" droits="consult"/>
+		<item module="experimentationList" label="Expérimentations" tooltip="Liste des expérimentations" droits="consult"/>
 	</item>
 	<item module="administration" label="Administration" tooltip="Administration de l'application" droits="admin">
 		<item module="loginGestionList" droits="admin" label="Liste des comptes locaux" tooltip="Liste des logins - identification via la base de données" />
@@ -29,6 +34,11 @@
 		<item module="systemShowSession" droits="admin" label="Variables SESSION" tooltip="Affichage des variables de session"/>
 		<item divider="1"/>
 		<item module="backupDisplay" droits="admin" label="Backup" tooltip="Sauvegarde de la base de données" />
+	</item>
+	<item module="documentation_fr" label="Documentation" tooltip="Documentations en ligne en français" language="fr">
+		<item module="manuel_fr" label="Manuel d'utilisation" tooltip="Conseils pour la saisie des traits" language="fr"/>
+		<item divider='1' />
+		<item module="doctotp_fr" label="Comprendre la double authentification" tooltip="Comprendre le mécanisme de la double authentification" language="fr"/>
 	</item>
 	<item module="connexion" label="Connexion" tooltip="S'identifier dans l'application" onlynoconnect="1" />
 	<item module="disconnect" label="Déconnexion" tooltip="Déconnexion de l'application" loginrequis="1">
