@@ -1,0 +1,234 @@
+<?php 
+namespace App\Models;
+use Ppci\Models\PpciModel;
+
+/**
+ * Classe de base pour gerer des parametres de recherche
+ * Classe non instanciable, a heriter
+ * L'instance doit etre conservee en variable de session
+ * @author Eric Quinton
+ *
+ */
+class SearchParam
+{
+
+    /**
+     * Tableau des parametres geres par la classe
+     * La liste des parametres doit etre declaree dans la fonction construct
+     *
+     * @var array
+     */
+    public $param;
+
+    public $paramNum;
+
+    public $paramArray;
+
+    /**
+     * Indique si la lecture des parametres a ete realisee au moins une fois
+     * Permet ainsi de declencher ou non la recherche
+     *
+     * @var int
+     */
+    public $isSearch;
+
+    /**
+     * Constructeur de la classe
+     * A rappeler systematiquement pour initialiser isSearch
+     */
+    public function __construct()
+    {
+        if (!is_array($this->param)) {
+            $this->param = array();
+        }
+        $this->isSearch = 0;
+        $this->param["isSearch"] = 0;
+        if (is_array($this->paramNum)) {
+            $this->paramNum = array_flip($this->paramNum);
+        }
+    }
+
+    /**
+     * Stocke les parametres fournis
+     *
+     * @param array $data
+     *            : tableau des valeurs, ou non de la variable
+     * @param string $valeur
+     *            : valeur a renseigner, dans le cas ou la donnee est unique
+     */
+    function setParam($data, $valeur = NULL)
+    {
+        if (is_array($data)) {
+            /*
+             * Les donnees sont fournies sous forme de tableau
+             */
+            foreach ($this->param as $key => $value) {
+                /*
+                 * Recherche si une valeur de $data correspond a un parametre
+                 */
+                if (isset($data[$key])) {
+                    /*
+                     * Recherche si la valeur est attendue sous forme de tableau
+                     */
+                    if (isset($this->paramArray[$key])) {
+                        $this->param[$key] = $data[$key];
+                    } else {
+                        /*
+                         * Recherche si la valeur doit etre numerique
+                         */
+                        if (isset($this->paramNum[$key]) && !is_numeric($data[$key])) {
+                            $data[$key] = "";
+                        }
+                        $this->param[$key] = $data[$key];
+                    }
+                }
+            }
+        } else {
+            /*
+             * Une donnee unique est fournie
+             */
+            if (isset($this->param[$data]) && !is_null($valeur)) {
+                if (isset($this->paramNum[$data]) && !is_numeric($valeur)) {
+                    $valeur = "";
+                }
+                $this->param[$data] = $valeur;
+            }
+        }
+        /*
+         * Gestion de l'indicateur de recherche
+         */
+        if ($data["isSearch"] == 1) {
+            $this->isSearch = 1;
+        }
+    }
+
+    /**
+     * Retourne les parametres existants
+     */
+    function getParam()
+    {
+        return $this->param;
+    }
+
+    /**
+     * Indique si la recherche a ete deja lancee
+     *
+     * @return int
+     */
+    function isSearch()
+    {
+        if ($this->isSearch == 1) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
+    /**
+     * Encode les donnees avant de les envoyer au navigateur
+     *
+     * @param string|array $data
+     * @return string|array
+     */
+    function encodeData($data)
+    {
+        if (is_array($data)) {
+            foreach ($data as $key => $value) {
+                $data[$key] = $this->encodeData($value);
+            }
+        } else {
+            $data = htmlspecialchars($data);
+        }
+        return $data;
+    }
+}
+
+/**
+ * Classe de recherche des especes
+ *
+ * @author Eric Quinton
+ *
+ */
+class SearchEspece extends SearchParam
+{
+
+    public function __construct()
+    {
+        $this->param = array(
+            "nom" => "",
+            "phylum" => "",
+            "subphylum" => "",
+            "classe" => "",
+            "ordre" => "",
+            "famille" => "",
+            "genre" => ""
+        );
+        parent::__construct();    }
+}
+
+/**
+ * Classe de recherche des campagnes
+ *
+ * @author quinton
+ *
+ */
+class SearchCampagne extends SearchParam
+{
+
+    public function __construct()
+    {
+        $this->param = array(
+            "saison" => "",
+            "annee" => "",
+            "masse_eau_id" => ""
+        );
+        $this->paramNum = array(
+            "annee",
+            "masse_eau_id"
+        );
+        parent::__construct();    }
+}
+
+/**
+ * Classe de recherche des traits
+ *
+ * @author quinton
+ *
+ */
+class SearchTrait extends SearchParam
+{
+
+    public function __construct()
+    {
+        $this->param = array(
+            "campagne_id" => "",
+            "saison" => "",
+            "annee" => "",
+            "masse_eau_id" => ""
+        );
+        $this->paramNum = array(
+            "campagne_id",
+            "annee",
+            "masse_eau_id"
+        );
+        $this->paramArray = array(
+            "campagne_id" => "1"
+        );
+        parent::__construct();    }
+
+    /**
+     * Retourne si au moins une campagne est selectionnee
+     *
+     * @return boolean
+     */
+    function hasCampagneSelected()
+    {
+        $hasSelected = false;
+        foreach ($this->param["campagne_id"] as $value) {
+            if ($value > 0) {
+                $hasSelected = true;
+            }
+        }
+        return $hasSelected;
+    }
+}
