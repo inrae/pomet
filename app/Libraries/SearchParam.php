@@ -1,6 +1,5 @@
 <?php 
-namespace App\Models;
-use Ppci\Models\PpciModel;
+namespace App\Libraries;
 
 /**
  * Classe de base pour gerer des parametres de recherche
@@ -143,92 +142,4 @@ class SearchParam
     }
 }
 
-/**
- * Classe de recherche des especes
- *
- * @author Eric Quinton
- *
- */
-class SearchEspece extends SearchParam
-{
 
-    public function __construct()
-    {
-        $this->param = array(
-            "nom" => "",
-            "phylum" => "",
-            "subphylum" => "",
-            "classe" => "",
-            "ordre" => "",
-            "famille" => "",
-            "genre" => ""
-        );
-        parent::__construct();    }
-}
-
-/**
- * Classe de recherche des campagnes
- *
- * @author quinton
- *
- */
-class SearchCampagne extends SearchParam
-{
-
-    public function __construct()
-    {
-        $this->param = array(
-            "saison" => "",
-            "annee" => "",
-            "masse_eau_id" => ""
-        );
-        $this->paramNum = array(
-            "annee",
-            "masse_eau_id"
-        );
-        parent::__construct();    }
-}
-
-/**
- * Classe de recherche des traits
- *
- * @author quinton
- *
- */
-class SearchTrait extends SearchParam
-{
-
-    public function __construct()
-    {
-        $this->param = array(
-            "campagne_id" => "",
-            "saison" => "",
-            "annee" => "",
-            "masse_eau_id" => ""
-        );
-        $this->paramNum = array(
-            "campagne_id",
-            "annee",
-            "masse_eau_id"
-        );
-        $this->paramArray = array(
-            "campagne_id" => "1"
-        );
-        parent::__construct();    }
-
-    /**
-     * Retourne si au moins une campagne est selectionnee
-     *
-     * @return boolean
-     */
-    function hasCampagneSelected()
-    {
-        $hasSelected = false;
-        foreach ($this->param["campagne_id"] as $value) {
-            if ($value > 0) {
-                $hasSelected = true;
-            }
-        }
-        return $hasSelected;
-    }
-}
