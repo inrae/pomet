@@ -132,10 +132,13 @@ class Espece extends PpciModel
 		$this->where = " where ";
 		if (strlen($param["nom"]) > 0) {
 			if (is_numeric($param["nom"])) {
-				$this->where .= " code_sandre = " . $param["nom"];
+				$this->where .= " code_sandre = :sandre:";
+				$this->sqlparam["sandre"] = $param["nom"];
 			} else {
-				$this->where .= "(upper(nom) like upper('%" . $param["nom"] . "%')
-					or upper(nom_fr) like upper('%" . $param["nom"] . "%'))";
+				$this->where .= "(upper(nom) like upper(:nom:)
+					or upper(nom_fr) like upper(:nom_fr:)";
+				$this->sqlparam["nom"] = "%" . $param["nom"] . "%";
+				$this->sqlparam["nom_fr"] = "%" . $param["nom"] . "%";
 			}
 			$and = true;
 		}
@@ -150,7 +153,8 @@ class Espece extends PpciModel
 		foreach ($fields as $field) {
 			if (strlen($param[$field]) > 0) {
 				$and ? $this->where .= " and " : $and = true;
-				$this->where .= $field . " = '" . $param[$field] . "'";
+				$this->where .= " $field = :$field:";
+				$this->sqlparam[$field] = $param[$field];
 			}
 		}
 		if (!$and) {
@@ -174,13 +178,10 @@ class Espece extends PpciModel
 
 	/**
 	 * Supprime une espece de la table
-	 * (non-PHPdoc)
-	 *
-	 * @see ObjetBDD::supprimer()
 	 */
 	function supprimer($id)
 	{
-		if (is_numeric($id) && $id > 0) {
+		if ($id > 0) {
 			/*
 			 * Recherche si l'espece est utilisee
 			 */

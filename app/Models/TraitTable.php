@@ -1,13 +1,9 @@
-<?php 
-namespace App\Models;
-use Ppci\Models\PpciModel;
+<?php
 
-/**
- * @author Eric Quinton
- * @copyright Copyright (c) 2015, IRSTEA / Eric Quinton
- * @license http://www.cecill.info/licences/Licence_CeCILL-C_V1-fr.html LICENCE DE LOGICIEL LIBRE CeCILL-C
- *  Creation 2 nov. 2015
- */
+namespace App\Models;
+
+use Ppci\Libraries\PpciException;
+use Ppci\Models\PpciModel;
 
 /**
  * ORM de gestion de la table trait
@@ -44,6 +40,9 @@ class TraitTable extends PpciModel
 			";
 
     private $order = " order by madate";
+    public $errorData = [];
+    private $where = "";
+    private $sqlParams = [];
 
     public function __construct()
     {
@@ -160,7 +159,8 @@ class TraitTable extends PpciModel
             )
         );
         $this->srid = 4326;
-        parent::__construct();    }
+        parent::__construct();
+    }
 
     /**
      * Retourne le detail d'un trait
@@ -168,11 +168,11 @@ class TraitTable extends PpciModel
      * @param int $id
      * @return array
      */
-    function getDetail($id)
+    function getDetail(int $id)
     {
-        if ($id > 0 && is_numeric($id)) {
-            $where = " where trait_id = " . $id;
-            return $this->lireParam($this->sqlLire . $where);
+        if ($id > 0) {
+            $where = " where trait_id = :id:";
+            return $this->lireParam($this->sqlLire . $where, ["id" => $id]);
         } else {
             return [];
         }
@@ -184,9 +184,9 @@ class TraitTable extends PpciModel
      *
      * @see ObjetBDD::lire()
      */
-    function read($id, $getDefault = false, $parentValue = 0)
+    function read($id, $getDefault = false, $parentValue = 0):array
     {
-        if (is_numeric($id) && $id > 0) {
+        if ($id > 0) {
             return $this->getDetail($id);
         } else {
             return parent::lire($id, $getDefault, $parentValue);
@@ -199,7 +199,7 @@ class TraitTable extends PpciModel
      *
      * @see ObjetBDD::ecrire()
      */
-    function write($data)
+    function write($data):int
     {
         $data["validite"] == 1 ? $data["validite"] = "true" : $data["validite"] = "false";
         /*
@@ -208,11 +208,9 @@ class TraitTable extends PpciModel
         /*
          * Recuperation des donnees de l'experimentation
          */
-        include_once 'modules/classes/campagne.class.php';
-        include_once 'modules/classes/experimentation.class.php';
-        $campagne = new Campagne($this->connection, $this->paramori);
+        $campagne = new Campagne;
         $dataCampagne = $campagne->lireWithMasseEau($data["fk_campagne_id"]);
-        $experimentation = new Experimentation($this->connection, $this->paramori);
+        $experimentation = new Experimentation;
         $dataExp = $experimentation->lire($dataCampagne["experimentation_id"]);
         $error = false;
         if ($dataExp["controle_enabled"] == 1) {
@@ -313,14 +311,11 @@ class TraitTable extends PpciModel
                 $data["trait_id"] = $id;
                 if (strlen($data["pos_deb_lat_dd"]) > 0 && strlen($data["pos_deb_long_dd"]) > 0) {
                     if (strlen($data["pos_fin_lat_dd"]) > 0 && strlen($data["pos_fin_long_dd"]) > 0) {
-                        $geom = new DCEligneGeom($this->connection, $this->paramori);
+                        $geom = new DCEligneGeom;
                     } else {
-                        $geom = new DCEpointGeom($this->connection, $this->paramori);
+                        $geom = new DCEpointGeom;
                     }
-                    if ($geom->ecrire($data) < 1) {
-                        $this->errorData = array_merge($this->errorData, $geom->errorData);
-                        throw new ObjetBDDException();
-                    }
+                    $geom->ecrire($data);
                 }
             }
         } else {
@@ -329,7 +324,7 @@ class TraitTable extends PpciModel
                 "key" => 0,
                 "message" => "Les contrôles effectués ne permettent pas d'enregistrer le trait - trait invalide"
             );
-            throw new ObjetBDDException();
+            throw new PpciException();
         }
         return $id;
     }
@@ -417,7 +412,6 @@ class TraitTable extends PpciModel
     function getWhere($dataSearch)
     {
         $where = "";
-        $this->encodeData($dataSearch);
         if (is_array($dataSearch["campagne_id"]) || $dataSearch["campagne_id"] > 0) {
             $where = " where ";
             $isWhere = false;
@@ -583,470 +577,5 @@ class TraitTable extends PpciModel
         $especes = $this->getListeParamAsPrepared($sql, $a_trait);
         $trait["taxons"] = $especes;
         return $trait;
-    }
-}
-
-/**
- * ORM de gestion de la table echantillon
- *
- * @author quinton
- *
- */
-class Echantillon extends PpciModel
-{
-
-
-    private $sql = "select ech_id, espece_id, fk_trait_id,
-			nt::int, pt::float, nom, nom_fr, lt_max
-			from echantillon
-			natural join espece
-			left outer join species_size on (nom = species_consensus)";
-
-    public function __construct()
-    {
-        $this->table = "echantillon";
-                $this->fields = array(
-            "ech_id" => array(
-                "type" => 1,
-                "key" => 1,
-                "requis" => 1,
-                "defaultValue" => 0
-            ),
-            "espece_id" => array(
-                "type" => 1,
-                "requis" => 1
-            ),
-            "fk_trait_id" => array(
-                "type" => 1,
-                "requis" => 1,
-                "parentAttrib" => 1
-            ),
-            "nt" => array(
-                "type" => 1
-            ),
-            "pt" => array(
-                "type" => 1
-            )
-        );
-        parent::__construct();    }
-
-    /**
-     * Retourne le nombre d'echantillons pour une espece donnee
-     *
-     * @param int $espece_id
-     * @return int
-     */
-    function getNbFromEspece($espece_id)
-    {
-        if ($espece_id > 0 && is_numeric($espece_id)) {
-            $sql = "select count(*) as nombre from " . $this->table . " where espece_id = " . $espece_id;
-            $data = $this->lireParam($sql);
-            return ($data["nombre"]);
-        }
-    }
-
-    /**
-     * Retourne la liste des echantillons pour un trait
-     *
-     * @param int $trait_id
-     * @return tableau
-     */
-    function getListeFromTrait($trait_id)
-    {
-        if ($trait_id > 0 && is_numeric($trait_id)) {
-            $where = " where fk_trait_id = " . $trait_id;
-            $order = " order by ech_id ";
-            return $this->getListeParam($this->sql . $where . $order);
-        }
-    }
-
-    /**
-     * Surcharge de la fonction lire pour reformater les champs en affichage
-     * (non-PHPdoc)
-     *
-     * @see ObjetBDD::lire()
-     */
-    function read($id, $getDefault = false, $parentValue = 0)
-    {
-        if (is_numeric($id) && $id > 0) {
-            return $this->getDetail($id);
-        } else {
-            return parent::lire($id, $getDefault, $parentValue);
-        }
-    }
-
-    /**
-     * Recalcule le nombre total et la masse totale pour l'échantillon, et met a jour
-     * l'information le cas echeant
-     *
-     * @param int $id
-     */
-    function updateNbTotal($id)
-    {
-        if ($id > 0 && is_numeric($id)) {
-            $individu = new Individu($this->connection, $this->paramori);
-            $data = $this->lire($id);
-            $updateRequired = false;
-            $dataIndiv = $individu->getTotalFromEchantillon($id);
-            if ($dataIndiv["nombre"] > $data["nt"]) {
-                $data["nt"] = $dataIndiv["nombre"];
-                $updateRequired = true;
-            }
-            if ($dataIndiv["masse"] > $data["pt"]) {
-                $data["pt"] = $dataIndiv["masse"];
-                $updateRequired = true;
-            }
-            if ($updateRequired) {
-                parent::write($data);
-            }
-        }
-    }
-
-    /**
-     * Surcharge de la fonction supprimer pour enlever les poissons rattaches
-     *
-     * @see ObjetBDD::supprimer()
-     */
-    function supprimer($id)
-    {
-        if ($id > 0 && is_numeric($id)) {
-            /*
-             * Suppression des individus rattaches
-             */
-            $individu = new Individu($this->connection, $this->paramori);
-            $individu->supprimerChamp($id, "fk_ech_id");
-            return parent::supprimer($id);
-        }
-    }
-
-    /**
-     * Retourne le nombre d'echantillons rattaches a un trait
-     *
-     * @param int $traitId
-     * @return int
-     */
-    function getNombreFromTrait($traitId)
-    {
-        if ($traitId > 0 && is_numeric($traitId)) {
-            $sql = "select count(*) as nombre from echantillon
-					where fk_trait_id = " . $traitId;
-            $data = $this->lireParam($sql);
-            return ($data["nombre"]);
-        }
-    }
-
-    /**
-     * Retourne le detail d'un echantillon
-     *
-     * @param int $id
-     * @return array
-     */
-    function getDetail($id)
-    {
-        if ($id > 0 && is_numeric($id)) {
-            $where = " where ech_id = " . $id;
-            return $this->lireParam($this->sql . $where);
-        } else {
-            return [];
-        }
-    }
-
-    /**
-     * Prepare la liste des echantillons a exporter, qui correspondent aux parametres de recherche
-     * des traits fournis dans le tableau
-     *
-     * @param array $dataSearch
-     * @return array
-     */
-    function getListForExport(array $dataSearch)
-    {
-        $trait = new TraitTable($this->connection, $this->paramori);
-        $traits = $trait->getIdFromSearch($dataSearch);
-        if (count($traits) > 0) {
-            $sql = "select fk_trait_id as trait_id, ech_id, nom, code_sandre, nt, pt
-					from echantillon
-					join espece using (espece_id)";
-            $where = " where fk_trait_id in (";
-            $virgule = "";
-            foreach ($traits as $value) {
-                $where .= $virgule . $value["trait_id"];
-                $virgule = ",";
-            }
-            $where .= ")";
-            $order = " order by fk_trait_id";
-            return $this->getListeParam($sql . $where . $order);
-        }
-    }
-}
-
-class Individu extends PpciModel
-{
-
-
-    private $sql = "select ind_id, fk_ech_id,
-			longueur::float, poids::float
-			from individu";
-
-    public function __construct()
-    {
-        $this->table = "individu";
-                $this->fields = array(
-            "ind_id" => array(
-                "type" => 1,
-                "key" => 1,
-                "requis" => 1,
-                "defaultValue" => 0
-            ),
-            "fk_ech_id" => array(
-                "type" => 1,
-                "requis" => 1,
-                "parentAttrib" => 1
-            ),
-            "longueur" => array(
-                "type" => 1
-            ),
-            "poids" => array(
-                "type" => 1
-            )
-        );
-        parent::__construct();    }
-
-    /**
-     * Surcharge de la fonction lire pour reformater les champs en affichage
-     * (non-PHPdoc)
-     *
-     * @see ObjetBDD::lire()
-     */
-    function read($id, $getDefault = false, $parentValue = 0)
-    {
-        if (is_numeric($id) && $id > 0) {
-            return $this->getDetail($id);
-        } else {
-            return parent::lire($id, $getDefault, $parentValue);
-        }
-    }
-
-    /**
-     * Retourne le detail d'un individu
-     *
-     * @param int $id
-     * @return array
-     */
-    function getDetail($id)
-    {
-        if ($id > 0 && is_numeric($id)) {
-            $where = " where ind_id = " . $id;
-            return $this->lireParam($this->sql . $where);
-        }
-    }
-
-    /**
-     * Retourne la liste des individus rattaches a un echantillon
-     *
-     * @param unknown $id
-     * @return tableau
-     */
-    function getListFromEchantillon($id)
-    {
-        if ($id > 0 && is_numeric($id)) {
-            $where = " where fk_ech_id = " . $id;
-            $order = " order by ind_id";
-            return $this->getListeParam($this->sql . $where . $order);
-        }
-    }
-
-    /**
-     * Retourne le nombre de poissons, et leur masse totale,
-     * pour un echantillon
-     *
-     * @param int $id
-     *            : code de l'echantillon
-     * @return array["nombre", "masse"]
-     */
-    function getTotalFromEchantillon($id)
-    {
-        if ($id > 0 && is_numeric($id)) {
-            $sql = "select count(*) as nombre, sum(poids) as masse
-					from individu
-					where fk_ech_id = " . $id;
-            return $this->lireParam($sql);
-        }
-    }
-
-    /**
-     * Retourne la liste des individus correspondant a la liste des traits determinee
-     * par les parametres de recherche fournis
-     *
-     * @param array $dataSearch
-     * @return tableau
-     */
-    function getListForExport(array $dataSearch)
-    {
-        $trait = new TraitTable($this->connection, $this->paramori);
-        $traits = $trait->getIdFromSearch($dataSearch);
-        if (count($traits) > 0) {
-            $sql = "select fk_trait_id as trait_id, fk_ech_id as ech_id, ind_id, nom, code_sandre, longueur, poids
-					 from individu
-					join echantillon on (fk_ech_id = ech_id)
-					join espece using (espece_id)";
-            $where = " where fk_trait_id in (";
-            $virgule = "";
-            foreach ($traits as $value) {
-                $where .= $virgule . $value["trait_id"];
-                $virgule = ",";
-            }
-            $where .= ")";
-            $order = " order by fk_trait_id";
-            return $this->getListeParam($sql . $where . $order);
-        }
-    }
-}
-
-/**
- * ORM de gestion de la table des classes de salinite
- *
- * @author quinton
- *
- */
-class Salinite extends PpciModel
-{
-
-    public function __construct()
-    {
-        $this->table = "salinite";
-                $this->fields = array(
-            "salinite_id" => array(
-                "type" => 1,
-                "key" => 1,
-                "requis" => 1,
-                "defaultValue" => 0
-            ),
-            "salinite_libelle" => array(
-                "type" => 0,
-                "requis" => 1
-            )
-        );
-        parent::__construct();    }
-}
-
-/**
- * ORM de gestion de la table dce_ligne_geom
- *
- * @author quinton
- *
- */
-class DCEligneGeom extends PpciModel
-{
-
-    public function __construct()
-    {
-        $this->table = "dce_ligne_geom";
-        $this->useAutoIncrement = false;
-        $this->fields = array(
-            "trait_id" => array(
-                "type" => 1,
-                "key" => 1,
-                "requis" => 1
-            ),
-            "pos_deb_long_dd" => array(
-                "type" => 1,
-                "requis" => 1
-            ),
-            "pos_deb_lat_dd" => array(
-                "type" => 1,
-                "requis" => 1
-            ),
-            "pos_fin_long_dd" => array(
-                "type" => 1,
-                "requis" => 1
-            ),
-            "pos_fin_lat_dd" => array(
-                "type" => 1,
-                "requis" => 1
-            ),
-            "trait_geom" => array(
-                "type" => 4
-            )
-        );
-
-        $param["srid"] = 4326;
-        parent::__construct();    }
-
-    /**
-     * Surcharge de la fonction ecrire pour generer le point geographique
-     * (non-PHPdoc)
-     *
-     * @see ObjetBDD::ecrire()
-     */
-    function write($data)
-    {
-        /*
-         * Preparation de trait_geom
-         */
-        $id = parent::write($data);
-        if ($id > 0) {
-            $sql = "update dce_ligne_geom set trait_geom = "
-                . "st_setsrid(st_makeline(st_makepoint(" . $data["pos_deb_long_dd"] . "," . $data["pos_deb_lat_dd"] . "),st_makepoint(" . $data["pos_fin_long_dd"] . "," . $data["pos_fin_lat_dd"] . ")),4326)
-            where trait_id = " . $id;
-        }
-        $this->executeSQL($sql);
-        return $id;
-    }
-}
-
-/**
- * ORM de gestion de la table dce_point_geom
- *
- * @author quinton
- *
- */
-class DCEpointGeom extends PpciModel
-{
-
-    public function __construct()
-    {
-        $this->table = "dce_point_geom";
-        $this->useAutoIncrement = false;
-        $this->fields = array(
-            "trait_id" => array(
-                "type" => 1,
-                "key" => 1,
-                "requis" => 1
-            ),
-            "pos_deb_long_dd" => array(
-                "type" => 1,
-                "requis" => 1
-            ),
-            "pos_deb_lat_dd" => array(
-                "type" => 1,
-                "requis" => 1
-            ),
-            "trait_geom" => array(
-                "type" => 4
-            )
-        );
-        $param["srid"] = 4326;
-        parent::__construct();    }
-
-    /**
-     * Surcharge de la fonction ecrire pour generer le point geographique
-     * (non-PHPdoc)
-     *
-     * @see ObjetBDD::ecrire()
-     */
-    function write($data)
-    {
-        /*
-         * Preparation de trait_geom
-         */
-        /*
-         * Preparation de trait_geom
-         */
-        $id = parent::write($data);
-        if ($id > 0) {
-            $sql = "update dce_ligne_geom set trait_geom = " . "st_setsrid(st_makepoint(" . $data["pos_deb_long_dd"] . "," . $data["pos_deb_lat_dd"] . "),4326)";
-        }
-        $this->executeSQL($sql);
-        return $id;
     }
 }
