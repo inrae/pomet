@@ -65,14 +65,14 @@ class TranslateId
 	 */
 	function translateList($data, $reset = false)
 	{
-		/*
+		/**
 		 * Reinitialisation du tableau
 		 */
 		if ($reset) {
 			$this->reinit();
 		}
 
-		/*
+		/**
 		 * Traitement de chaque ligne du tableau, pour chaque nom de la cle
 		 */
 		foreach ($this->fieldname as $columnName) {

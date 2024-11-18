@@ -16,7 +16,7 @@ class Xx extends PpciLibrary {
     {
         parent::__construct();
         $this->dataclass = new XXX();
-        $keyName = "xxx_id";
+        $this->keyName = "xxx_id";
         if (isset($_REQUEST[$this->keyName])) {
             $this->id = $_REQUEST[$this->keyName];
         }
@@ -52,7 +52,7 @@ $this->vue=service('Smarty');
         }
         }
         function selectfile() {
-        /*
+        /**
          * Verification du chargement du fichier
          */
         try {
@@ -77,7 +77,7 @@ $this->vue=service('Smarty');
         }
         }
         function exec() {
-        /*
+        /**
          * Declenchement de l'import - creation de la trace
          */
         try {

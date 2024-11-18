@@ -1,78 +1,75 @@
-<?php 
+<?php
+
 namespace App\Libraries;
 
+use App\Models\Echantillon as ModelsEchantillon;
+use App\Models\Individu;
+use App\Models\TraitTable;
 use Ppci\Libraries\PpciException;
 use Ppci\Libraries\PpciLibrary;
-use Ppci\Models\PpciModel;
 
-class Xx extends PpciLibrary { 
-    /**
-     * @var xx
-     */
-    protected PpciModel $this->dataclass;
+class Echantillon extends PpciLibrary
+{
+
     private $keyName;
+    private int $trait_id;
 
     function __construct()
     {
         parent::__construct();
-        $this->dataclass = new XXX();
-        $keyName = "xxx_id";
+        $this->dataclass = new ModelsEchantillon;
+        $this->keyName = "ech_id";
+        translateIdInstanciate("ti_trait");
+        translateIdInstanciate("ti_echantillon");
+        translateIdInstanciate("ti_individu");
         if (isset($_REQUEST[$this->keyName])) {
-            $this->id = $_REQUEST[$this->keyName];
+            $this->id = $_SESSION["ti_echantillon"]->getValue($_REQUEST[$this->keyName]);
+        }
+        if (isset($_REQUEST["fk_trait_id"])) {
+            $this->trait_id = $_SESSION["ti_trait"]->getValue($_REQUEST["fk_trait_id"]);
+        } else {
+            $this->trait_id = $_SESSION["ti_trait"]->getValue($_REQUEST["trait_id"]);
         }
     }
-/**
- * @author : quinton
- * @date : 11 déc. 2015
- * @encoding : UTF-8
- * (c) 2015 - All rights reserved
- */
-include_once 'modules/classes/trait.class.php';
-$this->dataclass = new Echantillon;
-$keyName = "ech_id";
-$this->id = $_SESSION["ti_echantillon"]->getValue($_REQUEST[$keyName]);
-if (isset($_REQUEST["fk_trait_id"])) {
-    $trait_id = $_SESSION["ti_trait"]->getValue($_REQUEST["fk_trait_id"]);
-} else {
-    $trait_id = $_SESSION["ti_trait"]->getValue($_REQUEST["trait_id"]);
-}
-
-    function list(){
-$this->vue=service('Smarty');
-        $this->vue->set($this->dataclass->getListeFromTrait($trait_id), "data");
+    function list()
+    {
+        $this->vue = service('Smarty');
+        $this->vue->set($this->dataclass->getListeFromTrait($this->trait_id), "data");
         $this->vue->set("trait/echantillonList.tpl", "corps");
-        }
-    function change(){
-$this->vue=service('Smarty');
-		/*
-		 * open the form to modify the record
-		 * If is a new record, generate a new record with default value :
-		 * $_REQUEST["idParent"] contains the identifiant of the parent record
-		 */
-		$dataEchan = $this->dataRead( $this->id, "traits/echantillonChange.tpl", $trait_id);
+        return $this->vue->send();
+    }
+    function change()
+    {
+        $this->vue = service('Smarty');
+        /**
+         * open the form to modify the record
+         * If is a new record, generate a new record with default value :
+         * $_REQUEST["idParent"] contains the identifiant of the parent record
+         */
+        $dataEchan = $this->dataRead($this->id, "traits/echantillonChange.tpl", $this->trait_id);
         $dataEchan = $_SESSION["ti_echantillon"]->translateFromRow($dataEchan);
         $dataEchan = $_SESSION["ti_trait"]->translateFromRow($dataEchan);
         $this->vue->set($dataEchan, "dataEchan");
-        /*
+        /**
          * Lecture du trait pour le cartouche
          */
         $traitTable = new TraitTable;
-        $dataTrait = $traitTable->getDetail($trait_id);
+        $dataTrait = $traitTable->getDetail($this->trait_id);
         $dataTrait = $_SESSION["ti_trait"]->translateFromRow($dataTrait);
         $this->vue->set($dataTrait, "dataTrait");
-        /*
+        /**
          * Lecture des individus rattaches
          */
         $individu = new Individu;
         $dataIndiv = $_SESSION["ti_individu"]->translateList($individu->getListFromEchantillon($this->id));
         $dataIndiv = $_SESSION["ti_echantillon"]->translateList($dataIndiv);
         $this->vue->set($dataIndiv, "individus");
-        /*
+        /**
          * Lecture des donnees d'un individu, pour masque de saisie
          */
         if ($_REQUEST["ind_id"] > 0) {
             $ind_id = $_SESSION["ti_individu"]->getValue($_REQUEST["ind_id"]);
-            /*
+            /**
              * Assignation à Smarty pour affichage de l'enregistrement selectionne dans la liste
              */
             $this->vue->set($_REQUEST["ind_id"], "ind_id");
@@ -82,55 +79,56 @@ $this->vue=service('Smarty');
         $dataIndiv = $_SESSION["ti_individu"]->translateFromRow($individu->lire($ind_id, true, $this->id));
         $dataIndiv = $_SESSION["ti_echantillon"]->translateFromRow($dataIndiv);
         $this->vue->set($dataIndiv, "individu");
-        }
-        function write() {
-    try {
-            $this->id = $this->dataWrite($_REQUEST);
+        return $this->vue->send();
+    }
+    function write()
+    {
+        try {
+            /**
+             * Preparation des donnees a ecrire
+             */
+            $data = $_REQUEST;
+            $data["ech_id"] = $this->id;
+            $data["fk_trait_id"] = $_SESSION["ti_trait"]->getValue($_REQUEST["fk_trait_id"]);
+            $this->id = $this->dataWrite($data);
             if ($this->id > 0) {
-                $_REQUEST[$this->keyName] = $this->id;
-                return $this->display();
+                $_REQUEST[$this->keyName] = $_SESSION["ti_echantillon"]->setValue($this->id);
+                return true;
             } else {
-                return $this->change();
+                return false;
             }
         } catch (PpciException) {
-            return $this->change();
+            return false;
         }
     }
-		/*
-		 * Preparation des donnees a ecrire
-		 */
-		$data = $_REQUEST;
-        $data["ech_id"] = $this->id;
-        $data["fk_trait_id"] = $_SESSION["ti_trait"]->getValue($_REQUEST["fk_trait_id"]);
-        $this->id = dataWrite($this->dataclass, $data);
-        if ($this->id > 0) {
-            $_REQUEST[$keyName] = $_SESSION["ti_echantillon"]->setValue($this->id);
-        }
-        }
-        function delete() {
-		/*
-		 * delete record
-		 */
-		       try {
+    function delete()
+    {
+        /**
+         * delete record
+         */
+        try {
             $this->dataDelete($this->id);
             return $this->list();
         } catch (PpciException $e) {
             return $this->change();
         }
-        }
-        function export() {
+    }
+    function export()
+    {
         $dataSearch = $_SESSION["searchTrait"]->getParam();
         if ($_SESSION["searchTrait"]->isSearch() == 1) {
             $data = $this->dataclass->getListForExport($dataSearch);
-            if (!empty($data) ) {
+            if (!empty($data)) {
+                $this->vue = service("CsvView");
                 $this->vue->set($data);
                 $this->vue->setFilename("pomet_echantillons.csv");
+                $this->vue->send();
             } else {
                 unset($this->vue);
                 $this->message->set("Pas de traits ou d'informations a exporter");
-                $module_coderetour = - 1;
+                return false;
             }
         }
-        }
+        return false;
+    }
 }
-?>

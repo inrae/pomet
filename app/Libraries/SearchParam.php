@@ -58,21 +58,21 @@ class SearchParam
     function setParam($data, $valeur = NULL)
     {
         if (is_array($data)) {
-            /*
+            /**
              * Les donnees sont fournies sous forme de tableau
              */
             foreach ($this->param as $key => $value) {
-                /*
+                /**
                  * Recherche si une valeur de $data correspond a un parametre
                  */
                 if (isset($data[$key])) {
-                    /*
+                    /**
                      * Recherche si la valeur est attendue sous forme de tableau
                      */
                     if (isset($this->paramArray[$key])) {
                         $this->param[$key] = $data[$key];
                     } else {
-                        /*
+                        /**
                          * Recherche si la valeur doit etre numerique
                          */
                         if (isset($this->paramNum[$key]) && !is_numeric($data[$key])) {
@@ -83,7 +83,7 @@ class SearchParam
                 }
             }
         } else {
-            /*
+            /**
              * Une donnee unique est fournie
              */
             if (isset($this->param[$data]) && !is_null($valeur)) {
@@ -93,7 +93,7 @@ class SearchParam
                 $this->param[$data] = $valeur;
             }
         }
-        /*
+        /**
          * Gestion de l'indicateur de recherche
          */
         if ($data["isSearch"] == 1) {

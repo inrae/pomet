@@ -16,7 +16,7 @@ class Xx extends PpciLibrary {
     {
         parent::__construct();
         $this->dataclass = new XXX();
-        $keyName = "xxx_id";
+        $this->keyName = "xxx_id";
         if (isset($_REQUEST[$this->keyName])) {
             $this->id = $_REQUEST[$this->keyName];
         }
