@@ -1,5 +1,5 @@
 <?php 
-namespace App\Models;
+namespace App\Libraries;
 use Ppci\Models\PpciModel;
 
 /**
@@ -46,7 +46,7 @@ class TranslateId
 	 *
 	 * @param array $fieldname
 	 */
-	public function __construct()
+	public function __construct($fieldname)
 	{
 		if (!is_array($fieldname)) {
 			$this->fieldname = array($fieldname);
