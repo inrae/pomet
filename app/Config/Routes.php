@@ -5,11 +5,7 @@ use CodeIgniter\Router\RouteCollection;
 /**
  * @var RouteCollection $routes
  */
-//$routes->get('/', 'Home::index');
-$routes->add('dbstructureHtml', '\Ppci\Controllers\Structure::html');
-$routes->add('dbstructureGacl', '\Ppci\Controllers\Structure::gacl');
-$routes->add('dbstructureLatex', '\Ppci\Controllers\Structure::latex');
-$routes->add('dbstructureSchema', '\Ppci\Controllers\Structure::schema');
+
 $routes->add('default', 'Default::index');
 $routes->add('especeList', 'Espece::list');
 $routes->add('especeDisplay', 'Espece::display');

@@ -66,7 +66,7 @@
 
 		<div class="form-group center">
       <button type="submit" class="btn btn-primary button-valid">Valider</button>
-      {if $data.persone_id > 0 && $data.children == 0}
+      {if $data.personne_id > 0 && $data.children == 0}
       <button class="btn btn-danger button-delete">Supprimer</button>
       {/if}
  		</div>

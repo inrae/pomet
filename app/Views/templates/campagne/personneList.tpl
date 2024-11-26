@@ -4,7 +4,7 @@
 Nouveau responsable de campagne...
 </a>
 {/if}
-<table id="personneList" class="table table-bordered table-hover datatable display">
+<table id="personneList" class="table table-bordered table-hover datatable-searching display">
 <thead>
 <tr>
 <th>Nom</th>

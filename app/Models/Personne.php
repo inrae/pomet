@@ -14,7 +14,7 @@ class Personne extends PpciModel
         $this->fields = array(
             "personne_id" => array(
                 "type" => 1,
-                "cle" => 1,
+                "key" => 1,
                 "requis" => 1,
                 "defaultValue" => 0
             ),

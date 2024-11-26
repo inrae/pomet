@@ -89,7 +89,7 @@ class Campagne extends PpciModel
     {
         $sql = "select campagnes.*,
                  masse_eau, personne_id, personne.nom, prenom, experimentation_libelle
-				 from campagne
+				 from campagnes
 				left outer join masse_eau on (masse_eau_id = fk_masse_eau)
 				left outer join personne on (personne_id = fk_personne)
 				left outer join experimentation using (experimentation_id)
@@ -264,6 +264,16 @@ class Campagne extends PpciModel
         $where .= ")";
         return $this->getListeParam($sql . $where . $order, $param);
     }
+
+    /**
+     * Lit un enregistrement de campagnes avec la masse d'eau associee
+     * @param int $id
+     * @return array
+     */
+    function lireWithMasseEau($id)
+    {
+        $sql = "select * from campagnes join masse_eau on (masse_eau_id = fk_masse_eau)
+                where campagne_id = :campagne_id:";
+        return $this->lireParamAsPrepared($sql, array("campagne_id" => $id));
+    }
 }
-
-

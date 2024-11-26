@@ -28,6 +28,9 @@ class Campagne extends PpciLibrary
         /**
 		 * Display the list of all records of the table
 		 */
+        if (!isset($_SESSION["searchCampagne"])) {
+            $_SESSION["searchCampagne"] = new SearchCampagne;
+        }
         $_SESSION["searchCampagne"]->setParam($_REQUEST);
         $dataSearch = $_SESSION["searchCampagne"]->getParam();
         if ($_SESSION["searchCampagne"]->isSearch() == 1) {
