@@ -30,9 +30,9 @@ class Espece extends PpciLibrary
     function list()
     {
         $this->vue = service('Smarty');
-        /**
-         * Display the list of all records of the table
-         */
+        if (!isset($_SESSION["searchEspece"])) {
+            $_SESSION["searchEspece"] = new SearchEspece;
+        }
         $_SESSION["searchEspece"]->setParam($_REQUEST);
         $dataSearch = $_SESSION["searchEspece"]->getParam();
         if ($_SESSION["searchEspece"]->isSearch() == 1) {

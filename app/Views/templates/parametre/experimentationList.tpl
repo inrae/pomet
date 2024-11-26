@@ -28,7 +28,7 @@ Nouvelle expérimentation...
 {/if}
 </td>
 <td class="center">
-{if $data[lst].controle_enabled == '1'}oui{else}non{/if}</td>
+{if $data[lst].controle_enabled == 't'}oui{else}non{/if}</td>
 <td class="center">{$data[lst].speed_min}/{$data[lst].speed_max}</td>
 <td class="center">{$data[lst].duration_min}/{$data[lst].duration_max}</td>
 <td class="center">{$data[lst].distance_min}/{$data[lst].distance_max}</td>

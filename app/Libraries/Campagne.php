@@ -12,10 +12,6 @@ use Ppci\Libraries\PpciLibrary;
 
 class Campagne extends PpciLibrary
 {
-    /**
-     * @var xx
-     */
-    
     function __construct()
     {
         parent::__construct();
@@ -38,7 +34,7 @@ class Campagne extends PpciLibrary
             $this->vue->set($this->dataclass->getListFromParam($dataSearch), "data");
             $this->vue->set(1, "isSearch");
         }
-        $this->campagneInitSelectList();
+        $this->campagneInitSelectList($this->vue);
         $this->vue->set($dataSearch, "dataSearch");
         $this->vue->set("campagne/campagneList.tpl", "corps");
         $masse_eau = new MasseEau;
@@ -49,7 +45,7 @@ class Campagne extends PpciLibrary
     {
         $this->vue = service('Smarty');
         $this->dataRead($this->id, "campagne/campagneChange.tpl");
-        $this->campagneInitSelectList();
+        $this->campagneInitSelectList($this->vue);
         $experimentation = new Experimentation;
         $this->vue->set($experimentation->getListe(2), "experimentation");
         $masse_eau = new MasseEau;
@@ -170,9 +166,9 @@ class Campagne extends PpciLibrary
             return false;
         }
     }
-    function campagneInitSelectList()
+    function campagneInitSelectList($vue)
     {
-        $this->vue->set($this->dataclass->getSaisons(), "saisons");
-        $this->vue->set($this->dataclass->getAnnees(), "annees");
+        $vue->set($this->dataclass->getSaisons(), "saisons");
+        $vue->set($this->dataclass->getAnnees(), "annees");
     }
 }

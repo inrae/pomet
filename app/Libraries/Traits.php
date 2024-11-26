@@ -2,6 +2,7 @@
 
 namespace App\Libraries;
 
+use App\Libraries\Campagne as LibrariesCampagne;
 use App\Models\Campagne;
 use App\Models\Echantillon;
 use App\Models\Experimentation;
@@ -60,10 +61,11 @@ class Traits extends PpciLibrary
         /**
          * Recherche des campagnes
          */
-        $campagne = new Campagne;
-        $campagne->campagneInitSelectList();
+        $campagneLib = new LibrariesCampagne;
+        $campagneLib->campagneInitSelectList($this->vue);
         $masse_eau = new MasseEau;
         $this->vue->set($masse_eau->getListe(2), "masse_eau");
+        $campagne = new Campagne;
         $dataCampagne = $campagne->getListFromUser($_SESSION["login"], $dataSearch["campagne_id"], $dataSearch);
         if ($_SESSION["searchTrait"]->isSearch() == 1 && $_SESSION["searchTrait"]->hasCampagneSelected()) {
             $data = $this->dataclass->getListFromParam($dataSearch);

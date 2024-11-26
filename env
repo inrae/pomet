@@ -43,7 +43,7 @@ database.default.password = password
 database.default.DBDriver = Postgre
 database.default.DBPrefix =
 database.default.port = 5432
-database.default.searchpath = public,app,gacl
+database.default.searchpath = public,webacl
 database.default.charset = utf8
 
 # Ppci\Config\Ppci.language = fr
@@ -156,7 +156,7 @@ Ppci\Config\IdentificationConfig.identificationLogo = "${FRONT_DIR}/favicon.png"
 # Ppci Rights
 #--------------------------------------------------------------------
 # Name of the application in the right module
-# app.GACL_aco = app
+app.GACL_aco = pometweb
 
 # Set 1 to disable the creation of new rights in table aclaco
 #

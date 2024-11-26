@@ -1,4 +1,4 @@
-set search_path = gacl,public;
+set search_path = webacl,public;
 create unique index if not exists dbparamname_idx on dbparam (dbparam_name);
 alter table dbparam add column dbparam_description varchar;
 alter table dbparam add column dbparam_description_en varchar;
@@ -26,9 +26,6 @@ COMMENT ON COLUMN gacl.logingestion.is_expired IS E'If true, the account is expi
 COMMENT ON COLUMN gacl.logingestion.nbattempts IS E'Number of connection attempts';
 COMMENT ON COLUMN gacl.logingestion.lastattempt IS E'last attempt of connection';
 COMMENT ON COLUMN gacl.logingestion.locale IS E'Preferred locale for the user';
-
-update gacl.aclgroup set groupe = 'manage' where groupe = 'gestion';
-update gacl.aclaco set aco = 'manage' where aco = 'gestion';
 
 alter table log add column ipaddress varchar;
 

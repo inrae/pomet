@@ -135,7 +135,7 @@ class Espece extends PpciModel
 				$this->where .= " code_sandre = :sandre:";
 				$this->sqlparam["sandre"] = $param["nom"];
 			} else {
-				$this->where .= "(upper(nom) like upper(:nom:)
+				$this->where .= "upper(nom) like upper(:nom:)
 					or upper(nom_fr) like upper(:nom_fr:)";
 				$this->sqlparam["nom"] = "%" . $param["nom"] . "%";
 				$this->sqlparam["nom_fr"] = "%" . $param["nom"] . "%";
@@ -200,7 +200,7 @@ class Espece extends PpciModel
 
 	function read($id, $getDefault = false, $parentAttrib = 0): array
 	{
-		$data = parent::lire($id, $getDefault, $parentAttrib);
+		$data = parent::read($id, $getDefault, $parentAttrib);
 		if ($id > 0) {
 			$echantillon = new Echantillon;
 			$data["children"] = $echantillon->getNbFromEspece($id);

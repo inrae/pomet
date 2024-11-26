@@ -21,9 +21,9 @@
 				<label for="controle_enabled" class="control-label col-md-4">Contrôles activés <span
 						class="red">*</span> :</label>
 				<div class="col-md-8" id="controle_enabled">
-					<input type="radio" name="controle_enabled" value="1" {if $data.controle_enabled=='1'
+					<input type="radio" name="controle_enabled" value="1" {if $data.controle_enabled=='t'
 						}checked{/if}>oui
-					<input type="radio" name="controle_enabled" value="0" {if $data.controle_enabled !='1'
+					<input type="radio" name="controle_enabled" value="0" {if $data.controle_enabled !='t'
 						}checked{/if}>non
 				</div>
 			</div>
