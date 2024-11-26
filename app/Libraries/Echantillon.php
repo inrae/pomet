@@ -11,8 +11,7 @@ use Ppci\Libraries\PpciLibrary;
 class Echantillon extends PpciLibrary
 {
 
-    private $keyName;
-    private int $trait_id;
+        private int $trait_id;
 
     function __construct()
     {

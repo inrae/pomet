@@ -9,8 +9,7 @@ use Ppci\Libraries\PpciLibrary;
 class Experimentation extends PpciLibrary
 {
 
-    private $keyName;
-
+    
     function __construct()
     {
         parent::__construct();

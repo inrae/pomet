@@ -11,8 +11,7 @@ use Ppci\Models\PpciModel;
 class Materiel extends PpciLibrary
 {
 
-    private $keyName;
-
+    
     function __construct()
     {
         parent::__construct();

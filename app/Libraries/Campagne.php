@@ -15,8 +15,7 @@ class Campagne extends PpciLibrary
     /**
      * @var xx
      */
-    private $keyName;
-
+    
     function __construct()
     {
         parent::__construct();

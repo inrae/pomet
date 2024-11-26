@@ -9,8 +9,7 @@ use Ppci\Models\PpciModel;
 
 class Personne extends PpciLibrary
 {
-    private $keyName;
-
+    
     function __construct()
     {
         parent::__construct();

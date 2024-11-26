@@ -16,8 +16,7 @@ use Ppci\Models\PpciModel;
 
 class Traits extends PpciLibrary
 {
-    private $keyName;
-    private $campagne_id;
+        private $campagne_id;
 
     function __construct()
     {
