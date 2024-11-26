@@ -17,7 +17,7 @@ class Campagne extends PpciLibrary
         parent::__construct();
         $this->dataclass = new ModelsCampagne;
         $this->keyName = "campagne_id";
-        if (isset($_REQUEST[$this->keyName])) {
+        if (isset($_REQUEST[$this->keyName]) && !is_array($_REQUEST["campagne_id"])) {
             $this->id = $_REQUEST[$this->keyName];
         }
     }

@@ -41,6 +41,7 @@ class SearchTrait extends SearchParam
         foreach ($this->param["campagne_id"] as $value) {
             if ($value > 0) {
                 $hasSelected = true;
+                break;
             }
         }
         return $hasSelected;

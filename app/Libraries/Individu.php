@@ -20,7 +20,6 @@ class Individu extends PpciLibrary
         if (isset($_REQUEST[$this->keyName])) {
             $this->id = $_SESSION["ti_individu"]->getValue($_REQUEST[$this->keyName]);
         }
-        return $this->vue->send();
     }
     function write()
     {
