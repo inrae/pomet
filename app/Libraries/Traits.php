@@ -102,7 +102,8 @@ class Traits extends PpciLibrary
          * Recherche de la trace GPS
          */
         $tracegps = new Tracegps;
-        $this->vue->set($tracegps->getTrace($this->id), "tracegps");
+        $this->vue->set($tracegps->getTrace($this->id)["ligne_geom"], "tracegps");
+        $this->vue->htmlVars[] = "tracegps";
         $this->vue->set($tracegps->calculLength($this->id), "gps_trait_length");
         $this->vue->set("traits/traitDisplay.tpl", "corps");
         return $this->vue->send();

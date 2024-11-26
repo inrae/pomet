@@ -255,7 +255,7 @@ class Campagne extends PpciModel
         $param = [];
         foreach ($cles as $cle) {
             if ($cle > 0) {
-                $where .= $comma . "k$i";
+                $where .= $comma . ":k$i:";
                 $param["k$i"]  = $cle;
                 $comma = ",";
                 $i++;
