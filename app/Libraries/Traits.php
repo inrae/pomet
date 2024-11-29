@@ -17,7 +17,7 @@ use Ppci\Models\PpciModel;
 
 class Traits extends PpciLibrary
 {
-        private $campagne_id;
+    private $campagne_id;
 
     function __construct()
     {
@@ -161,10 +161,11 @@ class Traits extends PpciLibrary
                 $this->vue->set($salinite->getListe(1), "salinite");
 
                 /**
-                 * Recherche s'il existe une trace gps
+                 * Recherche de la trace GPS
                  */
                 $tracegps = new Tracegps;
-                $this->vue->set($tracegps->getTrace($this->id), "tracegps");
+                $this->vue->set($tracegps->getTrace($this->id)["ligne_geom"], "tracegps");
+                $this->vue->htmlVars[] = "tracegps";
 
                 $data = $_SESSION["ti_trait"]->translateRow($data);
                 $data = $_SESSION["ti_campagne"]->translateRow($data);
@@ -211,7 +212,7 @@ class Traits extends PpciLibrary
     function export()
     {
         if (!isset($_SESSION["searchTrait"])) {
-            $_SESSION["searchTrait"] = new SearchTrait;  
+            $_SESSION["searchTrait"] = new SearchTrait;
         }
         $dataSearch = $_SESSION["searchTrait"]->getParam();
         if ($_SESSION["searchTrait"]->isSearch() == 1) {

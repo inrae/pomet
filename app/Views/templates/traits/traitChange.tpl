@@ -35,19 +35,14 @@
 			 */
 			//create sphere to measure on
 			var longueur = 0;
-			var wgs84sphere = new ol.Sphere(earth_radius);
+			//var wgs84sphere = new ol.Sphere(earth_radius);
 			var long_deb = $('#pos_deb_long_dd').val();
 			var lat_deb = $('#pos_deb_lat_dd').val();
 			var long_fin = $('#pos_fin_long_dd').val();
 			var lat_fin = $('#pos_fin_lat_dd').val();
-			//console.log("long_deb", long_deb);
-			//console.log("lat_deb", lat_deb);
-			//console.log("long_fin", long_fin);
-			//console.log("lat_fin", lat_fin);
 			if (long_deb.length > 0 && lat_deb.length > 0 && long_fin.length > 0 && lat_fin.length > 0) {
 				// get distance on sphere
-				longueur = wgs84sphere.haversineDistance([long_deb, lat_deb], [long_fin, lat_fin]);
-				//console.log("longueur", longueur);
+				longueur = map.distance([long_deb, lat_deb], [long_fin,lat_fin]);
 				longueur = parseInt(longueur);
 				longueurCalculee = longueur;
 			}
@@ -55,10 +50,10 @@
 			 * Mise a jour de la carte
 			 */
 			if (long_deb.length > 0 && lat_deb.length > 0) {
-				setPosition(1, long_deb, lat_deb);
+				setPosition(0, lat_deb, long_deb);
 			}
 			if (long_fin.length > 0 && lat_fin.length > 0) {
-				setPosition(2, long_fin, lat_fin);
+				setPosition(1, lat_fin, long_fin);
 			}
 			$("#longueur_trait_gps").val(longueur);
 			validDistance();
@@ -675,7 +670,7 @@
 	</div>
 	<div class="col-md-4">
 		<div id="map" class="mapDisplay">
-			{include file="traits/traitMapChange.tpl"}
+			{include file="traits/traitMap.tpl"}
 		</div>
 		<div class="messagebas">
 			Niveau de zoom : <span id="zoomlevel"></span>

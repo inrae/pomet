@@ -65,11 +65,11 @@
     function mapDisplay(lmap) {
         lmap.setView([mapData.mapDefaultLat, mapData.mapDefaultLong], zoom);
         lmap.addLayer(osm);
-        L.easyPrint({
+        /*L.easyPrint({
             title: '{t}Imprimer la carte{/t}',
             sizeModes: [ 'A4Landscape'],
             exportOnly: true
-        }).addTo(lmap);
+        }).addTo(lmap);*/
     }
 
 </script>
