@@ -46,8 +46,10 @@ class Echantillon extends PpciLibrary
          * $_REQUEST["idParent"] contains the identifiant of the parent record
          */
         $dataEchan = $this->dataRead($this->id, "traits/echantillonChange.tpl", $this->trait_id);
+        $dataEchan["trait_id"] = $this->trait_id;
         $dataEchan = $_SESSION["ti_echantillon"]->translateFromRow($dataEchan);
         $dataEchan = $_SESSION["ti_trait"]->translateFromRow($dataEchan);
+        $dataEchan["fk_trait_id"] = $dataEchan["trait_id"];
         $this->vue->set($dataEchan, "dataEchan");
         /**
          * Lecture du trait pour le cartouche
@@ -75,7 +77,7 @@ class Echantillon extends PpciLibrary
         } else {
             $ind_id = 0;
         }
-        $dataIndiv = $_SESSION["ti_individu"]->translateFromRow($individu->lire($ind_id, true, $this->id));
+        $dataIndiv = $_SESSION["ti_individu"]->translateFromRow($individu->read($ind_id, true, $this->id));
         $dataIndiv = $_SESSION["ti_echantillon"]->translateFromRow($dataIndiv);
         $this->vue->set($dataIndiv, "individu");
         return $this->vue->send();

@@ -74,18 +74,12 @@ class Echantillon extends PpciModel
         }
     }
 
-    /**
-     * Surcharge de la fonction lire pour reformater les champs en affichage
-     * (non-PHPdoc)
-     *
-     * @see ObjetBDD::lire()
-     */
     function read($id, $getDefault = false, $parentValue = 0): array
     {
         if ($id > 0) {
             return $this->getDetail($id);
         } else {
-            return parent::lire($id, $getDefault, $parentValue);
+            return parent::read($id, $getDefault, $parentValue);
         }
     }
 
@@ -144,7 +138,7 @@ class Echantillon extends PpciModel
         if ($traitId > 0) {
             $sql = "select count(*) as nombre from echantillon
 					where fk_trait_id = :id:" . $traitId;
-            $data = $this->lireParam($sql, ["id" => $traitId]);
+            $data = $this->readParam($sql, ["id" => $traitId]);
             return ($data["nombre"]);
         }
     }
@@ -159,7 +153,7 @@ class Echantillon extends PpciModel
     {
         if ($id > 0) {
             $where = " where ech_id = :id:";
-            return $this->lireParam($this->sql . $where, ["id" => $id]);
+            return $this->readParam($this->sql . $where, ["id" => $id]);
         } else {
             return [];
         }

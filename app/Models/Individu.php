@@ -48,7 +48,7 @@ class Individu extends PpciModel
         if ($id > 0) {
             return $this->getDetail($id);
         } else {
-            return parent::lire($id, $getDefault, $parentValue);
+            return parent::read($id, $getDefault, $parentValue);
         }
     }
 
