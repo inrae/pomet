@@ -310,12 +310,12 @@ class App extends BaseConfig
      *
      * @var string
      */
-    public $APP_help_address = "https://github.com/equinton/ppci/issues/new";
+    public $APP_help_address = "https://github.com/inrae/pomet/issues/new/choose";
     /**
      *
      * @var string
      */
-    public $copyright = "Copyright © 2024 - All rights reserved. Author : Éric Quinton - Software distributed under AGPL license";
+    public $copyright = "Copyright © 2016-2024 - All rights reserved. Author : Éric Quinton, for INRAE - EABX - Software distributed under AGPL license";
 
     /**
      * Max duration of a session
@@ -335,7 +335,7 @@ class App extends BaseConfig
      * Get last release informations
      * Ask Github or Gitlab to obtains informations on the last published release
      */
-    public $checkRelease = 1;
+    public $checkRelease = 0;
     /**
      * Github server
      */

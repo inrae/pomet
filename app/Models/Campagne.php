@@ -174,7 +174,7 @@ class Campagne extends PpciModel
      * Retourne la liste des campagnes autorisees pour un login
      *
      * @param string $login
-     * @return tableau
+     * @return array
      */
     function getListFromUser($login, $a_is_checked = array(), $param = array(), $is_actif = 1)
     {
@@ -202,7 +202,7 @@ class Campagne extends PpciModel
             /*
              * Teste si l'utilisateur dispose de tous les droits sur les campagnes
              */
-            if ($_SESSION["rights"]["param"] == 1) {
+            if ($_SESSION["userRights"]["param"] == 1) {
                 $from = " from campagnes
 						join masse_eau on (masse_eau_id = fk_masse_eau)
 					    left outer join experimentation using (experimentation_id)";
@@ -213,8 +213,8 @@ class Campagne extends PpciModel
                 $order = " order by annee desc, saison, masse_eau";
             } else {
                 $from = " from campagnes
-					 join webacl.acllogin_campagnes using (campagne_id)
-					 join webacl.acllogin using (acllogin_id)
+					 join acllogin_campagnes using (campagne_id)
+					 join acllogin using (acllogin_id)
 					join masse_eau on (masse_eau_id = fk_masse_eau)
 					left outer join experimentation using (experimentation_id)";
                 $where .= $and . "login = :login:";

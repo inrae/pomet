@@ -96,7 +96,7 @@
                     </dl>
                     <dl class="dl-horizontal">
                         <dt>Trait validé :</dt>
-                        <dd>{if $data.validite == 1}
+                        <dd>{if $data.validite == "t"}
                             oui
                             {/if}
                         </dd>
