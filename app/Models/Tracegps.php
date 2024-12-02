@@ -199,7 +199,7 @@ class Tracegps extends PpciModel
     public function getTrace($trait_id)
     {
         if (is_numeric($trait_id)) {
-            $data = $this->lire($trait_id);
+            $data = $this->read($trait_id);
             if ($data["trait_id"] > 0) {
                 $value = "[";
                 $sql = "select st_asgeojson(ligne_geom) as ligne_geom from tracegps where trait_id = :trait_id:";

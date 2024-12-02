@@ -142,7 +142,7 @@ class Traits extends PpciLibrary
                  * Recherche des donnees de l'experimentation
                  */
                 $experimentation = new Experimentation;
-                $dataExp = $experimentation->lire($dataCampagne[0]["experimentation_id"]);
+                $dataExp = $experimentation->read($dataCampagne[0]["experimentation_id"]);
                 $this->vue->set($dataExp, "experimentation");
                 /**
                  * Recheche du materiel associe

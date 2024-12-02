@@ -24,7 +24,7 @@ class ImportGpsCsv extends PpciLibrary
     {
         $this->vue = service('Smarty');
         $trait = new TraitTable;
-        $dataTrait = $trait->lire($this->id);
+        $dataTrait = $trait->read($this->id);
         $this->vue->set($_SESSION["ti_trait"]->translateFromRow($dataTrait), "dataTrait");
         $this->vue->set("traits/importGpsCsv.tpl", "corps");
         return $this->vue->send();

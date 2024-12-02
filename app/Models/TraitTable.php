@@ -189,7 +189,7 @@ class TraitTable extends PpciModel
         if ($id > 0) {
             return $this->getDetail($id);
         } else {
-            return parent::lire($id, $getDefault, $parentValue);
+            return parent::read($id, $getDefault, $parentValue);
         }
     }
 
@@ -211,7 +211,7 @@ class TraitTable extends PpciModel
         $campagne = new Campagne;
         $dataCampagne = $campagne->lireWithMasseEau($data["fk_campagne_id"]);
         $experimentation = new Experimentation;
-        $dataExp = $experimentation->lire($dataCampagne["experimentation_id"]);
+        $dataExp = $experimentation->read($dataCampagne["experimentation_id"]);
         $error = false;
         if ($dataExp["controle_enabled"] == 1) {
             if ($data["duree"] > 0) {

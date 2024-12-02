@@ -25,7 +25,7 @@ class ImportGpx extends PpciLibrary
     {
         $this->vue = service('Smarty');
         $trait = new TraitTable;
-        $dataTrait = $trait->lire($this->id);
+        $dataTrait = $trait->read($this->id);
         $this->vue->set($_SESSION["ti_trait"]->translateFromRow($dataTrait), "dataTrait");
         $this->vue->set("traits/importGpx.tpl", "corps");
         return $this->vue->send();
@@ -42,7 +42,7 @@ class ImportGpx extends PpciLibrary
                     $_SESSION["traces"] = $data;
                     $this->vue->set($data, "traces");
                     $trait = new TraitTable;
-                    $dataTrait = $trait->lire($this->id);
+                    $dataTrait = $trait->read($this->id);
                     $this->vue = service("Smarty");
                     $this->vue->set($_SESSION["ti_trait"]->translateFromRow($dataTrait), "dataTrait");
                     $this->vue->set("traits/importGpx.tpl", "corps");

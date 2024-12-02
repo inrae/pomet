@@ -93,7 +93,7 @@ class Echantillon extends PpciModel
     {
         if ($id > 0 && is_numeric($id)) {
             $individu = new Individu;
-            $data = $this->lire($id);
+            $data = $this->read($id);
             $updateRequired = false;
             $dataIndiv = $individu->getTotalFromEchantillon($id);
             if ($dataIndiv["nombre"] > $data["nt"]) {

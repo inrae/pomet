@@ -50,13 +50,13 @@ class Espece extends PpciLibrary
         /**
          * Display the detail of the record
          */
-        $data = $this->dataclass->lire($this->id);
+        $data = $this->dataclass->read($this->id);
         $this->vue->set($data, "data");
         $this->vue->set("parametre/especeDisplay.tpl", "corps");
         $guilde = new Guilde;
-        $this->vue->set($guilde->lire($this->id), "guilde");
+        $this->vue->set($guilde->read($this->id), "guilde");
         $wiser = new Wiser;
-        $this->vue->set($wiser->lire($this->id), "wiser");
+        $this->vue->set($wiser->read($this->id), "wiser");
         $size = new Size;
         $this->vue->set($size->getFromName($data["nom"]), "size");
         return $this->vue->send();
@@ -66,9 +66,9 @@ class Espece extends PpciLibrary
         $this->vue = service('Smarty');
         $data = $this->dataRead($this->id, "parametre/especeChange.tpl");
         $guilde = new Guilde;
-        $this->vue->set($guilde->lire($this->id), "guilde");
+        $this->vue->set($guilde->read($this->id), "guilde");
         $wiser = new Wiser;
-        $this->vue->set($wiser->lire($this->id), "wiser");
+        $this->vue->set($wiser->read($this->id), "wiser");
         $this->especeInitDropdownlist($data);
         $size = new Size;
         $this->vue->set($size->getFromName($data["nom"]), "size");
