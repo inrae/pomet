@@ -184,7 +184,7 @@ class TraitTable extends PpciModel
      *
      * @see ObjetBDD::lire()
      */
-    function read($id, $getDefault = false, $parentValue = 0):array
+    function read($id, $getDefault = false, $parentValue = 0): array
     {
         if ($id > 0) {
             return $this->getDetail($id);
@@ -199,7 +199,7 @@ class TraitTable extends PpciModel
      *
      * @see ObjetBDD::ecrire()
      */
-    function write($data):int
+    function write($data): int
     {
         $data["validite"] == 1 ? $data["validite"] = "true" : $data["validite"] = "false";
         /*
@@ -577,5 +577,15 @@ class TraitTable extends PpciModel
         $especes = $this->getListeParamAsPrepared($sql, $a_trait);
         $trait["taxons"] = $especes;
         return $trait;
+    }
+    /**
+     * Get the min and max of years from traits after 2000
+     *
+     * @return array
+     */
+    function getYearsMinMax()
+    {
+        $sql = "select min(extract(year from madate)) as yearmin, max(extract (year from madate)) as yearmax from trait where madate > '2000-01-01'";
+        return $this->readParam($sql);
     }
 }

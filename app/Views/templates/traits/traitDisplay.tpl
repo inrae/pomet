@@ -12,9 +12,6 @@
 				$("#"+activeTab).tab('show');
 			}
 		} catch (Exception) { }
-		/*$('.nav-tabs > li > a').hover(function() {
-			$(this).tab('show');
- 		});*/
 		 $('.traitDisplayTab').on('shown.bs.tab', function () {
 			myStorage.setItem("traitDisplayTab", $(this).attr("id"));
 		});

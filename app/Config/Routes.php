@@ -56,3 +56,5 @@ $routes->add('ws1.0testList', 'Test::list');
 $routes->add('ws1.0traitsList', 'Traits::list');
 $routes->add('ws1.0traitDisplay', 'Traits::display');
 $routes->add('manuel_fr', '\Ppci\Controllers\Markdown::doc/fr/manuel_pomet.md');
+$routes->add('traitShapeSelect', 'Traits::shapeSelect');
+$routes->add('traitShapeExec', 'Traits::shapeExec');

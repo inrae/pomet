@@ -14,14 +14,20 @@ use App\Models\TraitTable;
 use Ppci\Libraries\PpciException;
 use Ppci\Libraries\PpciLibrary;
 use Ppci\Models\PpciModel;
+use ZipArchive;
 
 class Traits extends PpciLibrary
 {
     private $campagne_id;
+    /**
+     * @var TraitTable
+     */
+    public PpciModel $dataclass;
 
     function __construct()
     {
         parent::__construct();
+
         $this->dataclass = new TraitTable();
         translateIdInstanciate("ti_trait");
         translateIdInstanciate("ti_campagne");
@@ -227,5 +233,95 @@ class Traits extends PpciLibrary
             }
         }
         return false;
+    }
+    function shapeSelect()
+    {
+        $this->vue = service('Smarty');
+        $this->vue->set("traits/shapeSelect.tpl", "corps");
+        $experimentation = new Experimentation;
+        $this->vue->set($experimentation->getList("experimentation_libelle"), "experimentations");
+        if (isset($_REQUEST["experimentation_id"])) {
+            $this->vue->set($_REQUEST["experimentation_id"], "experimentation_id");
+        } else {
+            $this->vue->set(1, "experimentation_id");
+        }
+        $yearsminmax = $this->dataclass->getYearsMinMax();
+        $min = $yearsminmax["yearmin"];
+        $max = $yearsminmax["yearmax"];
+        $years = [];
+        for ($i = $min; $i <= $max; $i++) {
+            $years[] = $i;
+        }
+        $this->vue->set($years, "years");
+        if (isset($_REQUEST["yearmin"])) {
+            $this->vue->set($_REQUEST["yearmin"], "yearmin");
+            $this->vue->set($_REQUEST["yearmax"], "yearmax");
+        } else {
+            $this->vue->set($min, "yearmin");
+            $this->vue->set($max, "yearmax");
+        }
+        return $this->vue->send();
+    }
+    function shapeExec()
+    {
+        $shpFolder = WRITEPATH . "temp/" . $this->appConfig->shpFolder;
+        try {
+            if (!is_dir($shpFolder)) {
+                if (!mkdir($shpFolder)) {
+                    throw new PpciException("Impossible de créer le dossier temporaire pour exporter les traces");
+                }
+            }
+            if (!is_numeric($_REQUEST["experimentation_id"]) || !is_numeric($_REQUEST["yearmin"]) || !is_numeric($_REQUEST["yearmax"])) {
+                throw new PpciException("Les données en entrée sont erronées");
+            }
+            $sql = "select v.* from v_trait_shp v
+            join trait using (trait_id)
+            join campagnes on (fk_campagne_id = campagne_id)
+            where experimentation_id = " . $_REQUEST["experimentation_id"] . "
+            and v.annee between " . $_REQUEST["yearmin"] . " and " . $_REQUEST["yearmax"];
+            /**
+             * @var App\Config\Database
+             */
+            $db = config("Database");
+            $command = $this->appConfig->pgsql2shp . " -h " . $db->default["hostname"] . " -u " . $db->default["username"] . " -P " . $db->default["password"] . ' -f "' . $shpFolder . '/pomet.shp" ' . $db->default["database"] . ' "' . $sql . '"';
+            if (!exec($command)) {
+                throw new PpciException("Une erreur est survenue pendant la création du shape dans l'espace temporaire du serveur");
+            }
+            if (!file_exists("$shpFolder/pomet.shp")) {
+                throw new PpciException("Le fichier contenant le shape n'a pas été écrit dans l'espace temporaire pour une raison inconnue");
+            }
+            $zipfile = WRITEPATH . "temp/" . "pomet.zip";
+            $zip = new ZipArchive;
+            if (!$zip->open($zipfile, ZipArchive::CREATE)) {
+                throw new PpciException("Impossible de créer le fichier zip");
+            }
+            if (!$zip->addPattern('/\.(?:cpg|dbf|prj|shp|shx)$/', $shpFolder, ["remove_all_path" => true])) {
+                throw new PpciException("Impossible de rajouter les fichiers shp dans le fichier zip");
+            }
+            /**
+             * delete files
+             */
+            $folder = opendir($shpFolder);
+            while (false !== ($entry = readdir($folder))) {
+                $path = $shpFolder . "/" . $entry;
+                if (!is_dir($path)) {
+                    unlink($path);
+                }
+            }
+            closedir($folder);
+            /**
+             * @var \Ppci\Libraries\Views\FileView
+             */
+            $vue = service("FileView");
+            $params = [
+                "filename" => "pomet.zip",
+                "content_type" => "application/zip",
+                "tmp_name" => $zipfile
+            ];
+            $vue->send($params);
+        } catch (PpciException $e) {
+            $this->message->set($e->getMessage(), true);
+            return false;
+        }
     }
 }

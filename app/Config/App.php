@@ -359,4 +359,11 @@ class App extends BaseConfig
         "description" => "description",
     ];
     */
+    /**
+     * Generation of shape
+     */
+    public $pgsql2shp = "/usr/bin/pgsql2shp";
+    public $shpFolder = "pometshp";
+    
+
 }

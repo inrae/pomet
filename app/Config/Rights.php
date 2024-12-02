@@ -59,5 +59,7 @@ class Rights extends RightsPpci
         "importgpxExec" => ["saisie", "manage"],
         "importgpscsvDisplay" => ["saisie", "manage"],
         "importgpscsvExec" => ["saisie", "manage"],
+        "traitShapeSelect" => ["param"],
+        "traitShapeExec" => ["param"]
     ];
 }

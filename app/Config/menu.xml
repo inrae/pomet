@@ -12,6 +12,7 @@
 	<item module="campagneList" label="Campagnes" tooltip="Liste des campagnes" droits="param">
 		<item module="campagneList" label="Campagnes" tooltip="Liste des campagnes" droits="param" />
 		<item module="personneList" label="Responsables" tooltip="Liste des responsables de campagne" droits="param"/>
+		<item module="traitShapeSelect" label="Export des traits en shp" tooltip="Export des traits en format Shape" droits="param"/>
 		<item divider='1' droits="param" />
 		<item module="requestList" label="Requêtes SQL" tooltip="Exécution de requêtes SQL dans la base de données" droits="param" />
 	</item>

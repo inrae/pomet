@@ -44,4 +44,12 @@ class Traits extends PpciController
     {
         return $this->lib->export();
     }
+    function shapeSelect() {
+        return $this->lib->shapeSelect();
+    }
+    function shapeExec() {
+        if (!$this->lib->shapeExec()) {
+            return $this->lib->shapeSelect();
+        }
+    }
 }
