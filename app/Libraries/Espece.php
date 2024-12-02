@@ -130,7 +130,7 @@ class Espece extends PpciLibrary
          * Retourne la liste des especes correspondant au nom fourni,
          * au format json
          */
-        $this->vue = service('Smarty');
+        $this->vue = service('AjaxView');
         $this->vue->set(
             $this->dataclass->getListFromParam(
                 array(

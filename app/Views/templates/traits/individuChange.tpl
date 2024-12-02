@@ -35,7 +35,7 @@
 	});
 </script>
 
-	<form id="individuChange" method="post" action="individuWrite" class="form-horizontal col-md-8">
+	<form id="individuChange" method="post" action="individuWrite" class="form-horizontal col-md-12">
 		<input type="hidden" name="fk_trait_id" value="{$dataEchan.fk_trait_id}">
 		<input type="hidden" name="ech_id" value="{$dataEchan.ech_id}">
 			<input type="hidden" name="moduleBase" value="individu">

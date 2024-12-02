@@ -10,6 +10,13 @@
     var startend = [];
     function setPosition(pointnum, lat, lon, pos) {
         if (startend[pointnum] == undefined) {
+            if (pos == undefined) {
+                if (pointnum == 0) {
+                    pos = "{t}Début{/t}";
+                } else {
+                    pos = "{t}Fin{/t}";
+                }
+            }
             startend[pointnum] = L.marker([lat, lon]).bindTooltip(pos, { permanent: true, className: "transparent-tooltip" });
             startend[pointnum].addTo(map);
         } else {

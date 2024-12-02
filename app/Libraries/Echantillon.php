@@ -64,6 +64,9 @@ class Echantillon extends PpciLibrary
         $individu = new Individu;
         $dataIndiv = $_SESSION["ti_individu"]->translateList($individu->getListFromEchantillon($this->id));
         $dataIndiv = $_SESSION["ti_echantillon"]->translateList($dataIndiv);
+        foreach($dataIndiv as $k=>$v) {
+            $dataIndiv[$k]["fk_ech_id"] = $v["ech_id"];
+        }
         $this->vue->set($dataIndiv, "individus");
         /**
          * Lecture des donnees d'un individu, pour masque de saisie

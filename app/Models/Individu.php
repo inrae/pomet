@@ -8,7 +8,7 @@ class Individu extends PpciModel
 {
 
 
-    private $sql = "select ind_id, fk_ech_id,
+    private $sql = "select ind_id, fk_ech_id, fk_ech_id as ech_id,
 			longueur::float, poids::float
 			from individu";
 

@@ -42,7 +42,7 @@
 			var lat_fin = $('#pos_fin_lat_dd').val();
 			if (long_deb.length > 0 && lat_deb.length > 0 && long_fin.length > 0 && lat_fin.length > 0) {
 				// get distance on sphere
-				longueur = map.distance([long_deb, lat_deb], [long_fin,lat_fin]);
+				longueur = map.distance([long_deb, lat_deb], [long_fin, lat_fin]);
 				longueur = parseInt(longueur);
 				longueurCalculee = longueur;
 			}
@@ -71,7 +71,7 @@
 				var speedMax = "{$experimentation.speed_max}";
 				var speedMin = "{$experimentation.speed_min}";
 				if ("{$experimentation.controle_enabled}" == 1) {
-					if (vitesse >  speedMax || vitesse < speedMin) {
+					if (vitesse > speedMax || vitesse < speedMin) {
 						$("#vitesse").css("border", border_false);
 						errorVitesse = true;
 					} else {
@@ -179,7 +179,7 @@
 		}
 
 		function validDistance() {
-			if ("{$experimentation.controle_enabled}" != 1) {
+			if ("{$experimentation.controle_enabled}" != 't') {
 				return false;
 			} else {
 				/*
@@ -207,7 +207,7 @@
 
 				var diff = Math.abs(chalut - longueur);
 				var maxDeviation = "{$experimentation.max_allowed_distance_deviation}";
-				var taux = parseInt( maxDeviation ) / 100;
+				var taux = parseInt(maxDeviation) / 100;
 				if ((diff / chalut) > taux) {
 					errorDistance = true;
 					$("#erreur_gps").append("Écart > " + (taux * 100) + " % entre longueur chalutée déclarée et longueur calculée");
@@ -375,131 +375,159 @@
 			<input type="hidden" name="moduleBase" value="trait">
 			<input type="hidden" id="trait_id" name="trait_id" value="{$data.trait_id}">
 			<input type="hidden" id="validite" name="validite" value="{$data.validite}">
-			<fieldset>
-				<legend>Données générales</legend>
-				<div class="form-group">
-					<label for="madate" class="control-label col-md-4">
-						Date / heure du trait <span class="red">*</span> :
-					</label>
-					<div class="col-md-8">
-						<input class="form-control datetimepicker" id="madate" name="madate"
-							placeholder="1/4/16 09:20 ou 1/4 9:20" required value="{$data.madate}">
+			<div class="form-group center">
+				<button type="submit" id="validFormButton" class="btn btn-primary button-valid">Valider</button>
+				{if $data.trait_id > 0 }
+				<button class="btn btn-danger button-delete">Supprimer</button>
+				{/if}
+			</div>
+			<!-- Tab box -->
+			<ul class="nav nav-tabs" id="traitChangeTab" role="tabchange">
+				<li class="nav-item active">
+					<a class="nav-link traitChangeTab" id="tabchange-main" data-toggle="tab" role="tab"
+						aria-controls="navchange-main" aria-selected="true" href="#navchange-main">
+						{t}Données générales{/t}
+					</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link traitChangeTab" id="tabchange-phy" href="#navchange-phy" data-toggle="tab"
+						role="tab" aria-controls="navchange-phy" aria-selected="false">
+						{t}Données physico-chimiques{/t}
+					</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link traitChangeTab" id="tabchange-gps" href="#navchange-gps" data-toggle="tab"
+						role="tab" aria-controls="navchange-gps" aria-selected="false">
+						{t}Coordonnées GPS{/t}
+					</a>
+				</li>
+			</ul>
+			<div class="tab-content col-lg-12 form-horizontal" id="change-tabContent">
+				<div class="tab-pane active in" id="navchange-main" role="tabpanel" aria-labelledby="tabchange-main">
+					<div class="form-group">
+						<label for="madate" class="control-label col-md-4">
+							Date / heure du trait <span class="red">*</span> :
+						</label>
+						<div class="col-md-8">
+							<input class="form-control datetimepicker" id="madate" name="madate"
+								placeholder="1/4/16 09:20 ou 1/4 9:20" required value="{$data.madate}">
+						</div>
 					</div>
-				</div>
-				<div class="form-group">
-					<label for="fk_materiel_id" class="control-label col-md-4">
-						Engin utilisé<span class="red">*</span> :
-					</label>
-					<div class="col-md-8">
-						<input type="hidden" name="engin" id="engin" value="{$data.engin}">
-						<select class="form-control" name="fk_materiel_id" id="fk_materiel_id">
-							{section name=lst loop=$materiel}
-							<option value="{$materiel[lst].materiel_id}" {if
-								$materiel[lst].materiel_id==$data.fk_materiel_id}selected{/if}>
-								{$materiel[lst].materiel_nom}</option>
-							{/section}
-						</select>
+					<div class="form-group">
+						<label for="fk_materiel_id" class="control-label col-md-4">
+							Engin utilisé<span class="red">*</span> :
+						</label>
+						<div class="col-md-8">
+							<input type="hidden" name="engin" id="engin" value="{$data.engin}">
+							<select class="form-control" name="fk_materiel_id" id="fk_materiel_id">
+								{section name=lst loop=$materiel}
+								<option value="{$materiel[lst].materiel_id}" {if
+									$materiel[lst].materiel_id==$data.fk_materiel_id}selected{/if}>
+									{$materiel[lst].materiel_nom}</option>
+								{/section}
+							</select>
+						</div>
 					</div>
-				</div>
-				<div class="form-group">
-					<label for="station" class="control-label col-md-4">Station :</label>
-					<div class="col-md-8">
-						<input id="station" class="form-control commentaire" name="station" value="{$data.station}">
+					<div class="form-group">
+						<label for="station" class="control-label col-md-4">Station :</label>
+						<div class="col-md-8">
+							<input id="station" class="form-control commentaire" name="station" value="{$data.station}">
+						</div>
 					</div>
-				</div>
-				<div class="form-group">
-					<label for="ordre" class="control-label col-md-4">
-						Ordre de pêche dans la journée<span class="red">*</span> :
-					</label>
-					<div class="col-md-8">
-						<input name="ordre" id="ordre" class="form-control nombre" value="{$data.ordre}" required>
+					<div class="form-group">
+						<label for="ordre" class="control-label col-md-4">
+							Ordre de pêche dans la journée<span class="red">*</span> :
+						</label>
+						<div class="col-md-8">
+							<input name="ordre" id="ordre" class="form-control nombre" value="{$data.ordre}" required>
+						</div>
 					</div>
-				</div>
-				<div class="form-group">
-					<label for="experimentation" class="control-label col-md-4">Expérimentation :</label>
-					<div class="col-md-8">
-						<input class="form-control" id="experimentation" name="experimentation"
-							value="{$data.experimentation}" readonly>
+					<div class="form-group">
+						<label for="experimentation" class="control-label col-md-4">Expérimentation :</label>
+						<div class="col-md-8">
+							<input class="form-control" id="experimentation" name="experimentation"
+								value="{$data.experimentation}" readonly>
+						</div>
 					</div>
-				</div>
-				<div class="form-group">
-					<label for="" class="control-label col-md-4">
-						Campagne<span class="red">*</span> :
-					</label>
-					<div class="col-md-8">
-						<select class="form-control" id="fk_campagne_id" name="fk_campagne_id">
-							{section name=lst loop=$campagne}
-							<option value="{$campagne[lst].campagne_id}" {if
-								$campagne[lst].campagne_id==$data.campagne_id}selected{/if}>
-								{$campagne[lst].campagne_nom}:{$campagne[lst].experimentation_libelle}
-							</option>
-							{/section}
-						</select>
+					<div class="form-group">
+						<label for="" class="control-label col-md-4">
+							Campagne<span class="red">*</span> :
+						</label>
+						<div class="col-md-8">
+							<select class="form-control" id="fk_campagne_id" name="fk_campagne_id">
+								{section name=lst loop=$campagne}
+								<option value="{$campagne[lst].campagne_id}" {if
+									$campagne[lst].campagne_id==$data.campagne_id}selected{/if}>
+									{$campagne[lst].campagne_nom}:{$campagne[lst].experimentation_libelle}
+								</option>
+								{/section}
+							</select>
+						</div>
 					</div>
-				</div>
-				<div class="form-group">
-					<label for="commentaire" class="control-label col-md-4">Commentaire :</label>
-					<div class="col-md-8">
-						<textarea class="form-control" id="commentaire"
-							name="commentaire">{$data.commentaire}</textarea>
+					<div class="form-group">
+						<label for="commentaire" class="control-label col-md-4">Commentaire :</label>
+						<div class="col-md-8">
+							<textarea class="form-control" id="commentaire"
+								name="commentaire">{$data.commentaire}</textarea>
+						</div>
 					</div>
-				</div>
-				<div class="form-group">
-					<label for="duree" class="control-label col-md-4">
-						Durée du trait (mn)<span class="red">*</span> :
-					</label>
-					<div class="col-md-8">
-						<input class="form-control nombre vitesse duree" id="duree" name="duree" value="{$data.duree}"
-							required>
-						(entre {$experimentation.duration_min} et {$experimentation.duration_max}')
+					<div class="form-group">
+						<label for="duree" class="control-label col-md-4">
+							Durée du trait (mn)<span class="red">*</span> :
+						</label>
+						<div class="col-md-8">
+							<input class="form-control nombre vitesse duree" id="duree" name="duree"
+								value="{$data.duree}" required>
+							(entre {$experimentation.duration_min} et {$experimentation.duration_max}')
+						</div>
 					</div>
-				</div>
-				<div class="form-group">
-					{if $campagne[0].code_agence == "GUY"}
-					<label for="maree" class="control-label col-md-4">
-						hauteur d'eau pleine mer<span class="red">*</span> :
-					</label>
-					<div class="col-md-8">
-						<input class="form-control taux" id="maree" name="h_eau_pleine_mer"
-							value="{$data.h_eau_pleine_mer}">
-						(en mètres)
-					</div>
-					{else}
-					<label for="maree" class="control-label col-md-4">
-						Coefficient de marée<span class="red">*</span> :
-					</label>
-					<div class="col-md-8">
-						<input class="form-control nombre" id="maree" name="maree" value="{$data.maree}">
-						(entre 30 et 120)
-					</div>
-					{/if}
-				</div>
-				<div class="form-group">
-					<label for="profondeur" class="control-label col-md-4">Profondeur de pêche (m) :</label>
-					<div class="col-md-8">
-						<input class="form-control taux " name="profondeur" value="{$data.profondeur}">
-					</div>
-				</div>
-				<div class="form-group">
-					<label for="distance_chalutee" class="control-label col-md-4">
-						Distance réelle chalutée (m)<span class="red">*</span> :
-					</label>
-					<div class="col-md-8">
-						<input class="form-control nombre vitesse" name="distance_chalutee" id="distance_chalutee"
-							value="{$data.distance_chalutee}" required> {if $experimentation.distance_max > 0}
-						({$experimentation.distance_min} - {$experimentation.distance_max})
+					<div class="form-group">
+						{if $campagne[0].code_agence == "GUY"}
+						<label for="maree" class="control-label col-md-4">
+							hauteur d'eau pleine mer<span class="red">*</span> :
+						</label>
+						<div class="col-md-8">
+							<input class="form-control taux" id="maree" name="h_eau_pleine_mer"
+								value="{$data.h_eau_pleine_mer}">
+							(en mètres)
+						</div>
+						{else}
+						<label for="maree" class="control-label col-md-4">
+							Coefficient de marée<span class="red">*</span> :
+						</label>
+						<div class="col-md-8">
+							<input class="form-control nombre" id="maree" name="maree" value="{$data.maree}">
+							(entre 30 et 120)
+						</div>
 						{/if}
 					</div>
-				</div>
-				<div class="form-group">
-					<label for="vitesse" class="control-label col-md-4">Vitesse calculée :</label>
-					<div class="col-md-8">
-						<input class="form-control" id="vitesse" readonly>
-						(entre {$experimentation.speed_min} et {$experimentation.speed_max} m/mn)
+					<div class="form-group">
+						<label for="profondeur" class="control-label col-md-4">Profondeur de pêche (m) :</label>
+						<div class="col-md-8">
+							<input class="form-control taux " name="profondeur" value="{$data.profondeur}">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="distance_chalutee" class="control-label col-md-4">
+							Distance réelle chalutée (m)<span class="red">*</span> :
+						</label>
+						<div class="col-md-8">
+							<input class="form-control nombre vitesse" name="distance_chalutee" id="distance_chalutee"
+								value="{$data.distance_chalutee}" required> {if $experimentation.distance_max > 0}
+							({$experimentation.distance_min} - {$experimentation.distance_max})
+							{/if}
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="vitesse" class="control-label col-md-4">Vitesse calculée :</label>
+						<div class="col-md-8">
+							<input class="form-control" id="vitesse" readonly>
+							(entre {$experimentation.speed_min} et {$experimentation.speed_max} m/mn)
+						</div>
 					</div>
 				</div>
-				<fieldset>
-					<legend>Données physico-chimiques</legend>
+
+				<div class="tab-pane fade" id="navchange-phy" role="tabpanel" aria-labelledby="tabchange-phy">
 					<div class="form-group">
 						<label for="temperature" class="control-label col-md-4">Température (°C) :</label>
 						<div class="col-md-8">
@@ -553,9 +581,9 @@
 							<input class="form-control taux" id="ph" name="ph" value="{$data.ph}">
 						</div>
 					</div>
-				</fieldset>
-				<fieldset>
-					<legend>Coordonnées GPS</legend>
+				</div>
+
+				<div class="tab-pane fade" id="navchange-gps" role="tabpanel" aria-labelledby="tabchange-gps">
 					<div class="form-group">
 						<label for="pos_deb_lat" class="control-label col-md-4">
 							Point de début<span class="red">*</span> :
@@ -602,92 +630,71 @@
 											value="{$data.pos_deb_long_dd}" required autocomplete="off"></td>
 								</tr>
 							</table>
-
+						</div>
+						<div class="form-group">
+							<label for="pos_fin" class="control-label col-md-4">
+								Point de fin<span class="red">*</span> :
+							</label>
+							<div class="col-md-8" id="pos_fin">
+								<table class="tablesaisie">
+									{if $campagne[0].code_agence == "GUY"}
+									<tr>
+										<td>X (RGFG95) :</td>
+										<td>
+											<input class="rgfg_fin taux" name="rgfg95_fin_x" id="rgfg95_fin_x"
+												value="{$data.rgfg95_fin_x}" autocomplete="off">
+										</td>
+										<td>Y:</td>
+										<td>
+											<input class="rgfg_fin taux" name="rgfg95_fin_y" id="rgfg95_fin_y"
+												value="{$data.rgfg95_fin_y}" autocomplete="off">
+										</td>
+									</tr>
+								</table>
+								<table class="tablesaisie">
+									{/if}
+									<tr>
+										<td>Lat :</td>
+										<td>
+											<input class="gps_source" name="pos_fin_lat" id="pos_findeb_lat"
+												value="{$data.pos_fin_lat}" placeholder="45°01,234N" autocomplete="off">
+										</td>
+										<td><input class="taux  gps" name="pos_fin_lat_dd" id="pos_fin_lat_dd"
+												value="{$data.pos_fin_lat_dd}" required autocomplete="off"></td>
+									</tr>
+									<tr>
+										<td>Long :</td>
+										<td>
+											<input class="gps_source" name="pos_fin_long" id="pos_fin_long"
+												value="{$data.pos_fin_long}" placeholder="01°10,234W"
+												autocomplete="off">
+										</td>
+										<td><input class="taux  gps" name="pos_fin_long_dd" id="pos_fin_long_dd"
+												value="{$data.pos_fin_long_dd}" required autocomplete="off"></td>
+									</tr>
+								</table>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="longueur_trait_gps" class="control-label col-md-4">Longueur calculée (mètres)
+								:</label>
+							<div class="col-md-7">
+								<input class="form-control" id="longueur_trait_gps" readonly><span
+									id="erreur_gps"></span>
+							</div>
 						</div>
 					</div>
-					<div class="form-group">
-						<label for="pos_fin" class="control-label col-md-4">
-							Point de fin<span class="red">*</span> :
-						</label>
-						<div class="col-md-8" id="pos_fin">
-							<table class="tablesaisie">
-								{if $campagne[0].code_agence == "GUY"}
-								<tr>
-									<td>X (RGFG95) :</td>
-									<td>
-										<input class="rgfg_fin taux" name="rgfg95_fin_x" id="rgfg95_fin_x"
-											value="{$data.rgfg95_fin_x}" autocomplete="off">
-									</td>
-									<td>Y:</td>
-									<td>
-										<input class="rgfg_fin taux" name="rgfg95_fin_y" id="rgfg95_fin_y"
-											value="{$data.rgfg95_fin_y}" autocomplete="off">
-									</td>
-								</tr>
-							</table>
-							<table class="tablesaisie">
-								{/if}
-								<tr>
-									<td>Lat :</td>
-									<td>
-										<input class="gps_source" name="pos_fin_lat" id="pos_findeb_lat"
-											value="{$data.pos_fin_lat}" placeholder="45°01,234N" autocomplete="off">
-									</td>
-									<td><input class="taux  gps" name="pos_fin_lat_dd" id="pos_fin_lat_dd"
-											value="{$data.pos_fin_lat_dd}" required autocomplete="off"></td>
-								</tr>
-								<tr>
-									<td>Long :</td>
-									<td>
-										<input class="gps_source" name="pos_fin_long" id="pos_fin_long"
-											value="{$data.pos_fin_long}" placeholder="01°10,234W" autocomplete="off">
-									</td>
-									<td><input class="taux  gps" name="pos_fin_long_dd" id="pos_fin_long_dd"
-											value="{$data.pos_fin_long_dd}" required autocomplete="off"></td>
-								</tr>
-							</table>
-
+					<div class="row">
+						<div class="col-lg-12">
+							{include file="traits/traitMap.tpl"}
 						</div>
 					</div>
-					<div class="form-group">
-						<label for="longueur_trait_gps" class="control-label col-md-4">Longueur calculée (mètres)
-							:</label>
-						<div class="col-md-8">
-							<input class="form-control" id="longueur_trait_gps" readonly><span id="erreur_gps"></span>
-						</div>
-					</div>
-				</fieldset>
-			</fieldset>
-
-			<div class="form-group center">
-				<button type="submit" class="btn btn-primary button-valid">Valider</button>
-				{if $data.trait_id > 0 }
-				<button class="btn btn-danger button-delete">Supprimer</button>
-				{/if}
+				</div>
 			</div>
 			{$csrf}
 		</form>
 	</div>
-	<div class="col-md-4">
-		<div id="map" class="mapDisplay">
-			{include file="traits/traitMap.tpl"}
-		</div>
-		<div class="messagebas">
-			Niveau de zoom : <span id="zoomlevel"></span>
-		</div>
-		{if !empty($tracegps["trait_id"])}
-		<div class="form-display">
-			<dl class="dl-horizontal">
-				<dt>Début trace gps :</dt>
-				<dd>{$tracegps.trace_start}</dd>
-			</dl>
-			<dl class="dl-horizontal">
-				<dt>Fin trace gps :</dt>
-				<dd>{$tracegps.trace_end}</dd>
-			</dl>
-		</div>
-		{/if}
-	</div>
+
 </div>
 
 <span class="red">*</span>
