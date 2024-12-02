@@ -16,7 +16,7 @@ class TraitTable extends PpciModel
 
 
     private $sql = "select trait_id, madate, station, experimentation, ordre,
-			campagne_nom, masse_eau, validite
+			campagne_nom, masse_eau, validite, trait_id as trait_id_display
 			from trait
 			left outer join campagnes on (campagne_id = fk_campagne_id)
 			left outer join masse_eau on (masse_eau_id = fk_masse_eau) ";

@@ -179,21 +179,25 @@ class Tracegps extends PpciModel
                 }
                 $data["trace_end"] = $trace["end"];
                 foreach ($trace["points"] as $point) {
-                    $line .= $comma .
-                        "st_setsrid(st_makepoint(" . $point["lon"] . "," . $point["lat"] . "),4326)";
-                    $comma = ",";
+                    if (is_numeric($point["lon"]) && is_numeric($point["lat"])) {
+                        $line .= $comma .
+                            "st_setsrid(st_makepoint(" . $point["lon"] . "," . $point["lat"] . "),4326)";
+                        $comma = ",";
+                    }
                 }
             }
         }
         $line .= "])";
-        $data["ligne_geom"] = $line;
         $data["trait_id"] = $trait_id;
-        $data = $this->encodeData($data);
         $this->delete($data["trait_id"]);
-        $sql = "insert into tracegps (trait_id, trace_start, trace_end, ligne_geom) values (" .
-            $data["trait_id"] . ", '" . $data["trace_start"] . "','" . $data["trace_end"] . "'," .
-            $data["ligne_geom"] . ")";
-        return $this->executeSQL($sql, [], true);
+        $sql = "insert into tracegps (trait_id, trace_start, trace_end, ligne_geom) 
+            values (:trait_id:, :trace_start:, :trace_end:, $line)";
+        $param = [
+            "trait_id" => $data["trait_id"],
+            "trace_start" => $data["trace_start"],
+            "trace_end" => $data["trace_end"]
+        ];
+        return $this->executeSQL($sql, $param, true);
     }
 
     public function getTrace($trait_id)
@@ -285,20 +289,25 @@ class Tracegps extends PpciModel
                     $data["trace_start"] = $point[$header["time"]];
                 }
                 $data["trace_end"] = $point[$header["time"]];
-                $line .= $comma .
-                    "st_setsrid(st_makepoint(" . $point[$header["lon"]] . "," . $point[$header["lat"]] . "),4326)";
-                $comma = ",";
+                if (is_numeric($point[$header["lon"]]) && is_numeric($point[$header["lat"]])) {
+                    $line .= $comma .
+                        "st_setsrid(st_makepoint(" . $point[$header["lon"]] . "," . $point[$header["lat"]] . "),4326)";
+                    $comma = ",";
+                }
             }
         }
         fclose($handle);
         $line .= "])";
         $data["ligne_geom"] = $line;
         $data["trait_id"] = $trait_id;
-        $data = $this->encodeData($data);
         $this->delete($data["trait_id"]);
-        $sql = "insert into tracegps (trait_id, trace_start, trace_end, ligne_geom) values (" .
-            $data["trait_id"] . ", '" . $data["trace_start"] . "','" . $data["trace_end"] . "'," .
-            $data["ligne_geom"] . ")";
-        return $this->executeSQL($sql, [], true);
+        $sql = "insert into tracegps (trait_id, trace_start, trace_end, ligne_geom) 
+        values (:trait_id:, :trace_start:, :trace_end:, $line)";
+        $param = [
+            "trait_id" => $data["trait_id"],
+            "trace_start" => $data["trace_start"],
+            "trace_end" => $data["trace_end"]
+        ];
+        return $this->executeSQL($sql, $param, true);
     }
 }

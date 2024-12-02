@@ -35,6 +35,7 @@ class ImportGpx extends PpciLibrary
         /**
          * Verification du chargement du fichier
          */
+        $this->vue = service("Smarty");
         try {
             if ($_FILES["filename"]["size"] > 0) {
                 $data = $this->dataclass->parseGpx($_FILES["filename"]["tmp_name"]);

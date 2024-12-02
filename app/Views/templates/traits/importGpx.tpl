@@ -30,7 +30,7 @@
 					<label for="filename" class="control-label col-md-4">Fichier à télécharger (.gpx) :</label>
 					<div class="col-md-8">
 						<input type="file" class="form-control" id="filename" name="filename"
-							accept="application/gpx+xml,text/xml,application/xml,application/octet-stream">
+							accept=".gpx,application/gpx+xml,text/xml,application/xml,application/octet-stream">
 					</div>
 				</div>
 				<div class="center form-group">

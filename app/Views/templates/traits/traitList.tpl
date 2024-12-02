@@ -28,6 +28,7 @@ Nouveau trait</a>
 <th>Expérimentation</th>
 <th>Campagne</th>
 <th>Trait validé ?</th>
+<th>N° informatique</th>
 </tr>
 <tbody>
 {section name=lst loop=$data}
@@ -42,10 +43,11 @@ Nouveau trait</a>
 <td>{$data[lst].experimentation}</td>
 <td>{$data[lst].campagne_nom}</td>
 <td class="center">
-{if $data[lst].validite == 1}
+{if $data[lst].validite == 't'}
 oui
 {/if}
 </td>
+<td class="center">{$data[lst].trait_id_display}</td>
 </tr>
 {/section}
 </tbody>
