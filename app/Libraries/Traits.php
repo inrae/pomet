@@ -260,46 +260,73 @@ class Traits extends PpciLibrary
             $this->vue->set($min, "yearmin");
             $this->vue->set($max, "yearmax");
         }
+        $masseeau = new MasseEau;
+        $this->vue->set($masseeau->getList("masse_eau"), "masseseaux");
         return $this->vue->send();
     }
     function shapeExec()
     {
-        $shpFolder = WRITEPATH . "temp/" . $this->appConfig->shpFolder;
+        $shpFolder = $this->appConfig->APP_temp . '/' . $this->appConfig->shpFolder;
         try {
             if (!is_dir($shpFolder)) {
                 if (!mkdir($shpFolder)) {
                     throw new PpciException("Impossible de créer le dossier temporaire pour exporter les traces");
                 }
             }
+            
             if (!is_numeric($_REQUEST["experimentation_id"]) || !is_numeric($_REQUEST["yearmin"]) || !is_numeric($_REQUEST["yearmax"])) {
                 throw new PpciException("Les données en entrée sont erronées");
+            }
+            $masses = "";
+            $hasMasseEau = false;
+            $comma = "";
+            if (!empty($_REQUEST["masseseaux"])) {
+                $hasMasseEau = true;
+                foreach($_REQUEST["masseseaux"] as $masse_eau_id) {
+                    if (!is_numeric ($masse_eau_id)) {
+                        throw new PpciException("Les données en entrée sont erronées");
+                    }
+                    $masses .= $comma.$masse_eau_id;
+                    $comma = ",";
+                }
             }
             $sql = "select v.* from v_trait_shp v
             join trait using (trait_id)
             join campagnes on (fk_campagne_id = campagne_id)
             where experimentation_id = " . $_REQUEST["experimentation_id"] . "
             and v.annee between " . $_REQUEST["yearmin"] . " and " . $_REQUEST["yearmax"];
+            if ($hasMasseEau) {
+                $sql .= " and fk_masse_eau in ($masses)";
+            }
             /**
              * @var App\Config\Database
              */
             $db = config("Database");
             $command = $this->appConfig->pgsql2shp . " -h " . $db->default["hostname"] . " -u " . $db->default["username"] . " -P " . $db->default["password"] . ' -f "' . $shpFolder . '/pomet.shp" ' . $db->default["database"] . ' "' . $sql . '"';
-            if (!exec($command)) {
+            //printA($command);exit;
+            if (!exec($command, $output)) {
+                foreach ($output as $error) {
+                    $this->message->set($error, true);
+                }
                 throw new PpciException("Une erreur est survenue pendant la création du shape dans l'espace temporaire du serveur");
             }
             if (!file_exists("$shpFolder/pomet.shp")) {
                 throw new PpciException("Le fichier contenant le shape n'a pas été écrit dans l'espace temporaire pour une raison inconnue");
             }
-            $zipfile = WRITEPATH . "temp/" . "pomet.zip";
+            $zipfile = $this->appConfig->APP_temp . "/" . "pomet.zip";
             $zip = new ZipArchive;
             if (!$zip->open($zipfile, ZipArchive::CREATE)) {
                 throw new PpciException("Impossible de créer le fichier zip");
             }
-            if (!$zip->addPattern('/\.(?:cpg|dbf|prj|shp|shx)$/', $shpFolder, ["remove_all_path" => true])) {
+            if (!$zip->addPattern('/\.(?:cpg|dbf|prj|shp|shx)$/', $shpFolder, [
+                "remove_all_path" => true,
+                ZipArchive::FL_OVERWRITE
+                ])) {
                 throw new PpciException("Impossible de rajouter les fichiers shp dans le fichier zip");
             }
+            $zip->close();
             /**
-             * delete files
+             * delete files generated
              */
             $folder = opendir($shpFolder);
             while (false !== ($entry = readdir($folder))) {

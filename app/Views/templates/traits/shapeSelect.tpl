@@ -18,6 +18,16 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    <label for="masseseaux" class="col-md-2 control-label">Masses d'eaux :</label>
+                    <div class="col-md-4">
+                        <select id="masseseaux" name="masseseaux[]" multiple class="form-control">
+                            {foreach $masseseaux as $masseeau}
+                            <option value="{$masseeau.masse_eau_id}">{$masseeau.masse_eau}</option>
+                            {/foreach}
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
                     <label for="yearfrom" class="col-md-2 control-label">
                         Années : de
                     </label>
