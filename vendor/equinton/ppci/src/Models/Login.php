@@ -79,7 +79,7 @@ class Login
                     $_SESSION["filterMessages"][] = $e->getMessage();
                 }
                 //$this->message->set(_("L'identification par jeton n'a pas abouti"), true);
-                $this->message->setSyslog($e->getMessage());
+                $this->message->setSyslog($e->getMessage(),true);
                 /**
                  * Destroy the token
                  */
@@ -101,10 +101,14 @@ class Login
             $tauth = "ldap";
             $login = $this->getLoginLdap($_POST["login"], $_POST["password"]);
             $_SESSION["realIdentificationMode"] = "LDAP";
-            if (empty($login) && $type_authentification == "LDAP-BDD") {
-                $tauth = "db";
-                $login = $this->getLoginBDD($_POST["login"], $_POST["password"]);
-                $_SESSION["realIdentificationMode"] = "BDD";
+            if (empty($login)) {
+                if ($type_authentification == "LDAP-BDD") {
+                    $tauth = "db";
+                    $login = $this->getLoginBDD($_POST["login"], $_POST["password"]);
+                    $_SESSION["realIdentificationMode"] = "BDD";
+                } else {
+                    $this->message->set(sprintf(_("La connexion auprès de l'annuaire LDAP pour l'utilisateur %s a échoué"), $login), true);
+                }
             }
         } elseif ($type_authentification == "BDD" || $type_authentification == "CAS-BDD" || $type_authentification == "OIDC-BDD") {
             $tauth = "db";
@@ -404,7 +408,6 @@ class Login
                 $loginOk = $login;
             } else {
                 $this->log->setLog($login, "connection-ldap", "ko");
-                throw new \Ppci\Libraries\PpciException(sprintf(_("La connexion auprès de l'annuaire LDAP pour l'utilisateur %s a échoué"), $login));
             }
         }
         return $loginOk;
