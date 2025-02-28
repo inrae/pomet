@@ -112,9 +112,9 @@ class Echantillon extends PpciLibrary
          */
         try {
             $this->dataDelete($this->id);
-            return $this->list();
+            return true;
         } catch (PpciException $e) {
-            return $this->change();
+            return false;
         }
     }
     function export()
