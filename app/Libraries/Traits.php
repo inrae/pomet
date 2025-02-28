@@ -73,7 +73,7 @@ class Traits extends PpciLibrary
         $this->vue->set($masse_eau->getListe(2), "masse_eau");
         $campagne = new Campagne;
         $dataCampagne = $campagne->getListFromUser($_SESSION["login"], $dataSearch["campagne_id"], $dataSearch);
-        if ($_SESSION["searchTrait"]->isSearch() == 1 && $_SESSION["searchTrait"]->hasCampagneSelected()) {
+        if ($_SESSION["searchTrait"]->isSearch() == 1 && ($_SESSION["searchTrait"]->hasCampagneSelected() || $dataSearch["uid"] > 0)) {
             $data = $this->dataclass->getListFromParam($dataSearch);
             $data = $_SESSION["ti_trait"]->translateList($data);
             $data = $_SESSION["ti_campagne"]->translateList($data);
@@ -273,7 +273,7 @@ class Traits extends PpciLibrary
                     throw new PpciException("Impossible de créer le dossier temporaire pour exporter les traces");
                 }
             }
-            
+
             if (!is_numeric($_REQUEST["experimentation_id"]) || !is_numeric($_REQUEST["yearmin"]) || !is_numeric($_REQUEST["yearmax"])) {
                 throw new PpciException("Les données en entrée sont erronées");
             }
@@ -282,11 +282,11 @@ class Traits extends PpciLibrary
             $comma = "";
             if (!empty($_REQUEST["masseseaux"])) {
                 $hasMasseEau = true;
-                foreach($_REQUEST["masseseaux"] as $masse_eau_id) {
-                    if (!is_numeric ($masse_eau_id)) {
+                foreach ($_REQUEST["masseseaux"] as $masse_eau_id) {
+                    if (!is_numeric($masse_eau_id)) {
                         throw new PpciException("Les données en entrée sont erronées");
                     }
-                    $masses .= $comma.$masse_eau_id;
+                    $masses .= $comma . $masse_eau_id;
                     $comma = ",";
                 }
             }
@@ -321,7 +321,7 @@ class Traits extends PpciLibrary
             if (!$zip->addPattern('/\.(?:cpg|dbf|prj|shp|shx)$/', $shpFolder, [
                 "remove_all_path" => true,
                 ZipArchive::FL_OVERWRITE
-                ])) {
+            ])) {
                 throw new PpciException("Impossible de rajouter les fichiers shp dans le fichier zip");
             }
             $zip->close();

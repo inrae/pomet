@@ -1,0 +1,2190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+CAUTION: Do not modify this file unless you know what you are doing.
+ Unexpected results may occur if the code is changed deliberately.
+-->
+<dbmodel pgmodeler-ver="1.2.0-beta" use-changelog="false" max-obj-count="38"
+	 last-position="0,0" last-zoom="1" scene-rect="0,0,2140.31,2742.52"
+	 default-owner="postgres"
+	 layers="gacl,New layer"
+	 active-layers="1,0"
+	 layer-name-colors="#000000,#000000"
+	 layer-rect-colors="#ef24d9,#4155f3"
+	 show-layer-names="false" show-layer-rects="false">
+<role name="alosa_r"
+ inherit="true"
+ password="********">
+</role>
+
+<role name="quinton"
+ superuser="true"
+ createdb="true"
+ createrole="true"
+ inherit="true"
+ login="true"
+ password="********">
+	<roles names="alosa_r" role-type="member" />
+</role>
+
+<role name="eric.quinton"
+ superuser="true"
+ createdb="true"
+ createrole="true"
+ inherit="true"
+ login="true"
+ validity="2050-12-31 00:00:00"
+ password="********">
+</role>
+
+<database name="pomet" encoding="UTF8" lc-collate="fr_FR.UTF-8" lc-ctype="fr_FR.UTF-8" is-template="false" allow-conns="true">
+	<role name="quinton"/>
+	<tablespace name="pg_default"/>
+</database>
+
+<schema name="public" layers="0" fill-color="#e1e1e1" name-color="#000000" sql-disabled="true">
+</schema>
+
+<schema name="webacl" layers="1" rect-visible="true" fill-color="#ffaaff" name-color="#000000">
+	<role name="&quot;eric.quinton&quot;"/>
+</schema>
+
+<tag name="acl">
+	<style id="table-body" colors="#fcfcfc,#fcfcfc,#808080"/>
+	<style id="table-ext-body" colors="#fcfcfc,#fcfcfc,#808080"/>
+	<style id="table-name" colors="#000000"/>
+	<style id="table-schema-name" colors="#000000"/>
+	<style id="table-title" colors="#ff0000,#ff0000,#20486f"/>
+	<style id="table-toggler-body" colors="#ffffff,#ffffff,#000000"/>
+	<style id="table-toggler-btns" colors="#ffffff,#ffffff,#000000"/>
+</tag>
+<tag name="campagne">
+	<style id="table-body" colors="#fcfcfc,#fcfcfc,#808080"/>
+	<style id="table-ext-body" colors="#fcfcfc,#fcfcfc,#808080"/>
+	<style id="table-name" colors="#000000"/>
+	<style id="table-schema-name" colors="#000000"/>
+	<style id="table-title" colors="#00aa00,#00aa00,#20486f"/>
+	<style id="table-toggler-body" colors="#ffffff,#ffffff,#000000"/>
+	<style id="table-toggler-btns" colors="#ffffff,#ffffff,#000000"/>
+</tag>
+<tag name="trait">
+	<style id="table-body" colors="#fcfcfc,#fcfcfc,#808080"/>
+	<style id="table-ext-body" colors="#fcfcfc,#fcfcfc,#808080"/>
+	<style id="table-name" colors="#000000"/>
+	<style id="table-schema-name" colors="#000000"/>
+	<style id="table-title" colors="#ff5500,#ff5500,#20486f"/>
+	<style id="table-toggler-body" colors="#ffffff,#ffffff,#000000"/>
+	<style id="table-toggler-btns" colors="#ffffff,#ffffff,#000000"/>
+</tag>
+<tag name="sample">
+	<style id="table-body" colors="#fcfcfc,#fcfcfc,#808080"/>
+	<style id="table-ext-body" colors="#fcfcfc,#fcfcfc,#808080"/>
+	<style id="table-name" colors="#000000"/>
+	<style id="table-schema-name" colors="#000000"/>
+	<style id="table-title" colors="#00aaff,#00aaff,#20486f"/>
+	<style id="table-toggler-body" colors="#ffffff,#ffffff,#000000"/>
+	<style id="table-toggler-btns" colors="#ffffff,#ffffff,#000000"/>
+</tag>
+<tag name="species_size">
+	<style id="table-body" colors="#fcfcfc,#fcfcfc,#808080"/>
+	<style id="table-ext-body" colors="#fcfcfc,#fcfcfc,#808080"/>
+	<style id="table-name" colors="#000000"/>
+	<style id="table-schema-name" colors="#000000"/>
+	<style id="table-title" colors="#ffaa7f,#ffaa7f,#20486f"/>
+	<style id="table-toggler-body" colors="#ffffff,#ffffff,#000000"/>
+	<style id="table-toggler-btns" colors="#ffffff,#ffffff,#000000"/>
+</tag>
+<extension name="postgis" cur-version="2.5.5">
+	<schema name="public"/>
+	<comment> <![CDATA[PostGIS geometry, geography, and raster spatial types and functions]]> </comment>
+</extension>
+
+<extension name="tablefunc" cur-version="1.0">
+	<schema name="public"/>
+	<comment> <![CDATA[functions that manipulate whole tables, including crosstab]]> </comment>
+</extension>
+
+<usertype name="box3d_extent" configuration="range">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<comment> <![CDATA[postgis type: A box composed of x min, ymin, zmin, xmax, ymax, zmax. Often used to return the extent of a geometry.]]> </comment>
+	<type name="smallint" length="0"/>
+</usertype>
+
+<usertype name="chip" configuration="range">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<type name="smallint" length="0"/>
+</usertype>
+
+<function name="exec"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="CALLED ON NULL INPUT"
+		function-type="VOLATILE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL UNSAFE"
+		execution-cost="100"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="&quot;eric.quinton&quot;"/>
+	<language name="plpgsql"/>
+	<return-type>
+	<type name="void" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="text" length="0"/>
+	</parameter>
+	<definition> <![CDATA[begin
+execute $1;  
+end   ]]> </definition>
+</function>
+
+<function name="f_translate"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="CALLED ON NULL INPUT"
+		function-type="VOLATILE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL UNSAFE"
+		execution-cost="100"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="&quot;eric.quinton&quot;"/>
+	<language name="sql"/>
+	<return-type>
+	<type name="character varying" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="character varying" length="0"/>
+	</parameter>
+	<definition> <![CDATA[select translate ($1, 'âàéèêëïîôöûüùçÂÄÀÉÈËÊÎÏÖÔÙÛÜÇ', 'aaeeeeiioouuucAAAEEEEIIOOUUUC');]]> </definition>
+</function>
+
+<function name="fix_geometry_columns"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="CALLED ON NULL INPUT"
+		function-type="VOLATILE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL UNSAFE"
+		execution-cost="100"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<language name="plpgsql"/>
+	<return-type>
+	<type name="text" length="0"/>
+	</return-type>
+	<definition> <![CDATA[DECLARE
+	mislinked record;
+	result text;
+	linked integer;
+	deleted integer;
+	foundschema integer;
+BEGIN
+
+	-- Since 7.3 schema support has been added.
+	-- Previous postgis versions used to put the database name in
+	-- the schema column. This needs to be fixed, so we try to
+	-- set the correct schema for each geometry_colums record
+	-- looking at table, column, type and srid.
+	UPDATE geometry_columns SET f_table_schema = n.nspname
+		FROM pg_namespace n, pg_class c, pg_attribute a,
+			pg_constraint sridcheck, pg_constraint typecheck
+			WHERE ( f_table_schema is NULL
+		OR f_table_schema = ''
+			OR f_table_schema NOT IN (
+					SELECT nspname::varchar
+					FROM pg_namespace nn, pg_class cc, pg_attribute aa
+					WHERE cc.relnamespace = nn.oid
+					AND cc.relname = f_table_name::name
+					AND aa.attrelid = cc.oid
+					AND aa.attname = f_geometry_column::name))
+			AND f_table_name::name = c.relname
+			AND c.oid = a.attrelid
+			AND c.relnamespace = n.oid
+			AND f_geometry_column::name = a.attname
+
+			AND sridcheck.conrelid = c.oid
+		AND sridcheck.consrc LIKE '(srid(% = %)'
+			AND sridcheck.consrc ~ textcat(' = ', srid::text)
+
+			AND typecheck.conrelid = c.oid
+		AND typecheck.consrc LIKE
+		'((geometrytype(%) = ''%''::text) OR (% IS NULL))'
+			AND typecheck.consrc ~ textcat(' = ''', type::text)
+
+			AND NOT EXISTS (
+					SELECT oid FROM geometry_columns gc
+					WHERE c.relname::varchar = gc.f_table_name
+					AND n.nspname::varchar = gc.f_table_schema
+					AND a.attname::varchar = gc.f_geometry_column
+			);
+
+	GET DIAGNOSTICS foundschema = ROW_COUNT;
+
+	-- no linkage to system table needed
+	return 'fixed:'||foundschema::text;
+
+END;]]> </definition>
+</function>
+
+<function name="probe_geometry_columns"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="CALLED ON NULL INPUT"
+		function-type="VOLATILE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL UNSAFE"
+		execution-cost="100"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<comment> <![CDATA[Scans all tables with PostGIS geometry constraints and adds them to the geometry_columns table if they are not there.]]> </comment>
+	<language name="plpgsql"/>
+	<return-type>
+	<type name="text" length="0"/>
+	</return-type>
+	<definition> <![CDATA[DECLARE
+	inserted integer;
+	oldcount integer;
+	probed integer;
+	stale integer;
+BEGIN
+
+	SELECT count(*) INTO oldcount FROM geometry_columns;
+
+	SELECT count(*) INTO probed
+		FROM pg_class c, pg_attribute a, pg_type t,
+			pg_namespace n,
+			pg_constraint sridcheck, pg_constraint typecheck
+
+		WHERE t.typname = 'geometry'
+		AND a.atttypid = t.oid
+		AND a.attrelid = c.oid
+		AND c.relnamespace = n.oid
+		AND sridcheck.connamespace = n.oid
+		AND typecheck.connamespace = n.oid
+		AND sridcheck.conrelid = c.oid
+		AND sridcheck.consrc LIKE '(srid('||a.attname||') = %)'
+		AND typecheck.conrelid = c.oid
+		AND typecheck.consrc LIKE
+		'((geometrytype('||a.attname||') = ''%''::text) OR (% IS NULL))'
+		;
+
+	INSERT INTO geometry_columns SELECT
+		''::varchar as f_table_catalogue,
+		n.nspname::varchar as f_table_schema,
+		c.relname::varchar as f_table_name,
+		a.attname::varchar as f_geometry_column,
+		2 as coord_dimension,
+		trim(both  ' =)' from
+			replace(replace(split_part(
+				sridcheck.consrc, ' = ', 2), ')', ''), '(', ''))::integer AS srid,
+		trim(both ' =)''' from substr(typecheck.consrc,
+			strpos(typecheck.consrc, '='),
+			strpos(typecheck.consrc, '::')-
+			strpos(typecheck.consrc, '=')
+			))::varchar as type
+		FROM pg_class c, pg_attribute a, pg_type t,
+			pg_namespace n,
+			pg_constraint sridcheck, pg_constraint typecheck
+		WHERE t.typname = 'geometry'
+		AND a.atttypid = t.oid
+		AND a.attrelid = c.oid
+		AND c.relnamespace = n.oid
+		AND sridcheck.connamespace = n.oid
+		AND typecheck.connamespace = n.oid
+		AND sridcheck.conrelid = c.oid
+		AND sridcheck.consrc LIKE '(st_srid('||a.attname||') = %)'
+		AND typecheck.conrelid = c.oid
+		AND typecheck.consrc LIKE
+		'((geometrytype('||a.attname||') = ''%''::text) OR (% IS NULL))'
+
+			AND NOT EXISTS (
+					SELECT oid FROM geometry_columns gc
+					WHERE c.relname::varchar = gc.f_table_name
+					AND n.nspname::varchar = gc.f_table_schema
+					AND a.attname::varchar = gc.f_geometry_column
+			);
+
+	GET DIAGNOSTICS inserted = ROW_COUNT;
+
+	IF oldcount > probed THEN
+		stale = oldcount-probed;
+	ELSE
+		stale = 0;
+	END IF;
+
+	RETURN 'probed:'||probed::text||
+		' inserted:'||inserted::text||
+		' conflicts:'||(probed-inserted)::text||
+		' stale:'||stale::text;
+END
+]]> </definition>
+</function>
+
+<function name="rename_geometry_table_constraints"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="CALLED ON NULL INPUT"
+		function-type="IMMUTABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL UNSAFE"
+		execution-cost="100"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<language name="sql"/>
+	<return-type>
+	<type name="text" length="0"/>
+	</return-type>
+	<definition> <![CDATA[SELECT 'rename_geometry_table_constraint() is obsoleted'::text]]> </definition>
+</function>
+
+<function name="zsp_dce_geom"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="CALLED ON NULL INPUT"
+		function-type="VOLATILE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL UNSAFE"
+		execution-cost="100"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<language name="plpgsql"/>
+	<return-type>
+	<type name="text" length="0"/>
+	</return-type>
+	<parameter name="_param1">
+		<type name="text" length="0"/>
+	</parameter>
+	<definition> <![CDATA[declare
+	type_geometry ALIAS FOR $1;
+	msg text;
+begin
+if (type_geometry = 'p') then
+	begin
+	begin
+	  drop table dce_point_geom;
+	  exception
+	  when UNDEFINED_TABLE THEN
+	end;
+	execute 'create table dce_point_geom as select trait_id,
+	  trait.pos_deb_long_dd,
+	  trait.pos_deb_lat_dd
+	  from trait
+	  where (trait.pos_deb_long_dd is not null and trait.pos_deb_lat_dd is not null and trait.pos_fin_long_dd is null and trait.pos_fin_lat_dd is null)
+	  order by trait_id';
+	execute 'select * from AddGeometryColumn(''dce_point_geom'',''trait_geom'',4326,''POINT'',2)';
+	execute 'update dce_point_geom set trait_geom=st_geomfromtext(''POINT(''||pos_deb_long_dd||'' ''||pos_deb_lat_dd||'')'',4326)';
+	execute 'alter table dce_point_geom add constraint point_pkey PRIMARY KEY(trait_id)';
+  
+	return 'points ok';
+	end;
+
+elsif (type_geometry = 'l')  then
+	begin
+	begin
+	  drop table dce_ligne_geom;
+	  exception
+	  when UNDEFINED_TABLE THEN
+	end;
+	execute 'create table dce_ligne_geom as select trait_id,
+	  trait.pos_deb_long_dd,
+	  trait.pos_deb_lat_dd,
+	  trait.pos_fin_long_dd,
+	  trait.pos_fin_lat_dd
+	  from trait
+	  where (trait.pos_deb_long_dd is not null and trait.pos_deb_lat_dd is not null and trait.pos_fin_long_dd is not null and trait.pos_fin_lat_dd is not null)
+	  order by trait_id';
+	execute 'select * from AddGeometryColumn(''dce_ligne_geom'',''trait_geom'',4326,''LINESTRING'',2)';
+	execute 'update dce_ligne_geom set trait_geom=st_geomfromtext(''LINESTRING(''||pos_deb_long_dd||'' ''||pos_deb_lat_dd||'',''||pos_fin_long_dd||'' ''||pos_fin_lat_dd||'')'',4326)';
+	execute 'alter table dce_ligne_geom add constraint ligne_pkey PRIMARY KEY(trait_id)';
+	return 'lignes ok';
+	end;
+
+else
+	msg = 'type valide p ou l';
+	return msg;
+	exit;
+end if;
+
+end;]]> </definition>
+</function>
+
+<sequence name="seq_campagnes_campagne_id" cycle="false" start="312" increment="1" min-value="1" max-value="9999999" cache="1">
+	<schema name="public"/>
+	<role name="postgres"/>
+</sequence>
+
+<sequence name="seq_trait_trait_id" cycle="false" start="6300" increment="1" min-value="1" max-value="9999999" cache="1">
+	<schema name="public"/>
+	<role name="postgres"/>
+</sequence>
+
+<sequence name="seq_echantillon_ech_id" cycle="false" start="159422" increment="1" min-value="1" max-value="9999999" cache="1">
+	<schema name="public"/>
+	<role name="postgres"/>
+</sequence>
+
+<sequence name="seq_espece_espece_id" cycle="false" start="712" increment="1" min-value="1" max-value="9999999" cache="1">
+	<schema name="public"/>
+	<role name="postgres"/>
+</sequence>
+
+<sequence name="experimentation_experimentation_id_seq" cycle="false" start="1" increment="1" min-value="1" max-value="9223372036854775807" cache="1">
+	<schema name="public"/>
+	<role name="&quot;eric.quinton&quot;"/>
+</sequence>
+
+<sequence name="seq_masse_eau_masse_eau_id" cycle="false" start="103" increment="1" min-value="1" max-value="9999999" cache="1">
+	<schema name="public"/>
+	<role name="postgres"/>
+</sequence>
+
+<table name="guilde_wiser" layers="0" collapse-mode="2" max-obj-count="7" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<tag name="sample"/>
+	<position x="40" y="2540"/>
+	<column name="espece_id" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="name">
+		<type name="character varying" length="50"/>
+	</column>
+	<column name="Ecological_guild">
+		<type name="character varying" length="255"/>
+	</column>
+	<column name="Position_guild">
+		<type name="character varying" length="255"/>
+	</column>
+	<column name="Trophic_guild">
+		<type name="character varying" length="255"/>
+	</column>
+	<column name="trophic_index_fishbase">
+		<type name="double precision" length="0"/>
+	</column>
+	<constraint name="pk_espece_guilde" type="pk-constr" table="public.guilde_wiser">
+		<columns names="espece_id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<sequence name="seq_individu_ind_id" cycle="false" start="227058" increment="1" min-value="1" max-value="9999999" cache="1">
+	<schema name="public"/>
+	<role name="postgres"/>
+</sequence>
+
+<sequence name="seq_materiel_materiel_id" cycle="false" start="29" increment="1" min-value="1" max-value="9999999" cache="1">
+	<schema name="public"/>
+	<role name="postgres"/>
+</sequence>
+
+<sequence name="seq_personne_personne_id" cycle="false" start="31" increment="1" min-value="1" max-value="9999999" cache="1">
+	<schema name="public"/>
+	<role name="postgres"/>
+</sequence>
+
+<usertype name="geometry" configuration="base"
+ internal-length="0" by-value="false"
+ alignment="double precision" storage="main"
+ delimiter=":"
+ category="U" sql-disabled="true">
+	<schema name="public"/>
+	<role name="quinton"/>
+	<comment> <![CDATA[postgis type: Planar spatial data type.]]> </comment>
+</usertype>
+
+<table name="dce_ligne_geom" layers="0" collapse-mode="2" max-obj-count="7" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<tag name="trait"/>
+	<position x="460" y="1600"/>
+	<column name="trait_id" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="pos_deb_long_dd">
+		<type name="double precision" length="0"/>
+	</column>
+	<column name="pos_deb_lat_dd">
+		<type name="double precision" length="0"/>
+	</column>
+	<column name="pos_fin_long_dd">
+		<type name="double precision" length="0"/>
+	</column>
+	<column name="pos_fin_lat_dd">
+		<type name="double precision" length="0"/>
+	</column>
+	<column name="trait_geom">
+		<type name="public.geometry" length="0"/>
+	</column>
+	<constraint name="ligne_pkey" type="pk-constr" table="public.dce_ligne_geom">
+		<columns names="trait_id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="campagnes" layers="0" collapse-mode="2" max-obj-count="9" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<tag name="campagne"/>
+	<position x="460" y="700"/>
+	<column name="campagne_id" not-null="true" sequence="public.seq_campagnes_campagne_id">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="campagne_nom">
+		<type name="character varying" length="100"/>
+	</column>
+	<column name="fk_masse_eau">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="saison">
+		<type name="character varying" length="10"/>
+	</column>
+	<column name="annee">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="fk_personne">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="is_actif" not-null="true" default-value="1">
+		<type name="smallint" length="0"/>
+		<comment> <![CDATA[Indique si la campagne est active dans le logiciel de saisie]]> </comment>
+	</column>
+	<column name="experimentation_id">
+		<type name="integer" length="0"/>
+	</column>
+	<constraint name="pk_campagnes" type="pk-constr" table="public.campagnes">
+		<columns names="campagne_id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="trait" layers="0" collapse-mode="2" max-obj-count="39" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<tag name="trait"/>
+	<position x="40" y="1040"/>
+	<column name="trait_id" not-null="true" sequence="public.seq_trait_trait_id">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="madate">
+		<type name="timestamp" length="0"/>
+	</column>
+	<column name="engin">
+		<type name="character varying" length="255"/>
+	</column>
+	<column name="station">
+		<type name="character varying" length="255"/>
+	</column>
+	<column name="ordre">
+		<type name="character varying" length="255"/>
+	</column>
+	<column name="experimentation">
+		<type name="character varying" length="255"/>
+	</column>
+	<column name="fk_campagne_id">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="commentaire">
+		<type name="character varying" length="255"/>
+	</column>
+	<column name="conductivite">
+		<type name="numeric" length="28" precision="6"/>
+	</column>
+	<column name="duree">
+		<type name="numeric" length="28" precision="6"/>
+	</column>
+	<column name="maree">
+		<type name="numeric" length="28" precision="6"/>
+	</column>
+	<column name="oxygene">
+		<type name="numeric" length="28" precision="6"/>
+	</column>
+	<column name="pos_deb_lat">
+		<type name="character varying" length="255"/>
+	</column>
+	<column name="pos_deb_long">
+		<type name="character varying" length="255"/>
+	</column>
+	<column name="pos_fin_lat">
+		<type name="character varying" length="255"/>
+	</column>
+	<column name="pos_fin_long">
+		<type name="character varying" length="255"/>
+	</column>
+	<column name="profondeur">
+		<type name="numeric" length="28" precision="6"/>
+	</column>
+	<column name="salinite">
+		<type name="numeric" length="28" precision="6"/>
+	</column>
+	<column name="salinite_classe">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="temperature">
+		<type name="numeric" length="28" precision="6"/>
+	</column>
+	<column name="pos_deb_lat_dd">
+		<type name="double precision" length="0"/>
+	</column>
+	<column name="pos_deb_long_dd">
+		<type name="double precision" length="0"/>
+	</column>
+	<column name="pos_fin_lat_dd">
+		<type name="double precision" length="0"/>
+	</column>
+	<column name="pos_fin_long_dd">
+		<type name="double precision" length="0"/>
+	</column>
+	<column name="fk_materiel_id">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="validite">
+		<type name="boolean" length="0"/>
+	</column>
+	<column name="distance_chalutee">
+		<type name="numeric" length="6" precision="1"/>
+	</column>
+	<column name="rgfg95_deb_x">
+		<type name="double precision" length="0"/>
+		<comment> <![CDATA[Valeur X du point de début, en RGFG95 (Guyane française, projection UTM 22 N - EPSG:2972)]]> </comment>
+	</column>
+	<column name="rgfg95_deb_y">
+		<type name="double precision" length="0"/>
+		<comment> <![CDATA[Valeur Y du point de début, en RGFG95 (Guyane française, projection UTM 22 N - EPSG:2972)]]> </comment>
+	</column>
+	<column name="rgfg95_fin_x">
+		<type name="double precision" length="0"/>
+		<comment> <![CDATA[Valeur X du point de fin, en RGFG95 (Guyane française, projection UTM 22 N - EPSG:2972)]]> </comment>
+	</column>
+	<column name="rgfg95_fin_y">
+		<type name="double precision" length="0"/>
+		<comment> <![CDATA[Valeur Y du point de fin, en RGFG95 (Guyane française, projection UTM 22 N - EPSG:2972)]]> </comment>
+	</column>
+	<column name="ph">
+		<type name="double precision" length="0"/>
+		<comment> <![CDATA[Valeur du pH]]> </comment>
+	</column>
+	<column name="h_eau_pleine_mer">
+		<type name="double precision" length="0"/>
+		<comment> <![CDATA[Hauteur d'eau de la pleine mer, en mètre (i. e. coef de marée, en Guyane française)]]> </comment>
+	</column>
+	<constraint name="trait_pkey" type="pk-constr" table="public.trait">
+		<columns names="trait_id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<sequence name="biologic_sw_biologic_sw_id_seq" cycle="false" start="1" increment="1" min-value="1" max-value="9223372036854775807" cache="1">
+	<schema name="public"/>
+	<role name="postgres"/>
+</sequence>
+
+<table name="biologic_sw" layers="0" collapse-mode="2" max-obj-count="7" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<comment> <![CDATA[Tailles et poids biologiques possibles pour l'espece consideree]]> </comment>
+	<tag name="sample"/>
+	<position x="460" y="2540"/>
+	<column name="biologic_sw_id" not-null="true" sequence="public.biologic_sw_biologic_sw_id_seq">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="espece_id" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="size_min" default-value="0">
+		<type name="integer" length="0"/>
+		<comment> <![CDATA[Taille mini possible]]> </comment>
+	</column>
+	<column name="size_max" default-value="0">
+		<type name="integer" length="0"/>
+		<comment> <![CDATA[Taille maxi possible]]> </comment>
+	</column>
+	<column name="weight_min" default-value="0">
+		<type name="integer" length="0"/>
+		<comment> <![CDATA[Poids mini possible]]> </comment>
+	</column>
+	<column name="weight_max" default-value="0">
+		<type name="integer" length="0"/>
+		<comment> <![CDATA[poids maxi possible]]> </comment>
+	</column>
+	<constraint name="biologic_sw_pk" type="pk-constr" table="public.biologic_sw">
+		<columns names="biologic_sw_id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="dce_point_geom" layers="0" collapse-mode="2" max-obj-count="4" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<tag name="trait"/>
+	<position x="40" y="1900"/>
+	<column name="trait_id" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="pos_deb_long_dd">
+		<type name="double precision" length="0"/>
+	</column>
+	<column name="pos_deb_lat_dd">
+		<type name="double precision" length="0"/>
+	</column>
+	<column name="point_geom">
+		<type name="geometry" length="0" spatial-type="POINT" variation="0" srid="4326"/>
+	</column>
+	<constraint name="point_pkey" type="pk-constr" table="public.dce_point_geom">
+		<columns names="trait_id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="experimentation" layers="0" collapse-mode="2" max-obj-count="12" z-value="0">
+	<schema name="public"/>
+	<role name="&quot;eric.quinton&quot;"/>
+	<comment> <![CDATA[Table des expérimentations]]> </comment>
+	<tag name="campagne"/>
+	<position x="920" y="1260"/>
+	<column name="experimentation_id" not-null="true" sequence="public.experimentation_experimentation_id_seq">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="experimentation_libelle" not-null="true">
+		<type name="character varying" length="0"/>
+	</column>
+	<column name="controle_enabled" not-null="true" default-value="false">
+		<type name="boolean" length="0"/>
+		<comment> <![CDATA[Active ou désactive les contrôles de vitesse, durée et longueur du trait]]> </comment>
+	</column>
+	<column name="distance_max">
+		<type name="real" length="0"/>
+		<comment> <![CDATA[Distance maximale, en mètres]]> </comment>
+	</column>
+	<column name="distance_min">
+		<type name="real" length="0"/>
+		<comment> <![CDATA[Distance minimale, en mètres]]> </comment>
+	</column>
+	<column name="duration_max">
+		<type name="real" length="0"/>
+		<comment> <![CDATA[Durée maximale, en minutes]]> </comment>
+	</column>
+	<column name="duration_min">
+		<type name="real" length="0"/>
+		<comment> <![CDATA[Durée minimale, en minutes]]> </comment>
+	</column>
+	<column name="max_allowed_distance_deviation">
+		<type name="real" length="0"/>
+		<comment> <![CDATA[Taux maximum d'écart autorisé entre la distance déclarée et la distance calculée (sous la forme 20 %)]]> </comment>
+	</column>
+	<column name="speed_max">
+		<type name="real" length="0"/>
+		<comment> <![CDATA[Vitesse maximale, en m/mn]]> </comment>
+	</column>
+	<column name="speed_min">
+		<type name="real" length="0"/>
+		<comment> <![CDATA[Vitesse minimale, en m/mn]]> </comment>
+	</column>
+	<constraint name="experimentation_pk" type="pk-constr" table="public.experimentation">
+		<columns names="experimentation_id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="guilde" layers="0" collapse-mode="2" max-obj-count="8" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<tag name="sample"/>
+	<position x="40" y="2120"/>
+	<column name="espece_id" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="nom">
+		<type name="character varying" length="255"/>
+	</column>
+	<column name="guilde_ecologique_dce2007">
+		<type name="character varying" length="255"/>
+	</column>
+	<column name="guilde_trophique_dce2007">
+		<type name="character varying" length="255"/>
+	</column>
+	<column name="guilde_trophique_lp">
+		<type name="character varying" length="255"/>
+	</column>
+	<column name="index_trophique_fb2006">
+		<type name="numeric" length="6" precision="3"/>
+	</column>
+	<column name="repartition_dce2007">
+		<type name="character varying" length="255"/>
+	</column>
+	<constraint name="pk_guilde" type="pk-constr" table="public.guilde">
+		<columns names="espece_id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="resilience" layers="0" collapse-mode="2" max-obj-count="2" z-value="0">
+	<schema name="public"/>
+	<role name="&quot;eric.quinton&quot;"/>
+	<comment> <![CDATA[1 : very low
+2 : low
+3 : medium
+4 : high]]> </comment>
+	<tag name="species_size"/>
+	<position x="880" y="2540"/>
+	<column name="resilience_id" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="resilience_name" not-null="true">
+		<type name="character varying" length="0"/>
+	</column>
+	<constraint name="resilience_pk" type="pk-constr" table="public.resilience">
+		<columns names="resilience_id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="salinite" layers="0" collapse-mode="2" max-obj-count="2" z-value="0">
+	<schema name="public"/>
+	<role name="&quot;eric.quinton&quot;"/>
+	<comment> <![CDATA[Table des classes de salinité]]> </comment>
+	<tag name="trait"/>
+	<position x="460" y="1260"/>
+	<column name="salinite_id" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="salinite_libelle" not-null="true">
+		<type name="character varying" length="0"/>
+	</column>
+	<constraint name="salinite_pk" type="pk-constr" table="public.salinite">
+		<columns names="salinite_id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="echantillon" layers="0" collapse-mode="2" max-obj-count="6" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<tag name="sample"/>
+	<position x="460" y="1900"/>
+	<column name="ech_id" not-null="true" sequence="public.seq_echantillon_ech_id">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="espece_id">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="fk_trait_id">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="nt">
+		<type name="numeric" length="28" precision="6"/>
+	</column>
+	<column name="pt">
+		<type name="numeric" length="28" precision="6"/>
+	</column>
+	<constraint name="pk_echantillon" type="pk-constr" table="public.echantillon">
+		<columns names="ech_id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="espece" layers="0" collapse-mode="2" max-obj-count="14" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<tag name="sample"/>
+	<position x="460" y="2120"/>
+	<column name="nom">
+		<type name="character varying" length="100"/>
+	</column>
+	<column name="nom_fr">
+		<type name="character varying" length="100"/>
+	</column>
+	<column name="auteur">
+		<type name="character varying" length="100"/>
+	</column>
+	<column name="phylum">
+		<type name="character varying" length="100"/>
+	</column>
+	<column name="subphylum">
+		<type name="character varying" length="100"/>
+	</column>
+	<column name="classe">
+		<type name="character varying" length="100"/>
+	</column>
+	<column name="ordre">
+		<type name="character varying" length="100"/>
+	</column>
+	<column name="famille">
+		<type name="character varying" length="100"/>
+	</column>
+	<column name="genre">
+		<type name="character varying" length="100"/>
+	</column>
+	<column name="espece_id" not-null="true" sequence="public.seq_espece_espece_id">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="code_perm_ifremer">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="code_sandre">
+		<type name="integer" length="0"/>
+	</column>
+	<constraint name="pk_espece" type="pk-constr" table="public.espece">
+		<columns names="espece_id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="individu" layers="0" collapse-mode="2" max-obj-count="4" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<tag name="sample"/>
+	<position x="880" y="1900"/>
+	<column name="ind_id" not-null="true" sequence="public.seq_individu_ind_id">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="fk_ech_id">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="longueur">
+		<type name="numeric" length="28" precision="6"/>
+	</column>
+	<column name="poids">
+		<type name="numeric" length="28" precision="6"/>
+	</column>
+	<constraint name="pk_individu" type="pk-constr" table="public.individu">
+		<columns names="ind_id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="masse_eau" layers="0" collapse-mode="2" max-obj-count="20" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<tag name="campagne"/>
+	<position x="920" y="700"/>
+	<column name="masse_eau_id" not-null="true" sequence="public.seq_masse_eau_masse_eau_id">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="masse_eau">
+		<type name="character varying" length="255"/>
+	</column>
+	<column name="code_agence">
+		<type name="character varying" length="255"/>
+	</column>
+	<column name="code_masse_eau">
+		<type name="character varying" length="255"/>
+	</column>
+	<column name="categorie">
+		<type name="character varying" length="255"/>
+	</column>
+	<column name="systeme">
+		<type name="character varying" length="255"/>
+	</column>
+	<column name="code_type">
+		<type name="character varying" length="255"/>
+	</column>
+	<column name="type_base">
+		<type name="character varying" length="255"/>
+	</column>
+	<column name="nom">
+		<type name="character varying" length="255"/>
+	</column>
+	<column name="code_f">
+		<type name="character varying" length="255"/>
+	</column>
+	<column name="ecoregion">
+		<type name="character varying" length="255"/>
+	</column>
+	<column name="agence">
+		<type name="character varying" length="255"/>
+	</column>
+	<column name="superficie">
+		<type name="numeric" length="28" precision="3"/>
+	</column>
+	<column name="connectivite">
+		<type name="character varying" length="50"/>
+	</column>
+	<column name="latitude" not-null="true" default-value="46">
+		<type name="double precision" length="0"/>
+		<comment> <![CDATA[Longitude, en valeur decimale, du point central]]> </comment>
+	</column>
+	<column name="longitude" not-null="true" default-value="2.3">
+		<type name="double precision" length="0"/>
+		<comment> <![CDATA[Latitude, en valeur decimale, du point central]]> </comment>
+	</column>
+	<column name="zoom" not-null="true" default-value="10">
+		<type name="integer" length="0"/>
+		<comment> <![CDATA[Facteur de zoom pour affichage de la carte centrae sur la masse d'eau (openstreetmap)]]> </comment>
+	</column>
+	<constraint name="pk_massedeau" type="pk-constr" table="public.masse_eau">
+		<columns names="masse_eau_id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="materiel" layers="0" collapse-mode="2" max-obj-count="7" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<tag name="trait"/>
+	<position x="460" y="1040"/>
+	<column name="materiel_id" not-null="true" sequence="public.seq_materiel_materiel_id">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="materiel_type">
+		<type name="character varying" length="255"/>
+	</column>
+	<column name="materiel_nom">
+		<type name="character varying" length="255"/>
+	</column>
+	<column name="materiel_code">
+		<type name="character varying" length="255"/>
+	</column>
+	<column name="materiel_description">
+		<type name="character varying" length="255"/>
+	</column>
+	<column name="experimentation_id">
+		<type name="integer" length="0"/>
+	</column>
+	<constraint name="pk_materiel" type="pk-constr" table="public.materiel">
+		<columns names="materiel_id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="personne" layers="0" collapse-mode="2" max-obj-count="8" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<tag name="campagne"/>
+	<position x="40" y="700"/>
+	<column name="personne_id" not-null="true" sequence="public.seq_personne_personne_id">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="nom">
+		<type name="character varying" length="255"/>
+	</column>
+	<column name="prenom">
+		<type name="character varying" length="255"/>
+	</column>
+	<column name="institut">
+		<type name="character varying" length="255"/>
+	</column>
+	<column name="telephone">
+		<type name="character varying" length="255"/>
+	</column>
+	<column name="email">
+		<type name="character varying" length="255"/>
+	</column>
+	<column name="adresse">
+		<type name="character varying" length="255"/>
+	</column>
+	<constraint name="pk_personne" type="pk-constr" table="public.personne">
+		<columns names="personne_id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<sequence name="species_size_species_size_id_seq" cycle="false" start="1" increment="1" min-value="1" max-value="9223372036854775807" cache="1">
+	<schema name="public"/>
+	<role name="&quot;eric.quinton&quot;"/>
+</sequence>
+
+<table name="species_size" layers="0" collapse-mode="2" max-obj-count="16" z-value="0">
+	<schema name="public"/>
+	<role name="&quot;eric.quinton&quot;"/>
+	<comment> <![CDATA[Table des données de taille et de reproduction]]> </comment>
+	<tag name="species_size"/>
+	<position x="880" y="2120"/>
+	<column name="species_id" not-null="true" sequence="public.species_size_species_size_id_seq">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="species_consensus" not-null="true">
+		<type name="character varying" length="0"/>
+		<comment> <![CDATA[Nom latin consensuel]]> </comment>
+	</column>
+	<column name="lt_maturity">
+		<type name="real" length="0"/>
+		<comment> <![CDATA[Longueur totale à maturité (cm)]]> </comment>
+	</column>
+	<column name="age_maturity">
+		<type name="real" length="0"/>
+		<comment> <![CDATA[Age à maturité]]> </comment>
+	</column>
+	<column name="lt_max">
+		<type name="real" length="0"/>
+		<comment> <![CDATA[Longueur totale maxi, en cm]]> </comment>
+	</column>
+	<column name="age_max">
+		<type name="real" length="0"/>
+		<comment> <![CDATA[Age maxi]]> </comment>
+	</column>
+	<column name="iucn">
+		<type name="character varying" length="0"/>
+		<comment> <![CDATA[Statut IUCN]]> </comment>
+	</column>
+	<column name="spawn_frequence">
+		<type name="smallint" length="0"/>
+		<comment> <![CDATA[Nombre d'années entre deux frais]]> </comment>
+	</column>
+	<column name="repro_guild">
+		<type name="smallint" length="0"/>
+	</column>
+	<column name="parent_care">
+		<type name="smallint" length="0"/>
+		<comment> <![CDATA[Protection/soin par les parents :
+0 : non
+1 : oui]]> </comment>
+	</column>
+	<column name="fecondity_max">
+		<type name="double precision" length="0"/>
+		<comment> <![CDATA[Nombre d'oeufs maximum]]> </comment>
+	</column>
+	<column name="egg_size">
+		<type name="real" length="0"/>
+		<comment> <![CDATA[Taille des oeufs, en mm]]> </comment>
+	</column>
+	<column name="swimming_id">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="resilience_id">
+		<type name="integer" length="0"/>
+	</column>
+	<constraint name="species_size_pk" type="pk-constr" table="public.species_size">
+		<columns names="species_id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<sequence name="swimming_swimming_id_seq" cycle="false" start="1" increment="1" min-value="1" max-value="9223372036854775807" cache="1">
+	<schema name="public"/>
+	<role name="&quot;eric.quinton&quot;"/>
+</sequence>
+
+<table name="swimming" layers="0" collapse-mode="2" max-obj-count="2" z-value="0">
+	<schema name="public"/>
+	<role name="&quot;eric.quinton&quot;"/>
+	<tag name="species_size"/>
+	<position x="1400" y="2120"/>
+	<column name="swimming_id" not-null="true" sequence="public.swimming_swimming_id_seq">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="swimming_name" not-null="true">
+		<type name="character varying" length="0"/>
+	</column>
+	<constraint name="swimming_pk" type="pk-constr" table="public.swimming">
+		<columns names="swimming_id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="tracegps" layers="0" collapse-mode="2" max-obj-count="4" z-value="0">
+	<schema name="public"/>
+	<role name="&quot;eric.quinton&quot;"/>
+	<comment> <![CDATA[Table contenant les traces GPS importees]]> </comment>
+	<tag name="trait"/>
+	<position x="460" y="1380"/>
+	<column name="trait_id" not-null="true" sequence="public.seq_trait_trait_id">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="trace_start" not-null="true">
+		<type name="timestamp" length="0"/>
+		<comment> <![CDATA[Date-heure de début de la trace]]> </comment>
+	</column>
+	<column name="trace_end" not-null="true">
+		<type name="timestamp" length="0"/>
+		<comment> <![CDATA[Date-heure de fin de la trace]]> </comment>
+	</column>
+	<column name="ligne_geom">
+		<type name="geometry" length="0" spatial-type="GEOMETRY" variation="0" srid="4326"/>
+		<comment> <![CDATA[ligne geometrique contenant tous les points de la trace]]> </comment>
+	</column>
+	<constraint name="tracegps_pk" type="pk-constr" table="public.tracegps">
+		<columns names="trait_id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<view name="v_campagne" layers="0" collapse-mode="2" max-obj-count="0" z-value="0">
+	<schema name="public"/>
+	<role name="&quot;eric.quinton&quot;"/>
+	<tag name="campagne"/>
+	<position x="1760" y="700"/>
+	<simplecol name="campagne_id" type="integer"/>
+	<simplecol name="campagne_nom" type="character varying(100)"/>
+	<simplecol name="fk_masse_eau" type="integer"/>
+	<simplecol name="saison" type="character varying(10)"/>
+	<simplecol name="annee" type="integer"/>
+	<simplecol name="fk_personne" type="integer"/>
+	<simplecol name="is_actif" type="smallint"/>
+	<simplecol name="experimentation_id" type="integer"/>
+	<simplecol name="masse_eau" type="character varying(255)"/>
+	<simplecol name="code_agence" type="character varying(255)"/>
+	<definition> <![CDATA[SELECT c.campagne_id,
+    c.campagne_nom,
+    c.fk_masse_eau,
+    c.saison,
+    c.annee,
+    c.fk_personne,
+    c.is_actif,
+    c.experimentation_id,
+    masse_eau.masse_eau,
+    masse_eau.code_agence
+   FROM (campagnes c
+     JOIN masse_eau ON ((masse_eau.masse_eau_id = c.fk_masse_eau)));;]]> </definition>
+</view>
+
+<view name="v_echantillon" layers="0" collapse-mode="2" max-obj-count="0" z-value="0">
+	<schema name="public"/>
+	<role name="&quot;eric.quinton&quot;"/>
+	<tag name="sample"/>
+	<position x="1780" y="1600"/>
+	<simplecol name="ech_id" type="integer"/>
+	<simplecol name="espece_id" type="integer"/>
+	<simplecol name="fk_trait_id" type="integer"/>
+	<simplecol name="nt" type="numeric(28,6)"/>
+	<simplecol name="pt" type="numeric(28,6)"/>
+	<simplecol name="trait_id" type="integer"/>
+	<simplecol name="annee" type="double precision"/>
+	<simplecol name="campagne_nom" type="character varying(100)"/>
+	<simplecol name="saison" type="character varying(10)"/>
+	<simplecol name="masse_eau" type="character varying(255)"/>
+	<simplecol name="code_agence" type="character varying(255)"/>
+	<simplecol name="nom" type="character varying(100)"/>
+	<simplecol name="nom_fr" type="character varying(100)"/>
+	<definition> <![CDATA[SELECT e.ech_id,
+    e.espece_id,
+    e.fk_trait_id,
+    e.nt,
+    e.pt,
+    trait.trait_id,
+    date_part('year'::text, trait.madate) AS annee,
+    campagnes.campagne_nom,
+    campagnes.saison,
+    masse_eau.masse_eau,
+    masse_eau.code_agence,
+    espece.nom,
+    espece.nom_fr
+   FROM ((((echantillon e
+     JOIN trait ON ((trait.trait_id = e.fk_trait_id)))
+     JOIN campagnes ON ((campagnes.campagne_id = trait.fk_campagne_id)))
+     JOIN masse_eau ON ((masse_eau.masse_eau_id = campagnes.fk_masse_eau)))
+     JOIN espece USING (espece_id));;]]> </definition>
+</view>
+
+<view name="v_individu" layers="0" collapse-mode="2" max-obj-count="0" z-value="0">
+	<schema name="public"/>
+	<role name="&quot;eric.quinton&quot;"/>
+	<tag name="sample"/>
+	<position x="1400" y="1600"/>
+	<simplecol name="ind_id" type="integer"/>
+	<simplecol name="fk_ech_id" type="integer"/>
+	<simplecol name="longueur" type="numeric(28,6)"/>
+	<simplecol name="poids" type="numeric(28,6)"/>
+	<simplecol name="trait_id" type="integer"/>
+	<simplecol name="annee" type="double precision"/>
+	<simplecol name="campagne_nom" type="character varying(100)"/>
+	<simplecol name="saison" type="character varying(10)"/>
+	<simplecol name="masse_eau" type="character varying(255)"/>
+	<simplecol name="code_agence" type="character varying(255)"/>
+	<simplecol name="nom" type="character varying(100)"/>
+	<simplecol name="nom_fr" type="character varying(100)"/>
+	<definition> <![CDATA[SELECT i.ind_id,
+    i.fk_ech_id,
+    i.longueur,
+    i.poids,
+    trait.trait_id,
+    date_part('year'::text, trait.madate) AS annee,
+    campagnes.campagne_nom,
+    campagnes.saison,
+    masse_eau.masse_eau,
+    masse_eau.code_agence,
+    espece.nom,
+    espece.nom_fr
+   FROM (((((individu i
+     JOIN echantillon ON ((echantillon.ech_id = i.fk_ech_id)))
+     JOIN trait ON ((trait.trait_id = echantillon.fk_trait_id)))
+     JOIN campagnes ON ((campagnes.campagne_id = trait.fk_campagne_id)))
+     JOIN masse_eau ON ((masse_eau.masse_eau_id = campagnes.fk_masse_eau)))
+     JOIN espece USING (espece_id));;]]> </definition>
+</view>
+
+<view name="v_species_size" layers="0" collapse-mode="2" max-obj-count="0" z-value="0">
+	<schema name="public"/>
+	<role name="&quot;eric.quinton&quot;"/>
+	<tag name="species_size"/>
+	<position x="1400" y="2280"/>
+	<simplecol name="resilience_id" type="integer"/>
+	<simplecol name="swimming_id" type="integer"/>
+	<simplecol name="species_id" type="integer"/>
+	<simplecol name="species_consensus" type="character varying"/>
+	<simplecol name="lt_maturity" type="real"/>
+	<simplecol name="age_maturity" type="real"/>
+	<simplecol name="lt_max" type="real"/>
+	<simplecol name="age_max" type="real"/>
+	<simplecol name="iucn" type="character varying"/>
+	<simplecol name="spawn_frequence" type="smallint"/>
+	<simplecol name="repro_guild" type="smallint"/>
+	<simplecol name="parent_care" type="smallint"/>
+	<simplecol name="fecondity_max" type="double precision"/>
+	<simplecol name="egg_size" type="real"/>
+	<simplecol name="swimming_name" type="character varying"/>
+	<simplecol name="resilience_name" type="character varying"/>
+	<definition> <![CDATA[SELECT species_size.resilience_id,
+    species_size.swimming_id,
+    species_size.species_id,
+    species_size.species_consensus,
+    species_size.lt_maturity,
+    species_size.age_maturity,
+    species_size.lt_max,
+    species_size.age_max,
+    species_size.iucn,
+    species_size.spawn_frequence,
+    species_size.repro_guild,
+    species_size.parent_care,
+    species_size.fecondity_max,
+    species_size.egg_size,
+    swimming.swimming_name,
+    resilience.resilience_name
+   FROM ((species_size
+     LEFT JOIN swimming USING (swimming_id))
+     LEFT JOIN resilience USING (resilience_id));;]]> </definition>
+</view>
+
+<view name="v_trait" layers="0" collapse-mode="2" max-obj-count="0" z-value="0">
+	<schema name="public"/>
+	<role name="&quot;eric.quinton&quot;"/>
+	<tag name="trait"/>
+	<position x="1400" y="700"/>
+	<simplecol name="trait_id" type="integer"/>
+	<simplecol name="madate" type="timestamp"/>
+	<simplecol name="engin" type="character varying(255)"/>
+	<simplecol name="station" type="character varying(255)"/>
+	<simplecol name="ordre" type="character varying(255)"/>
+	<simplecol name="experimentation" type="character varying(255)"/>
+	<simplecol name="fk_campagne_id" type="integer"/>
+	<simplecol name="commentaire" type="character varying(255)"/>
+	<simplecol name="conductivite" type="numeric(28,6)"/>
+	<simplecol name="duree" type="numeric(28,6)"/>
+	<simplecol name="maree" type="numeric(28,6)"/>
+	<simplecol name="oxygene" type="numeric(28,6)"/>
+	<simplecol name="pos_deb_lat" type="character varying(255)"/>
+	<simplecol name="pos_deb_long" type="character varying(255)"/>
+	<simplecol name="pos_fin_lat" type="character varying(255)"/>
+	<simplecol name="pos_fin_long" type="character varying(255)"/>
+	<simplecol name="profondeur" type="numeric(28,6)"/>
+	<simplecol name="salinite" type="numeric(28,6)"/>
+	<simplecol name="salinite_classe" type="integer"/>
+	<simplecol name="temperature" type="numeric(28,6)"/>
+	<simplecol name="pos_deb_lat_dd" type="double precision"/>
+	<simplecol name="pos_deb_long_dd" type="double precision"/>
+	<simplecol name="pos_fin_lat_dd" type="double precision"/>
+	<simplecol name="pos_fin_long_dd" type="double precision"/>
+	<simplecol name="fk_materiel_id" type="integer"/>
+	<simplecol name="validite" type="boolean"/>
+	<simplecol name="distance_chalutee" type="numeric(6,1)"/>
+	<simplecol name="annee" type="double precision"/>
+	<simplecol name="campagne_nom" type="character varying(100)"/>
+	<simplecol name="saison" type="character varying(10)"/>
+	<simplecol name="masse_eau" type="character varying(255)"/>
+	<simplecol name="code_agence" type="character varying(255)"/>
+	<definition> <![CDATA[SELECT t.trait_id,
+    t.madate,
+    t.engin,
+    t.station,
+    t.ordre,
+    t.experimentation,
+    t.fk_campagne_id,
+    t.commentaire,
+    t.conductivite,
+    t.duree,
+    t.maree,
+    t.oxygene,
+    t.pos_deb_lat,
+    t.pos_deb_long,
+    t.pos_fin_lat,
+    t.pos_fin_long,
+    t.profondeur,
+    t.salinite,
+    t.salinite_classe,
+    t.temperature,
+    t.pos_deb_lat_dd,
+    t.pos_deb_long_dd,
+    t.pos_fin_lat_dd,
+    t.pos_fin_long_dd,
+    t.fk_materiel_id,
+    t.validite,
+    t.distance_chalutee,
+    date_part('year'::text, t.madate) AS annee,
+    campagnes.campagne_nom,
+    campagnes.saison,
+    masse_eau.masse_eau,
+    masse_eau.code_agence
+   FROM ((trait t
+     JOIN campagnes ON ((campagnes.campagne_id = t.fk_campagne_id)))
+     JOIN masse_eau ON ((masse_eau.masse_eau_id = campagnes.fk_masse_eau)));;]]> </definition>
+</view>
+
+<table name="aclacl" layers="1" collapse-mode="2" max-obj-count="3" z-value="1">
+	<schema name="webacl"/>
+	<role name="&quot;eric.quinton&quot;"/>
+	<comment> <![CDATA[Table des droits attribués]]> </comment>
+	<tag name="acl"/>
+	<position x="40" y="220"/>
+	<column name="aclaco_id" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="aclgroup_id" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<constraint name="aclacl_pk" type="pk-constr" table="webacl.aclacl">
+		<columns names="aclaco_id,aclgroup_id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<sequence name="aclaco_aclaco_id_seq" cycle="false" start="1" increment="1" min-value="1" max-value="9223372036854775807" cache="1">
+	<schema name="webacl"/>
+	<role name="&quot;eric.quinton&quot;"/>
+</sequence>
+
+<table name="aclaco" layers="1" collapse-mode="2" max-obj-count="3" z-value="1">
+	<schema name="webacl"/>
+	<role name="&quot;eric.quinton&quot;"/>
+	<comment> <![CDATA[Table des droits gérés]]> </comment>
+	<tag name="acl"/>
+	<position x="40" y="60"/>
+	<column name="aclaco_id" not-null="true" sequence="webacl.aclaco_aclaco_id_seq">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="aclappli_id" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="aco" not-null="true">
+		<type name="character varying" length="0"/>
+	</column>
+	<constraint name="aclaco_pk" type="pk-constr" table="webacl.aclaco">
+		<columns names="aclaco_id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<sequence name="aclappli_aclappli_id_seq" cycle="false" start="1" increment="1" min-value="1" max-value="9223372036854775807" cache="1">
+	<schema name="webacl"/>
+	<role name="&quot;eric.quinton&quot;"/>
+</sequence>
+
+<table name="aclappli" layers="1" collapse-mode="2" max-obj-count="3" z-value="2">
+	<schema name="webacl"/>
+	<role name="&quot;eric.quinton&quot;"/>
+	<comment> <![CDATA[Table des applications gérées]]> </comment>
+	<tag name="acl"/>
+	<position x="460" y="60"/>
+	<column name="aclappli_id" not-null="true" sequence="webacl.aclappli_aclappli_id_seq">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="appli" not-null="true">
+		<type name="character varying" length="0"/>
+		<comment> <![CDATA[Nom de l'application pour la gestion des droits]]> </comment>
+	</column>
+	<column name="applidetail">
+		<type name="character varying" length="0"/>
+		<comment> <![CDATA[Description de l'application]]> </comment>
+	</column>
+	<constraint name="aclappli_pk" type="pk-constr" table="webacl.aclappli">
+		<columns names="aclappli_id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<sequence name="aclgroup_aclgroup_id_seq" cycle="false" start="1" increment="1" min-value="1" max-value="9223372036854775807" cache="1">
+	<schema name="webacl"/>
+	<role name="&quot;eric.quinton&quot;"/>
+</sequence>
+
+<table name="aclgroup" layers="1" collapse-mode="2" max-obj-count="3" z-value="1">
+	<schema name="webacl"/>
+	<role name="&quot;eric.quinton&quot;"/>
+	<comment> <![CDATA[Groupes des logins]]> </comment>
+	<tag name="acl"/>
+	<position x="460" y="220"/>
+	<column name="aclgroup_id" not-null="true" sequence="webacl.aclgroup_aclgroup_id_seq">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="groupe" not-null="true">
+		<type name="character varying" length="0"/>
+	</column>
+	<column name="aclgroup_id_parent">
+		<type name="integer" length="0"/>
+	</column>
+	<constraint name="aclgroup_pk" type="pk-constr" table="webacl.aclgroup">
+		<columns names="aclgroup_id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<sequence name="acllogin_acllogin_id_seq" cycle="false" start="1" increment="1" min-value="1" max-value="9223372036854775807" cache="1">
+	<schema name="webacl"/>
+	<role name="&quot;eric.quinton&quot;"/>
+</sequence>
+
+<table name="acllogin" layers="1" collapse-mode="2" max-obj-count="4" z-value="1">
+	<schema name="webacl"/>
+	<role name="&quot;eric.quinton&quot;"/>
+	<comment> <![CDATA[Table des logins des utilisateurs autorisés]]> </comment>
+	<tag name="acl"/>
+	<position x="40" y="360"/>
+	<column name="acllogin_id" not-null="true" sequence="webacl.acllogin_acllogin_id_seq">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="login" not-null="true">
+		<type name="character varying" length="0"/>
+	</column>
+	<column name="logindetail" not-null="true">
+		<type name="character varying" length="0"/>
+		<comment> <![CDATA[Nom affiché]]> </comment>
+	</column>
+	<column name="totp_key">
+		<type name="varchar" length="0"/>
+		<comment> <![CDATA[TOTP secret key for the user]]> </comment>
+	</column>
+	<constraint name="acllogin_pk" type="pk-constr" table="webacl.acllogin">
+		<columns names="acllogin_id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="acllogin_campagnes" layers="1" collapse-mode="2" max-obj-count="3" z-value="1">
+	<schema name="webacl"/>
+	<role name="&quot;eric.quinton&quot;"/>
+	<comment> <![CDATA[Table définissant les campagnes autorisées pour un utilisateur]]> </comment>
+	<tag name="campagne"/>
+	<position x="40" y="540"/>
+	<column name="campagne_id" not-null="true" sequence="public.seq_campagnes_campagne_id">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="acllogin_id" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<constraint name="acllogin_campagnes_pk" type="pk-constr" table="webacl.acllogin_campagnes">
+		<columns names="campagne_id,acllogin_id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="acllogingroup" layers="1" collapse-mode="2" max-obj-count="3" z-value="2">
+	<schema name="webacl"/>
+	<role name="&quot;eric.quinton&quot;"/>
+	<comment> <![CDATA[Table des relations entre les logins et les groupes]]> </comment>
+	<tag name="acl"/>
+	<position x="460" y="360"/>
+	<column name="acllogin_id" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="aclgroup_id" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<constraint name="acllogingroup_pk" type="pk-constr" table="webacl.acllogingroup">
+		<columns names="acllogin_id,aclgroup_id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<sequence name="campagnes_campagne_id_seq" cycle="false" start="1" increment="1" min-value="1" max-value="9223372036854775807" cache="1">
+	<schema name="webacl"/>
+	<role name="&quot;eric.quinton&quot;"/>
+</sequence>
+
+<sequence name="log_log_id_seq" cycle="false" start="1" increment="1" min-value="1" max-value="9223372036854775807" cache="1">
+	<schema name="webacl"/>
+	<role name="&quot;eric.quinton&quot;"/>
+</sequence>
+
+<table name="log" layers="1" collapse-mode="2" max-obj-count="7" z-value="3">
+	<schema name="webacl"/>
+	<role name="&quot;eric.quinton&quot;"/>
+	<comment> <![CDATA[Liste des connexions ou des actions enregistrées]]> </comment>
+	<position x="1260" y="60"/>
+	<column name="log_id" not-null="true" sequence="webacl.log_log_id_seq">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="login" not-null="true">
+		<type name="character varying" length="32"/>
+	</column>
+	<column name="nom_module">
+		<type name="character varying" length="0"/>
+	</column>
+	<column name="log_date" not-null="true">
+		<type name="timestamp" length="0"/>
+		<comment> <![CDATA[Heure de connexion]]> </comment>
+	</column>
+	<column name="commentaire">
+		<type name="character varying" length="0"/>
+		<comment> <![CDATA[Donnees complementaires enregistrees]]> </comment>
+	</column>
+	<column name="ipaddress">
+		<type name="character varying" length="0"/>
+	</column>
+	<constraint name="log_pk" type="pk-constr" table="webacl.log">
+		<columns names="log_id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<sequence name="seq_logingestion_id" cycle="false" start="1" increment="1" min-value="1" max-value="999999" cache="1">
+	<schema name="webacl"/>
+	<role name="&quot;eric.quinton&quot;"/>
+</sequence>
+
+<sequence name="login_oldpassword_login_oldpassword_id_seq" cycle="false" start="1" increment="1" min-value="1" max-value="9223372036854775807" cache="1">
+	<schema name="webacl"/>
+	<role name="&quot;eric.quinton&quot;"/>
+</sequence>
+
+<index name="fki_campagne_id" table="public.trait"
+	 concurrent="false" unique="false" fast-update="false" buffering="false" nulls-not-distinct="false"
+	 index-type="btree" factor="90">
+		<idxelement use-sorting="false">
+			<column name="fk_campagne_id"/>
+		</idxelement>
+</index>
+
+<index name="fki_campagnes_masse_eau" table="public.campagnes"
+	 concurrent="false" unique="false" fast-update="false" buffering="false" nulls-not-distinct="false"
+	 index-type="btree" factor="90">
+		<idxelement use-sorting="false">
+			<column name="fk_masse_eau"/>
+		</idxelement>
+</index>
+
+<index name="fki_campagnes_personne" table="public.campagnes"
+	 concurrent="false" unique="false" fast-update="false" buffering="false" nulls-not-distinct="false"
+	 index-type="btree" factor="90">
+		<idxelement use-sorting="false">
+			<column name="fk_personne"/>
+		</idxelement>
+</index>
+
+<index name="fki_ech_id" table="public.individu"
+	 concurrent="false" unique="false" fast-update="false" buffering="false" nulls-not-distinct="false"
+	 index-type="btree" factor="90">
+		<idxelement use-sorting="false">
+			<column name="fk_ech_id"/>
+		</idxelement>
+</index>
+
+<index name="fki_espece_id" table="public.echantillon"
+	 concurrent="false" unique="false" fast-update="false" buffering="false" nulls-not-distinct="false"
+	 index-type="btree" factor="90">
+		<idxelement use-sorting="false">
+			<column name="espece_id"/>
+		</idxelement>
+</index>
+
+<index name="fki_materiel_id" table="public.trait"
+	 concurrent="false" unique="false" fast-update="false" buffering="false" nulls-not-distinct="false"
+	 index-type="btree" factor="90">
+		<idxelement use-sorting="false">
+			<column name="fk_materiel_id"/>
+		</idxelement>
+</index>
+
+<index name="fki_trait_id" table="public.echantillon"
+	 concurrent="false" unique="false" fast-update="false" buffering="false" nulls-not-distinct="false"
+	 index-type="btree" factor="90">
+		<idxelement use-sorting="false">
+			<column name="fk_trait_id"/>
+		</idxelement>
+</index>
+
+<index name="idx_trait_experimentation" table="public.trait"
+	 concurrent="false" unique="false" fast-update="false" buffering="false" nulls-not-distinct="false"
+	 index-type="btree" factor="90">
+		<idxelement use-sorting="false">
+			<column name="experimentation"/>
+		</idxelement>
+</index>
+
+<index name="log_date_idx" table="webacl.log"
+	 concurrent="false" unique="false" fast-update="false" buffering="false" nulls-not-distinct="false"
+	 index-type="btree" factor="90">
+		<idxelement use-sorting="false">
+			<column name="log_date"/>
+		</idxelement>
+</index>
+
+<index name="log_login_idx" table="webacl.log"
+	 concurrent="false" unique="false" fast-update="false" buffering="false" nulls-not-distinct="false"
+	 index-type="btree" factor="90">
+		<idxelement use-sorting="false">
+			<column name="login"/>
+		</idxelement>
+</index>
+
+<table name="logingestion" layers="1" collapse-mode="1" max-obj-count="12" z-value="0">
+	<schema name="webacl"/>
+	<role name="quinton"/>
+	<comment> <![CDATA[List of logins used to connect to the application, when the account is managed by the application itself. This table also contains the accounts authorized to use the web services.]]> </comment>
+	<tag name="acl"/>
+	<position x="920" y="220"/>
+	<column name="login" not-null="true">
+		<type name="varchar" length="0"/>
+		<comment> <![CDATA[Login used by the user]]> </comment>
+	</column>
+	<column name="password">
+		<type name="varchar" length="0"/>
+	</column>
+	<column name="nom">
+		<type name="varchar" length="0"/>
+		<comment> <![CDATA[Name of the user]]> </comment>
+	</column>
+	<column name="prenom">
+		<type name="varchar" length="0"/>
+		<comment> <![CDATA[Surname]]> </comment>
+	</column>
+	<column name="mail">
+		<type name="character varying" length="255"/>
+		<comment> <![CDATA[email. Used to send password loss messages]]> </comment>
+	</column>
+	<column name="datemodif">
+		<type name="timestamp" length="0"/>
+		<comment> <![CDATA[Last date of change of the record]]> </comment>
+	</column>
+	<column name="actif" default-value="1">
+		<type name="smallint" length="0"/>
+		<comment> <![CDATA[If 1, the account is active and can be logging to the application]]> </comment>
+	</column>
+	<column name="is_clientws" default-value="false">
+		<type name="boolean" length="0"/>
+		<comment> <![CDATA[True if the login is used by a third-party application to call a web-service]]> </comment>
+	</column>
+	<column name="tokenws">
+		<type name="character varying" length="0"/>
+		<comment> <![CDATA[Identification token used for the third-parties applications]]> </comment>
+	</column>
+	<column name="is_expired" default-value="false">
+		<type name="boolean" length="0"/>
+		<comment> <![CDATA[If true, the account is expired (password older)]]> </comment>
+	</column>
+	<initial-data>
+<![CDATA[id•login•password•nom•prenom•mail•datemodif•actif•is_clientws•tokenws•is_expired⸣
+1•admin•cd916028a2d8a1b901e831246dd5b9b4d3832786ddc63bbf5af4b50d9fc98f50•Administrator••admin@mysociety.com•2017-08-24 00:00:00•1•false••false]]>
+	</initial-data>
+</table>
+
+<table name="passwordlost" layers="1" collapse-mode="1" max-obj-count="4" z-value="0">
+	<schema name="webacl"/>
+	<role name="quinton"/>
+	<comment> <![CDATA[Password loss tracking table]]> </comment>
+	<tag name="acl"/>
+	<position x="920" y="60"/>
+	<column name="id" not-null="true">
+		<type name="integer" length="0"/>
+		<comment> <![CDATA[Logingestion id key]]> </comment>
+	</column>
+	<column name="token" not-null="true">
+		<type name="character varying" length="0"/>
+		<comment> <![CDATA[Token used to renewal]]> </comment>
+	</column>
+	<column name="expiration" not-null="true">
+		<type name="timestamp" length="0"/>
+		<comment> <![CDATA[Expiration date-time of the token]]> </comment>
+	</column>
+	<column name="usedate">
+		<type name="timestamp" length="0"/>
+		<comment> <![CDATA[Used date-time of the token]]> </comment>
+	</column>
+</table>
+
+<index name="logingestion_login_idx" table="webacl.logingestion"
+	 concurrent="false" unique="true" fast-update="false" buffering="false" nulls-not-distinct="false"
+	 index-type="btree" factor="90">
+		<idxelement use-sorting="false">
+			<column name="login"/>
+		</idxelement>
+</index>
+
+<table name="dbparam" layers="0" collapse-mode="1" max-obj-count="3" z-value="0">
+	<schema name="public"/>
+	<role name="quinton"/>
+	<comment> <![CDATA[Table of parameters intrinsically associated to the instance]]> </comment>
+	<position x="1740" y="2540"/>
+	<column name="dbparam_id" not-null="true">
+		<type name="serial" length="0"/>
+	</column>
+	<column name="dbparam_name" not-null="true">
+		<type name="character varying" length="0"/>
+		<comment> <![CDATA[Name of the parameter]]> </comment>
+	</column>
+	<column name="dbparam_value">
+		<type name="character varying" length="0"/>
+		<comment> <![CDATA[Value of the parameter]]> </comment>
+	</column>
+	<constraint name="dbparam_pk" type="pk-constr" table="public.dbparam">
+		<columns names="dbparam_id" ref-type="src-columns"/>
+	</constraint>
+	<initial-data>
+<![CDATA[dbparam_name•dbparam_value⸣
+APPLI_code•pometweb⸣
+APPLI_title•POMET⸣
+mapDefaultX•-0.70⸣
+mapDefaultY•44.77⸣
+mapDefaultZoom•7⸣
+otp_issuer•pomet]]>
+	</initial-data>
+</table>
+
+<table name="dbversion" layers="0" collapse-mode="1" max-obj-count="3" z-value="0">
+	<schema name="public"/>
+	<role name="quinton"/>
+	<comment> <![CDATA[Table of the database versions]]> </comment>
+	<position x="1780" y="2120"/>
+	<column name="dbversion_number" not-null="true">
+		<type name="character varying" length="0"/>
+		<comment> <![CDATA[Number of the version]]> </comment>
+	</column>
+	<column name="dbversion_date" not-null="true">
+		<type name="timestamp" length="0"/>
+		<comment> <![CDATA[Date of the version]]> </comment>
+	</column>
+	<column name="dbversion_id" not-null="true">
+		<type name="serial" length="0"/>
+	</column>
+	<constraint name="dbversion_pk" type="pk-constr" table="public.dbversion">
+		<columns names="dbversion_number" ref-type="src-columns"/>
+	</constraint>
+	<initial-data>
+<![CDATA[dbversion_number•dbversion_date⸣
+1.6•2021-08-06]]>
+	</initial-data>
+</table>
+
+<table name="request" layers="0" collapse-mode="1" max-obj-count="8" z-value="0">
+	<schema name="public"/>
+	<role name="quinton"/>
+	<comment> <![CDATA[Request table in database]]> </comment>
+	<position x="1780" y="2280"/>
+	<column name="create_date" not-null="true">
+		<type name="timestamp" length="0"/>
+		<comment> <![CDATA[Date of create of the request]]> </comment>
+	</column>
+	<column name="last_exec">
+		<type name="timestamp" length="0"/>
+		<comment> <![CDATA[Date of the last execution]]> </comment>
+	</column>
+	<column name="title" not-null="true">
+		<type name="character varying" length="0"/>
+		<comment> <![CDATA[Title of the request]]> </comment>
+	</column>
+	<column name="body" not-null="true">
+		<type name="character varying" length="0"/>
+		<comment> <![CDATA[Body of the request. Don't begin it by SELECT, which will be added automatically]]> </comment>
+	</column>
+	<column name="login" not-null="true">
+		<type name="character varying" length="0"/>
+		<comment> <![CDATA[Login of the creator of the request]]> </comment>
+	</column>
+	<column name="datefields">
+		<type name="character varying" length="0"/>
+		<comment> <![CDATA[List of the date fields used in the request, separated by a comma, for format it]]> </comment>
+	</column>
+	<column name="request_id" not-null="true">
+		<type name="serial" length="0"/>
+	</column>
+	<constraint name="request_pk" type="pk-constr" table="public.request">
+		<columns names="request_id" ref-type="src-columns"/>
+	</constraint>
+	<initial-data>
+<![CDATA[create_date•last_exec•title•body•login•datefields⸣
+/now()/••Number of samples by collection•collection_name, count(*) as "number of samples"
+from sample
+join collection using (collection_id)
+group by collection_name•admin•]]>
+	</initial-data>
+</table>
+
+<constraint name="fk_guilde_wiser_espece" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.espece" table="public.guilde_wiser">
+	<columns names="espece_id" ref-type="src-columns"/>
+	<columns names="espece_id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_dce_ligne_trait" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.trait" table="public.dce_ligne_geom">
+	<columns names="trait_id" ref-type="src-columns"/>
+	<columns names="trait_id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="experimentation_campagnes_fk" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.experimentation" table="public.campagnes">
+	<columns names="experimentation_id" ref-type="src-columns"/>
+	<columns names="experimentation_id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_campagnes_masse_eau" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.masse_eau" table="public.campagnes">
+	<columns names="fk_masse_eau" ref-type="src-columns"/>
+	<columns names="masse_eau_id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_campagnes_personne" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.personne" table="public.campagnes">
+	<columns names="fk_personne" ref-type="src-columns"/>
+	<columns names="personne_id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_campagne_id" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.campagnes" table="public.trait">
+	<columns names="fk_campagne_id" ref-type="src-columns"/>
+	<columns names="campagne_id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_materiel_id" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.materiel" table="public.trait">
+	<columns names="fk_materiel_id" ref-type="src-columns"/>
+	<columns names="materiel_id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="salinite_trait_fk" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.salinite" table="public.trait">
+	<columns names="salinite_classe" ref-type="src-columns"/>
+	<columns names="salinite_id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="espece_biologic_sw_fk" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.espece" table="public.biologic_sw">
+	<columns names="espece_id" ref-type="src-columns"/>
+	<columns names="espece_id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_dce_point_trait" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.trait" table="public.dce_point_geom">
+	<columns names="trait_id" ref-type="src-columns"/>
+	<columns names="trait_id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_guilde_espece" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.espece" table="public.guilde">
+	<columns names="espece_id" ref-type="src-columns"/>
+	<columns names="espece_id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="espece_echantillon_fk" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.espece" table="public.echantillon">
+	<columns names="espece_id" ref-type="src-columns"/>
+	<columns names="espece_id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_espece_id" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.espece" table="public.echantillon">
+	<columns names="espece_id" ref-type="src-columns"/>
+	<columns names="espece_id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_trait_id" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.trait" table="public.echantillon">
+	<columns names="fk_trait_id" ref-type="src-columns"/>
+	<columns names="trait_id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_ech_id" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.echantillon" table="public.individu">
+	<columns names="fk_ech_id" ref-type="src-columns"/>
+	<columns names="ech_id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="experimentation_materiel_fk" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.experimentation" table="public.materiel">
+	<columns names="experimentation_id" ref-type="src-columns"/>
+	<columns names="experimentation_id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="resilience_species_reproduction_fk" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.resilience" table="public.species_size">
+	<columns names="resilience_id" ref-type="src-columns"/>
+	<columns names="resilience_id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="swimming_species_reproduction_fk" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.swimming" table="public.species_size">
+	<columns names="swimming_id" ref-type="src-columns"/>
+	<columns names="swimming_id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="trait_tracegps_fk" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.trait" table="public.tracegps">
+	<columns names="trait_id" ref-type="src-columns"/>
+	<columns names="trait_id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="aclaco_aclacl_fk" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="webacl.aclaco" table="webacl.aclacl">
+	<columns names="aclaco_id" ref-type="src-columns"/>
+	<columns names="aclaco_id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="aclgroup_aclacl_fk" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="webacl.aclgroup" table="webacl.aclacl">
+	<columns names="aclgroup_id" ref-type="src-columns"/>
+	<columns names="aclgroup_id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="aclappli_aclaco_fk" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="webacl.aclappli" table="webacl.aclaco">
+	<columns names="aclappli_id" ref-type="src-columns"/>
+	<columns names="aclappli_id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="aclgroup_aclgroup_fk" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="webacl.aclgroup" table="webacl.aclgroup">
+	<columns names="aclgroup_id_parent" ref-type="src-columns"/>
+	<columns names="aclgroup_id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="acllogin_acllogin_campagnes_fk" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="webacl.acllogin" table="webacl.acllogin_campagnes">
+	<columns names="acllogin_id" ref-type="src-columns"/>
+	<columns names="acllogin_id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="public_campagnes_acllogin_campagnes_fk" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.campagnes" table="webacl.acllogin_campagnes">
+	<columns names="campagne_id" ref-type="src-columns"/>
+	<columns names="campagne_id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="aclgroup_acllogingroup_fk" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="webacl.aclgroup" table="webacl.acllogingroup">
+	<columns names="aclgroup_id" ref-type="src-columns"/>
+	<columns names="aclgroup_id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="acllogin_acllogingroup_fk" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="webacl.acllogin" table="webacl.acllogingroup">
+	<columns names="acllogin_id" ref-type="src-columns"/>
+	<columns names="acllogin_id" ref-type="dst-columns"/>
+</constraint>
+
+<relationship name="rel_guilde_wiser_espece" type="relfk" layers="0"
+	 src-table="public.guilde_wiser"
+	 dst-table="public.espece" reference-fk="fk_guilde_wiser_espece"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_dce_ligne_geom_trait" type="relfk" layers="0"
+	 src-table="public.dce_ligne_geom"
+	 dst-table="public.trait" reference-fk="fk_dce_ligne_trait"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_campagnes_experimentation" type="relfk" layers="0"
+	 src-table="public.campagnes"
+	 dst-table="public.experimentation" reference-fk="experimentation_campagnes_fk"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_campagnes_masse_eau" type="relfk" layers="0"
+	 src-table="public.campagnes"
+	 dst-table="public.masse_eau" reference-fk="fk_campagnes_masse_eau"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_campagnes_personne" type="relfk" layers="0"
+	 src-table="public.campagnes"
+	 dst-table="public.personne" reference-fk="fk_campagnes_personne"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_trait_campagnes" type="relfk" layers="0"
+	 src-table="public.trait"
+	 dst-table="public.campagnes" reference-fk="fk_campagne_id"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_trait_materiel" type="relfk" layers="0"
+	 src-table="public.trait"
+	 dst-table="public.materiel" reference-fk="fk_materiel_id"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_trait_salinite" type="relfk" layers="0"
+	 src-table="public.trait"
+	 dst-table="public.salinite" reference-fk="salinite_trait_fk"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_biologic_sw_espece" type="relfk" layers="0"
+	 src-table="public.biologic_sw"
+	 dst-table="public.espece" reference-fk="espece_biologic_sw_fk"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_dce_point_geom_trait" type="relfk" layers="0"
+	 src-table="public.dce_point_geom"
+	 dst-table="public.trait" reference-fk="fk_dce_point_trait"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_guilde_espece" type="relfk" layers="0"
+	 src-table="public.guilde"
+	 dst-table="public.espece" reference-fk="fk_guilde_espece"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_echantillon_espece" type="relfk" layers="0"
+	 src-table="public.echantillon"
+	 dst-table="public.espece" reference-fk="espece_echantillon_fk"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_echantillon_espece1" type="relfk" layers="0"
+	 src-table="public.echantillon"
+	 dst-table="public.espece" reference-fk="fk_espece_id"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_echantillon_trait" type="relfk" layers="0"
+	 src-table="public.echantillon"
+	 dst-table="public.trait" reference-fk="fk_trait_id"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_individu_echantillon" type="relfk" layers="0"
+	 src-table="public.individu"
+	 dst-table="public.echantillon" reference-fk="fk_ech_id"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_materiel_experimentation" type="relfk" layers="0"
+	 src-table="public.materiel"
+	 dst-table="public.experimentation" reference-fk="experimentation_materiel_fk"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_species_size_resilience" type="relfk" layers="0"
+	 src-table="public.species_size"
+	 dst-table="public.resilience" reference-fk="resilience_species_reproduction_fk"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_species_size_swimming" type="relfk" layers="0"
+	 src-table="public.species_size"
+	 dst-table="public.swimming" reference-fk="swimming_species_reproduction_fk"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_tracegps_trait" type="relfk" layers="0"
+	 src-table="public.tracegps"
+	 dst-table="public.trait" reference-fk="trait_tracegps_fk"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_aclacl_aclaco" type="relfk" layers="0"
+	 src-table="webacl.aclacl"
+	 dst-table="webacl.aclaco" reference-fk="aclaco_aclacl_fk"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_aclacl_aclgroup" type="relfk" layers="0"
+	 src-table="webacl.aclacl"
+	 dst-table="webacl.aclgroup" reference-fk="aclgroup_aclacl_fk"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_aclaco_aclappli" type="relfk" layers="0"
+	 src-table="webacl.aclaco"
+	 dst-table="webacl.aclappli" reference-fk="aclappli_aclaco_fk"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_aclgroup_aclgroup" type="relfk" layers="0"
+	 src-table="webacl.aclgroup"
+	 dst-table="webacl.aclgroup" reference-fk="aclgroup_aclgroup_fk"
+	 src-required="false" dst-required="false">
+	<line>
+		<position x="831.796" y="258.241"/>
+	<position x="831.796" y="187"/>
+	<position x="685.864" y="187"/>
+	</line>
+</relationship>
+
+<relationship name="rel_acllogin_campagnes_acllogin" type="relfk" layers="0"
+	 src-table="webacl.acllogin_campagnes"
+	 dst-table="webacl.acllogin" reference-fk="acllogin_acllogin_campagnes_fk"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_acllogin_campagnes_campagnes" type="relfk" layers="0"
+	 src-table="webacl.acllogin_campagnes"
+	 dst-table="public.campagnes" reference-fk="public_campagnes_acllogin_campagnes_fk"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_acllogingroup_aclgroup" type="relfk" layers="0"
+	 src-table="webacl.acllogingroup"
+	 dst-table="webacl.aclgroup" reference-fk="aclgroup_acllogingroup_fk"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_acllogingroup_acllogin" type="relfk" layers="0"
+	 src-table="webacl.acllogingroup"
+	 dst-table="webacl.acllogin" reference-fk="acllogin_acllogingroup_fk"
+	 src-required="false" dst-required="true"/>
+
+<permission>
+	<object name="public" type="schema"/>
+	<roles names="postgres"/>
+	<privileges create="true" usage="true"/>
+</permission>
+<permission>
+	<object name="public" type="schema"/>
+	<privileges create="true" usage="true"/>
+</permission>
+</dbmodel>
