@@ -120,7 +120,8 @@ class Traits extends PpciLibrary
         /**
          * Teste si on est en creation, avec plus d'une campagne selectionnee
          */
-        if (count($_SESSION["searchTrait"]->getParam()["campagne_id"]) > 1) {
+        $campagnes = $_SESSION["searchTrait"]->getParam()["campagne_id"];
+        if (is_array($campagnes) && count($campagnes) > 1) {
             $this->message->set("La création ou la modification d'un trait n'est pas possible si plusieurs campagnes sont sélectionnées", true);
             return false;
         } else {
