@@ -122,7 +122,9 @@ class Espece extends PpciLibrary
          * Retourne la liste des valeurs uniques du champ fourni en parametre,
          * au format json
          */
+        $this->vue = service ("AjaxView");
         $this->vue->set($this->dataclass->getUniqueValuesFromParent($_REQUEST["field"], $_REQUEST["parentField"], $_REQUEST["value"]));
+        return $this->vue->send();
     }
     function search()
     {
