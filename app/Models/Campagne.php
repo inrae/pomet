@@ -241,28 +241,32 @@ class Campagne extends PpciModel
      */
     function getListFromArray($cles)
     {
-        $sql = "select campagne_id, campagne_nom, saison, annee, masse_eau,
+        if (!empty($cles)) {
+            $sql = "select campagne_id, campagne_nom, saison, annee, masse_eau,
 				experimentation_libelle, experimentation_id, longitude, latitude, zoom,
                 code_agence
 				from campagnes
 				join masse_eau on (masse_eau_id = fk_masse_eau)
 				left outer join experimentation using (experimentation_id)
 				";
-        $where = " where campagne_id in (";
-        $order = " order by campagne_nom";
-        $comma = "";
-        $i = 0;
-        $param = [];
-        foreach ($cles as $cle) {
-            if ($cle > 0) {
-                $where .= $comma . ":k$i:";
-                $param["k$i"]  = $cle;
-                $comma = ",";
-                $i++;
+            $where = " where campagne_id in (";
+            $order = " order by campagne_nom";
+            $comma = "";
+            $i = 0;
+            $param = [];
+            foreach ($cles as $cle) {
+                if ($cle > 0) {
+                    $where .= $comma . ":k$i:";
+                    $param["k$i"]  = $cle;
+                    $comma = ",";
+                    $i++;
+                }
             }
+            $where .= ")";
+            return $this->getListeParam($sql . $where . $order, $param);
+        } else {
+            return [];
         }
-        $where .= ")";
-        return $this->getListeParam($sql . $where . $order, $param);
     }
 
     /**
