@@ -1,7 +1,12 @@
 Evolutions et corrections de bogues
 ===========
+
+Version v25.0.1 du 15 mai 2025
+-----------
+- mise à niveau du framework et des bibliothèques tierces
+
 Version v25.0.0 du 28 février 2025
-----------------------------------
+-----------
 - correction de la suppression d'un échantillon
 - ajout de la recherche par trait_id pour les administrateurs de l'application
 
