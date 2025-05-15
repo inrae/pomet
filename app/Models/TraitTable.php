@@ -370,7 +370,7 @@ class TraitTable extends PpciModel
     {
         $where = $this->getWhere($dataSearch);
         if (strlen($where) > 0) {
-            return $this->getListeParam($this->sql . $where . $this->order);
+            return $this->getListeParam($this->sql . $where . $this->order, $this->sqlParams);
         }
     }
 
@@ -384,7 +384,7 @@ class TraitTable extends PpciModel
     {
         $where = $this->getWhere($dataSearch);
         if (strlen($where) > 0) {
-            return $this->getListeParam($this->sqlLire . $where . " order by trait_id");
+            return $this->getListeParam($this->sqlLire . $where . " order by trait_id", $this->sqlParams);
         }
     }
 
@@ -399,7 +399,7 @@ class TraitTable extends PpciModel
         $where = $this->getWhere($dataSearch);
         if (strlen($where) > 0) {
             $sql = "select trait_id from trait";
-            return $this->getListeParam($sql . $where . " order by trait_id");
+            return $this->getListeParam($sql . $where . " order by trait_id", $this->sqlParams);
         }
     }
 
@@ -412,6 +412,11 @@ class TraitTable extends PpciModel
     function getWhere($dataSearch)
     {
         $where = "";
+        if ($_SESSION["userRights"]["param"] == 1 && $dataSearch["uid"] > 0) {
+            $where = " where trait_id = :uid:";
+            $this->sqlParams["uid"] = $dataSearch["uid"];
+            $isWhere = true;
+        } else {
         if (is_array($dataSearch["campagne_id"]) || $dataSearch["campagne_id"] > 0) {
             $where = " where ";
             $isWhere = false;
@@ -422,14 +427,19 @@ class TraitTable extends PpciModel
             if (is_array($dataSearch["campagne_id"])) {
                 $where .= " fk_campagne_id in (";
                 $comma = false;
+                $i = 0;
                 foreach ($dataSearch["campagne_id"] as $value) {
                     !$comma ? $comma = true : $where .= ", ";
-                    $where .= $value;
+                    $where .= ":campid$i:";
+                    $this->sqlParams["campid$i"] = $value;
+                    $i++;
                 }
                 $where .= ") ";
             } else {
-                $where .= " fk_campagne_id = " . $dataSearch["campagne_id"];
+                $where .= " fk_campagne_id = :camp_id:";
+                $this->sqlParams["camp_id"] = $dataSearch["campagne_id"];
             }
+        }
             if (!$isWhere) {
                 $where = "";
             }

@@ -14,15 +14,17 @@ class SearchTrait extends SearchParam
     public function __construct()
     {
         $this->param = array(
-            "campagne_id" => "",
+            "campagne_id" => [],
             "saison" => "",
             "annee" => "",
-            "masse_eau_id" => ""
+            "masse_eau_id" => "",
+            "uid" => ""
         );
         $this->paramNum = array(
             "campagne_id",
             "annee",
-            "masse_eau_id"
+            "masse_eau_id",
+            "uid"
         );
         $this->paramArray = array(
             "campagne_id" => "1"

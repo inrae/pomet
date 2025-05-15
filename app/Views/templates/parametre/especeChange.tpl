@@ -2,13 +2,16 @@
 	$(document).ready(
 		function () {
 			$(".form-control selectEdit ").change(function () {
-				$(this).next(".form-control").val($(this).val());
+				var id = $(this).attr("id");
+				console.log(id);
+				console.log ($(this).val());
+				$("#" + id + "Input").val($(this).val());
 			});
 			/*
 			 * Fonction de recherche des select lies au parent
 			 */
 			function fieldSearch(id, parentId, valeur) {
-				var subid;
+				var subid = "";
 				var url = "especeGetValues";
 				switch (id) {
 					case "phylum":
@@ -27,20 +30,20 @@
 						subid = "genre";
 				}
 				var options = "";
-				$.getJSON(url, {
-					"value": valeur,
-					"field": subid,
-					"parentField": parentId
-				}, function (data) {
-					options = '<option value="" selected></option>';
-					for (var i = 0; i < data.length; i++) {
-						options += '<option value="' + data[i].field + '">'
-							+ data[i].field + '</option>';
-					}
-					;
-					$("#" + subid).html(options);
-				});
 				if (subid.length > 0) {
+					$.getJSON(url, {
+						"value": valeur,
+						"field": subid,
+						"parentField": parentId
+					}, function (data) {
+						options = '<option value="" selected></option>';
+						for (var i = 0; i < data.length; i++) {
+							options += '<option value="' + data[i].field + '">'
+								+ data[i].field + '</option>';
+						}
+						;
+						$("#" + subid).html(options);
+					});
 					fieldSearch(subid, parentId, valeur);
 				}
 			}
@@ -49,6 +52,7 @@
 			$(".selection").change(function () {
 				var currentId = $(this).attr('id');
 				var valeur = $(this).val();
+				$("#" + currentId + "Input").val($(this).val());
 				fieldSearch(currentId, currentId, valeur);
 			});
 
@@ -59,8 +63,9 @@
 <a href="especeList"><img src="display/images/list.png" height="25">Retour à la liste</a>
 {if $data.espece_id > 0}
 &nbsp;
-<a href="especeDisplay?espece_id={$data.espece_id}"><img src="display/images/detail.png" height="25">Retour au
-	détail</a>
+<a href="especeDisplay?espece_id={$data.espece_id}"><img src="display/images/detail.png" height="25">
+	Retour au détail
+</a>
 {/if}
 <div class="formSaisie">
 	<form class="form-horizontal protoform" method="post" action="especeWrite">
@@ -89,14 +94,14 @@
 					<label for="auteur" class="control-label col-md-4">Auteur :</label>
 					<div class="col-md-8">
 						<select id="auteur" class="form-control selectEdit ">
-							<option value="" {if $data.auteur=="" }selected{/if}>{section name=lst
-								loop=$auteur}
+							<option value="" {if $data.auteur=="" }selected{/if}>
+								{section name=lst loop=$auteur}
 							<option value="{$auteur[lst].field}" {if $data.auteur==$auteur[lst].field}selected{/if}>
 								{$auteur[lst].field}
 							</option>
 							{/section}
 						</select>
-						<input class="form-control" name="auteur" value="{$data.auteur}">
+						<input class="form-control" id="auteurInput" name="auteur" value="{$data.auteur}">
 					</div>
 				</div>
 
@@ -104,14 +109,14 @@
 					<label for="phylum" class="control-label col-md-4">Phylum :</label>
 					<div class="col-md-8">
 						<select id="phylum" class="form-control selectEdit  selection">
-							<option value="" {if $data.phylum=="" }selected{/if}>{section name=lst
-								loop=$phylum}
+							<option value="" {if $data.phylum=="" }selected{/if}>
+								{section name=lst loop=$phylum}
 							<option value="{$phylum[lst].field}" {if $data.phylum==$phylum[lst].field}selected{/if}>
 								{$phylum[lst].field}
 							</option>
 							{/section}
 						</select>
-						<input class="form-control" name="phylum" value="{$data.phylum}">
+						<input class="form-control" id="phylumInput" name="phylum" value="{$data.phylum}">
 					</div>
 				</div>
 
@@ -119,15 +124,15 @@
 					<label for="" class="control-label col-md-4">Subphylum :</label>
 					<div class="col-md-8">
 						<select id="subphylum" class="form-control selectEdit  selection">
-							<option value="" {if $data.subphylum=="" }selected{/if}>{section name=lst
-								loop=$subphylum}
+							<option value="" {if $data.subphylum=="" }selected{/if}>
+								{section name=lst loop=$subphylum}
 							<option value="{$subphylum[lst].field}" {if
 								$data.subphylum==$subphylum[lst].field}selected{/if}>
 								{$subphylum[lst].field}
 							</option>
 							{/section}
 						</select>
-						<input class="form-control" name="subphylum" value="{$data.subphylum}">
+						<input class="form-control" id="subphylumInput" name="subphylum" value="{$data.subphylum}">
 					</div>
 				</div>
 
@@ -135,14 +140,14 @@
 					<label for="" class="control-label col-md-4">Classe :</label>
 					<div class="col-md-8">
 						<select id="classe" class="form-control selectEdit  selection">
-							<option value="" {if $data.classe=="" }selected{/if}>{section name=lst
-								loop=$classe}
+							<option value="" {if $data.classe=="" }selected{/if}>
+								{section name=lst loop=$classe}
 							<option value="{$classe[lst].field}" {if $data.classe==$classe[lst].field}selected{/if}>
 								{$classe[lst].field}
 							</option>
 							{/section}
 						</select>
-						<input class="form-control" name="classe" value="{$data.classe}">
+						<input class="form-control" id="classeInput" name="classe" value="{$data.classe}">
 					</div>
 				</div>
 
@@ -150,14 +155,14 @@
 					<label for="" class="control-label col-md-4">Ordre :</label>
 					<div class="col-md-8">
 						<select id="ordre" class="form-control selectEdit  selection">
-							<option value="" {if $data.ordre=="" }selected{/if}>{section name=lst
-								loop=$ordre}
+							<option value="" {if $data.ordre=="" }selected{/if}>
+								{section name=lst loop=$ordre}
 							<option value="{$ordre[lst].field}" {if $data.ordre==$ordre[lst].field}selected{/if}>
 								{$ordre[lst].field}
 							</option>
 							{/section}
 						</select>
-						<input class="form-control" name="ordre" value="{$data.ordre}">
+						<input class="form-control" id="ordreInput" name="ordre" value="{$data.ordre}">
 					</div>
 				</div>
 
@@ -166,14 +171,14 @@
 					<label for="" class="control-label col-md-4">Famille :</label>
 					<div class="col-md-8">
 						<select id="famille" class="form-control selectEdit  selection">
-							<option value="" {if $data.famille=="" }selected{/if}>{section name=lst
-								loop=$famille}
+							<option value="" {if $data.famille=="" }selected{/if}>
+								{section name=lst loop=$famille}
 							<option value="{$famille[lst].field}" {if $data.famille==$famille[lst].field}selected{/if}>
 								{$famille[lst].field}
 							</option>
 							{/section}
 						</select>
-						<input class="form-control" name="famille" value="{$data.famille}">
+						<input class="form-control" id="familleInput" name="famille" value="{$data.famille}">
 					</div>
 				</div>
 
@@ -181,14 +186,14 @@
 					<label for="genre" class="control-label col-md-4">Genre :</label>
 					<div class="col-md-8">
 						<select id="genre" class="form-control selectEdit  selection">
-							<option value="" {if $data.genre=="" }selected{/if}>{section name=lst
-								loop=$genre}
+							<option value="" {if $data.genre=="" }selected{/if}>
+								{section name=lst loop=$genre}
 							<option value="{$genre[lst].field}" {if $data.genre==$genre[lst].field}selected{/if}>
 								{$genre[lst].field}
 							</option>
 							{/section}
 						</select>
-						<input class="form-control" name="genre" value="{$data.genre}">
+						<input class="form-control" id="genreInput" name="genre" value="{$data.genre}">
 					</div>
 				</div>
 
@@ -211,16 +216,17 @@
 				<fieldset>
 					<legend>Guilde</legend>
 					<div class="form-group">
-						<label for="guilde_ecologique_dce2007" class="control-label col-md-4">guilde écologique DCE 2007
-							:</label>
+						<label for="guilde_ecologique_dce2007" class="control-label col-md-4">
+							guilde écologique DCE 2007 :</label>
 						<div class="col-md-8">
 							<input class="form-control" id="guilde_ecologique_dce2007" name="guilde_ecologique_dce2007"
 								value="{$guilde.guilde_ecologique_dce2007}">
 						</div>
 					</div>
 					<div class="form-group">
-						<label for="guilde_trophique_dce2007" class="control-label col-md-4">guilde trophique DCE 2007
-							:</label>
+						<label for="guilde_trophique_dce2007" class="control-label col-md-4">
+							guilde trophique DCE 2007 :
+						</label>
 						<div class="col-md-8">
 							<input class="form-control" id="guilde_trophique_dce2007" name="guilde_trophique_dce2007"
 								value="{$guilde.guilde_trophique_dce2007}">

@@ -23,7 +23,7 @@
 		<item module="experimentationList" label="Expérimentations" tooltip="Liste des expérimentations" droits="consult"/>
 	</item>
 	<item module="administration" label="Administration" tooltip="Administration de l'application" droits="admin">
-		<item module="loginGestionList" droits="admin" label="Liste des comptes locaux" tooltip="Liste des logins - identification via la base de données" />
+		<item module="loginList" droits="admin" label="Liste des comptes locaux" tooltip="Liste des logins - identification via la base de données" />
 		<item module="appliList" drsoits="admin" label="ACL - droits" tooltip="applications et droits gérés" />
 		<item module="aclloginList" droits="admin" label="ACL - logins" tooltip="Logins déclarés dans le module de gestion des droits" />
 		<item module="groupList" droits="admin" label="ACL - groupes de logins" tooltip="Groupes de logins et logins rattachés aux groupes" />

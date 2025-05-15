@@ -53,6 +53,25 @@
 					{/foreach}
 				</select>
 			</div>
+			{if $rights.param == 1} 
+			<label for="uid" class="col-md-1 control-label">Numéro du trait :</label>
+			<div class="col-md-1">
+				<input type="number" name="uid" id="uid" value="{$dataSearch.uid}" class="form-control">
+			</div>
+			{/if}
+		</div>
+
+		<div class="form-group">
+			<label for="campagne_id" class="col-md-2 control-label">Campagne(s) de pêche :</label>
+			<div class="col-md-4">
+				<select id="campagne_id" name="campagne_id[]" multiple>
+					{section name=lst loop=$campagne}
+					<option value="{$campagne[lst].campagne_id}" {if $campagne[lst].is_checked==1}selected{/if}>
+						{$campagne[lst].campagne_nom}:{$campagne[lst].experimentation_libelle}
+					</option>
+					{/section}
+				</select>
+			</div>
 			<label for="saison" class="col-md-1 control-label">Saison : </label>
 			<div class="col-md-2">
 				<select class="selectcamp form-control" id="saison" name="saison">
@@ -64,20 +83,7 @@
 					{/foreach}
 				</select>
 			</div>
-		</div>
-
-		<div class="form-group">
-			<label for="campagne_id" class="col-md-2 control-label">Campagne(s) de pêche :</label>
-			<div class="col-md-6">
-				<select id="campagne_id" name="campagne_id[]" multiple>
-					{section name=lst loop=$campagne}
-					<option value="{$campagne[lst].campagne_id}" {if $campagne[lst].is_checked==1}selected{/if}>
-						{$campagne[lst].campagne_nom}:{$campagne[lst].experimentation_libelle}
-					</option>
-					{/section}
-				</select>
-			</div>
-			<input class="btn btn-success col-md-2 col-md-offset-1" type="submit" name="Rechercher..."
+			<input class="btn btn-success col-md-1" type="submit" name="Rechercher..."
 				value="Rechercher" autofocus>
 		</div>
 

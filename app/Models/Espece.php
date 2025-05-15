@@ -198,7 +198,7 @@ class Espece extends PpciModel
 		}
 	}
 
-	function read($id, $getDefault = false, $parentAttrib = 0): array
+	function read($id, $getDefault = true, $parentAttrib = 0): array
 	{
 		$data = parent::read($id, $getDefault, $parentAttrib);
 		if ($id > 0) {
