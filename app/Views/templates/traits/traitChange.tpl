@@ -1,4 +1,4 @@
-<script src="display/javascript/proj4.js"></script>
+<script src="display/node_modules/proj4/dist/proj4.js"></script>
 <script>
 	$(document).ready(function () {
 		var border_false = "1px solid #CC0000";
@@ -10,6 +10,7 @@
 			isGuyane = 1;
 		}
 		proj4.defs("EPSG:2972", "+proj=utm +zone=22 +ellps=GRS80 +towgs84=2,2,-2,0,0,0,0 +units=m +no_defs");
+		proj4.defs("EPSG:2154","+proj=lcc +lat_0=46.5 +lon_0=3 +lat_1=49 +lat_2=44 +x_0=700000 +y_0=6600000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs +type=crs");
 
 		$(":input").focus(function () {
 			hasfocus = $(this).attr("name");
@@ -42,9 +43,17 @@
 			var lat_fin = $('#pos_fin_lat_dd').val();
 			if (long_deb.length > 0 && lat_deb.length > 0 && long_fin.length > 0 && lat_fin.length > 0) {
 				// get distance on sphere
-				longueur = map.distance([long_deb, lat_deb], [long_fin, lat_fin]);
+				/*longueur = map.distance([long_deb, lat_deb], [long_fin, lat_fin]);
 				longueur = parseInt(longueur);
-				longueurCalculee = longueur;
+				longueurCalculee = longueur;*/
+				if (isGuyane == 1) {
+					epsg = 'EPSG:2172';
+				} else {
+					epsg = 'EPSG:2154';
+				}
+				var pointA = proj4( 'EPSG:4326', epsg, [parseFloat(long_deb), parseFloat(lat_deb)]);
+				var pointB = proj4( 'EPSG:4326', epsg, [parseFloat(long_fin), parseFloat(lat_fin)]);
+				longueur = parseInt(Math.sqrt(Math.pow(Math.abs(pointA[0]-pointB[0]),2)+Math.pow(Math.abs(pointA[1]- pointB[1]),2)));
 			}
 			/*
 			 * Mise a jour de la carte
