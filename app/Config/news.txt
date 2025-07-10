@@ -1,6 +1,10 @@
 Evolutions et corrections de bogues
 ===========
 
+Version v25.0.2 du 10 juillet 2025
+-----------
+- le calcul de la distance à partir des coordonnées GPS présentait une précision insuffisante, induisant des écarts bloquants dans certaines situations
+
 Version v25.0.1 du 15 mai 2025
 -----------
 - mise à niveau du framework et des bibliothèques tierces
